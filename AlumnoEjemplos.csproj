@@ -43,6 +43,8 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,27 +60,35 @@
     <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.Direct3D.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.DirectX.Direct3DX, Version=1.0.2903.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.Direct3DX.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.DirectX.DirectDraw, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.DirectDraw.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.DirectX.DirectInput, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.DirectInput.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.DirectX.DirectPlay, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.DirectX.DirectPlay, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.DirectX.DirectSound, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\WINDOWS\Microsoft.NET\Managed DirectX\v9.03.91\Microsoft.DirectX.DirectSound.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -94,6 +104,7 @@
     <ProjectReference Include="..\TgcViewer\TgcViewer.csproj">
       <Project>{990E714F-7FF2-4A87-86B1-E5FC8D4C2F4C}</Project>
       <Name>TgcViewer</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
