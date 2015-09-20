@@ -97,7 +97,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MiGrupo\EjemploAlumno.cs" />
+    <Compile Include="MiGrupo\EjemploAlumnoMati.cs" />
+    <Compile Include="MiGrupo\Pelota.cs" />
+    <Compile Include="MiGrupo\EjemploAlumnoold.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
