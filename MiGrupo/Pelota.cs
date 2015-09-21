@@ -15,13 +15,14 @@ namespace AlumnoEjemplos.MiGrupo
     {
         TgcSphere sphere;
         Device d3dDevice;
+        float velocidadRotacion = 200;
 
         public Pelota(Device d3dDevice)
         {
             //no se si sirve para algo, por ahora la pelota se crea y se guarda el device
             this.d3dDevice = GuiController.Instance.D3dDevice;
 
-            TgcTexture texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "MeshCreator\\Textures\\Metal\\OM106-SO.jpg");
+            TgcTexture texture = TgcTexture.createTexture(GuiController.Instance.AlumnoEjemplosMediaDir + "Texturas\\pelota.jpg");
 
             
             //se definen configuracion globlales de la pelota fea
@@ -38,7 +39,7 @@ namespace AlumnoEjemplos.MiGrupo
         
         public void render(float elapsedTime)
         {
-            sphere.BoundingSphere.render();
+            s
             sphere.render();
 
         }
@@ -58,10 +59,42 @@ namespace AlumnoEjemplos.MiGrupo
             }
         }
 
-        public void move(Vector3 vector)
+        /// <summary>
+        /// Mueve la pelota hacia el punto indicado, 
+        /// el movimiento hacia ese punto es lineal, 
+        /// en base a ese movimiento tambien hace la rotacion de la pelota
+        /// </summary>
+        public void mover(Vector3 vector, float elapsedTime)
         {
-
+            rotarSimple(vector, elapsedTime);
             sphere.move(vector);
+        }
+
+        private void rotarSimple(Vector3 movimiento, float elapsedTime)
+        {
+            //TO DO la rotacion sobre X se caga, porque la camara se mentiene estable en en Z y se mueve en X, esto hace que la rotacion no sea correcta, no tengo idea como arregarlo xD
+
+            if (movimiento.X != 0)
+            {
+                float rotAngle = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime * movimiento.X);
+                sphere.rotateZ(-rotAngle);
+            }
+            
+            //la rotacion sobre Y solo se da cuando la pelota esta en el aire, ahi la rotacion puede ser en cualquier eje, ya que no esta sobre el piso
+            if (movimiento.Y != 0)
+            {
+                float rotAngle = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime * movimiento.Y);
+                sphere.rotateX(-rotAngle);
+            }
+
+            if (movimiento.Z != 0)
+            {
+                float rotAngle = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime * movimiento.Z);
+                sphere.rotateX(rotAngle);
+            }
+            
+            
+            
         } 
 
         internal void dispose()
