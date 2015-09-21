@@ -1,0 +1,60 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AlumnoEjemplos.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="camaraOffsetHeight" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="camaraOffsetForward" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">-900</Value>
+    </Setting>
+    <Setting Name="mediaFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Media\</Value>
+    </Setting>
+    <Setting Name="textureFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Texturas\</Value>
+    </Setting>
+    <Setting Name="textureBall" Type="System.String" Scope="User">
+      <Value Profile="(Default)">pelota.jpg</Value>
+    </Setting>
+    <Setting Name="textureNet" Type="System.String" Scope="User">
+      <Value Profile="(Default)">red.jpg</Value>
+    </Setting>
+    <Setting Name="textureField" Type="System.String" Scope="User">
+      <Value Profile="(Default)">cancha.jpg</Value>
+    </Setting>
+    <Setting Name="textureTeam1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">uvw.jpg</Value>
+    </Setting>
+    <Setting Name="textureTeam2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">uvwGreen.jpg</Value>
+    </Setting>
+    <Setting Name="meshFolderPlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkeletalAnimations\Robot\</Value>
+    </Setting>
+    <Setting Name="meshTextureFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Textures\</Value>
+    </Setting>
+    <Setting Name="meshFilePlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Robot-TgcSkeletalMesh.xml</Value>
+    </Setting>
+    <Setting Name="animationWalkFilePlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Caminando-TgcSkeletalAnim.xml</Value>
+    </Setting>
+    <Setting Name="animationRunFilePlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Correr-TgcSkeletalAnim.xml</Value>
+    </Setting>
+    <Setting Name="animationStopFilePlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Parado-TgcSkeletalAnim.xml</Value>
+    </Setting>
+    <Setting Name="animationStopPlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Parado</Value>
+    </Setting>
+    <Setting Name="animationRunPlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Correr</Value>
+    </Setting>
+    <Setting Name="animationWalkPlayer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Caminando</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
