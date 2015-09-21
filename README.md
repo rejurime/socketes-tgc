@@ -1,7 +1,7 @@
 # :soccer: socketes-tgc :soccer:
 
 ## Synopsis
-Ultra precario juego de fútbol :stuck_out_tongue_closed_eye:
+Ultra precario juego de fútbol :stuck_out_tongue_closed_eyes:
 ## Motivation
 *Trabajo Práctico de la materia* **"Teoría de Gráficos por Computadora"**. *Segundo Cuatrimestre 2015.*
 ## Installation
