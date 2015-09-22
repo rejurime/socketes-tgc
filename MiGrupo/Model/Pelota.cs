@@ -1,8 +1,10 @@
-﻿using Microsoft.DirectX;
+﻿using AlumnoEjemplos.Properties;
+using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using TgcViewer;
 using TgcViewer.Utils.Modifiers;
@@ -13,6 +15,8 @@ namespace AlumnoEjemplos.MiGrupo
 {
     class Pelota
     {
+        private string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+
         TgcSphere sphere;
         Device d3dDevice;
         float velocidadRotacion = 200;
@@ -22,7 +26,8 @@ namespace AlumnoEjemplos.MiGrupo
             //no se si sirve para algo, por ahora la pelota se crea y se guarda el device
             this.d3dDevice = GuiController.Instance.D3dDevice;
 
-            TgcTexture texture = TgcTexture.createTexture(GuiController.Instance.AlumnoEjemplosMediaDir + "Texturas\\pelota.jpg");
+            TgcTexture texture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall
+);
 
             
             //se definen configuracion globlales de la pelota fea
@@ -39,7 +44,7 @@ namespace AlumnoEjemplos.MiGrupo
         
         public void render(float elapsedTime)
         {
-            s
+     
             sphere.render();
 
         }
@@ -81,12 +86,12 @@ namespace AlumnoEjemplos.MiGrupo
             }
             
             //la rotacion sobre Y solo se da cuando la pelota esta en el aire, ahi la rotacion puede ser en cualquier eje, ya que no esta sobre el piso
-            if (movimiento.Y != 0)
+           /* if (movimiento.Y != 0)
             {
                 float rotAngle = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime * movimiento.Y);
                 sphere.rotateX(-rotAngle);
             }
-
+            */
             if (movimiento.Z != 0)
             {
                 float rotAngle = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime * movimiento.Z);
