@@ -11,7 +11,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
         #region Miembros
 
         private TgcBox cancha;
-        private TgcSphere pelota;
+        private Pelota pelota;
         private TgcBox arcoLocal;
         private TgcBox arcoVisitante;
         private Jugador jugadorHumano;
@@ -29,7 +29,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
             set { cancha = value; }
         }
 
-        public TgcSphere Pelota
+        public Pelota Pelota
         {
             get { return pelota; }
             set { pelota = value; }
