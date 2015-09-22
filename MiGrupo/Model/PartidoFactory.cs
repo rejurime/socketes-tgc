@@ -50,11 +50,11 @@ namespace AlumnoEjemplos.MiGrupo.Model
         {
             Partido partido = new Partido();
 
-            partido.Cancha = this.CrearCancha(d3dDevice, pathRecursos);
-            partido.Pelota = this.CrearPelota(d3dDevice, pathRecursos);
-            this.CrearArcos(partido, d3dDevice, pathRecursos);
-            this.CrearJugadores(partido, d3dDevice, pathRecursos);
-            partido.Tribunas = this.CrearTribunas(d3dDevice, pathRecursos);
+            partido.Cancha = this.CrearCancha(pathRecursos);
+            partido.Pelota = this.CrearPelota(pathRecursos);
+            this.CrearArcos(partido, pathRecursos);
+            this.CrearJugadores(partido, pathRecursos);
+            partido.Tribunas = this.CrearTribunas(pathRecursos);
 
             return partido;
         }
@@ -105,7 +105,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// <param name="pathRecursos"></param>
         private void CrearArcos(Partido partido, string pathRecursos)
         {
-            TgcTexture texturaArco = TgcTexture.createTexture(d3dDevice, pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet);
+            TgcTexture texturaArco = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet);
             Vector3 size = new Vector3(20, 170, 350);
 
             partido.ArcoLocal = TgcBox.fromSize(new Vector3(875, 75, 5), size, texturaArco);

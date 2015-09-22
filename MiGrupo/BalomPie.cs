@@ -172,7 +172,6 @@ namespace AlumnoEjemplos.MiGrupo
                 }
             }
 
-
             //Si hubo colision, restaurar la posicion anterior
             if (collide)
             {
