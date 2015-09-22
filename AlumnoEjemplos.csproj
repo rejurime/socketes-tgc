@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="MiGrupo\EjemploAlumno.cs" />
     <Compile Include="MiGrupo\BalomPie.cs" />
+    <Compile Include="MiGrupo\Model\Jugador.cs" />
     <Compile Include="MiGrupo\Model\Partido.cs" />
     <Compile Include="MiGrupo\Model\PartidoFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

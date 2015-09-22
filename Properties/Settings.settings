@@ -6,7 +6,7 @@
       <Value Profile="(Default)">400</Value>
     </Setting>
     <Setting Name="camaraOffsetForward" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">-900</Value>
+      <Value Profile="(Default)">-600</Value>
     </Setting>
     <Setting Name="mediaFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Media\</Value>
@@ -55,6 +55,9 @@
     </Setting>
     <Setting Name="animationWalkPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">Caminando</Value>
+    </Setting>
+    <Setting Name="texturePeople" Type="System.String" Scope="User">
+      <Value Profile="(Default)">people.jpg</Value>
     </Setting>
   </Settings>
 </SettingsFile>

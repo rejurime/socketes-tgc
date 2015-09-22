@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-900")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-600")]
         public float camaraOffsetForward {
             get {
                 return ((float)(this["camaraOffsetForward"]));
@@ -236,6 +236,18 @@ namespace AlumnoEjemplos.Properties {
             }
             set {
                 this["animationWalkPlayer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("people.jpg")]
+        public string texturePeople {
+            get {
+                return ((string)(this["texturePeople"]));
+            }
+            set {
+                this["texturePeople"] = value;
             }
         }
     }

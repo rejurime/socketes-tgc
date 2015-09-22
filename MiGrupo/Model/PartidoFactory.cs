@@ -1,6 +1,7 @@
 ﻿using AlumnoEjemplos.Properties;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using System.Collections.Generic;
 using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
@@ -49,10 +50,11 @@ namespace AlumnoEjemplos.MiGrupo.Model
         {
             Partido partido = new Partido();
 
-            this.CrearCancha(partido, d3dDevice, pathRecursos);
-            this.CrearPelota(partido, d3dDevice, pathRecursos);
+            partido.Cancha = this.CrearCancha(d3dDevice, pathRecursos);
+            partido.Pelota = this.CrearPelota(d3dDevice, pathRecursos);
             this.CrearArcos(partido, d3dDevice, pathRecursos);
             this.CrearJugadores(partido, d3dDevice, pathRecursos);
+            partido.Tribunas = this.CrearTribunas(d3dDevice, pathRecursos);
 
             return partido;
         }
@@ -61,34 +63,41 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// Creo la cancha donde van a estar parado los jugadores
         /// </summary>
         /// <param name="d3dDevice"></param>
-        private void CrearCancha(Partido partido, Device d3dDevice, string pathRecursos)
+        private TgcBox CrearCancha(Device d3dDevice, string pathRecursos)
         {
             TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField);
-            partido.Cancha = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), pisoTexture);
+            return TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), pisoTexture);
         }
 
-        private void CrearTribunas(Partido partido, Device d3dDevice, string pathRecursos)
+        private List<TgcBox> CrearTribunas(Device d3dDevice, string pathRecursos)
         {
-            //TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(0, 1920, 1200));
-            //TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200));
-            //TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200));
-            //TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200));
+            TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, pathRecursos + Settings.Default.textureFolder + Settings.Default.texturePeople);
+
+            List<TgcBox> tribunas = new List<TgcBox>();
+            tribunas.Add(TgcBox.fromSize(new Vector3(900, 200, 0), new Vector3(0, 400, 1200), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 200, 0), new Vector3(0, 400, 1200), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 200, 580), new Vector3(1900, 400, 0), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 200, -580), new Vector3(1900, 400, 0), pisoTexture));
+
+            return tribunas;
         }
 
         /// <summary>
         /// Creo la pelota en el centro de la cancha
         /// </summary>
         /// <param name="d3dDevice"></param>
-        private void CrearPelota(Partido partido, Device d3dDevice, string pathRecursos)
+        private TgcSphere CrearPelota(Device d3dDevice, string pathRecursos)
         {
             //Crear esfera
-            partido.Pelota = new TgcSphere();
+            TgcSphere pelota = new TgcSphere();
 
-            partido.Pelota.setTexture(TgcTexture.createTexture(d3dDevice, pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
-            partido.Pelota.Radius = 10;
-            partido.Pelota.Position = new Vector3(0, 0, 0);
+            pelota.setTexture(TgcTexture.createTexture(d3dDevice, pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
+            pelota.Radius = 10;
+            pelota.Position = new Vector3(0, 0, 0);
 
-            partido.Pelota.updateValues();
+            pelota.updateValues();
+
+            return pelota;
         }
 
         /// <summary>
@@ -127,7 +136,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// <param name="angulo">El angulo donde va a mirar</param>
         /// <param name="nombreTextura">Que textura va a tener</param>
         /// <returns></returns>
-        private TgcSkeletalMesh CrearJugador(Device d3dDevice, Vector3 posicion, float angulo, string pathRecursos, string nombreTextura)
+        private Jugador CrearJugador(Device d3dDevice, Vector3 posicion, float angulo, string pathRecursos, string nombreTextura)
         {
             //Cargar personaje con animaciones
             TgcSkeletalMesh personaje = new TgcSkeletalLoader().loadMeshAndAnimationsFromFile(
@@ -153,7 +162,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
             personaje.Scale = new Vector3(0.55f, 0.55f, 0.55f);
             personaje.rotateY(Geometry.DegreeToRadian(angulo));
 
-            return personaje;
+            return new Jugador(personaje);
         }
 
         #endregion

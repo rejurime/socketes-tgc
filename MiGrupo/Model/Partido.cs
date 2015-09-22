@@ -14,13 +14,10 @@ namespace AlumnoEjemplos.MiGrupo.Model
         private TgcSphere pelota;
         private TgcBox arcoLocal;
         private TgcBox arcoVisitante;
-        private TgcSkeletalMesh jugadorHumano;
-        private List<TgcSkeletalMesh> jugadoresCPUAliados = new List<TgcSkeletalMesh>();
-        private List<TgcSkeletalMesh> jugadoresCPURivales = new List<TgcSkeletalMesh>();
-
-        //TODO esto no lo deberia tener la clase jugador? :)
-        float velocidadCaminar = 400f;
-        float velocidadRotacion = 150f;
+        private Jugador jugadorHumano;
+        private List<Jugador> jugadoresCPUAliados = new List<Jugador>();
+        private List<Jugador> jugadoresCPURivales = new List<Jugador>();
+        private List<TgcBox> tribunas = new List<TgcBox>();
 
         #endregion
 
@@ -50,22 +47,28 @@ namespace AlumnoEjemplos.MiGrupo.Model
             set { arcoVisitante = value; }
         }
 
-        public TgcSkeletalMesh JugadorHumano
+        public Jugador JugadorHumano
         {
             get { return jugadorHumano; }
             set { jugadorHumano = value; }
         }
 
-        public List<TgcSkeletalMesh> JugadoresCPUAliados
+        public List<Jugador> JugadoresCPUAliados
         {
             get { return jugadoresCPUAliados; }
             set { jugadoresCPUAliados = value; }
         }
 
-        public List<TgcSkeletalMesh> JugadoresCPURivales
+        public List<Jugador> JugadoresCPURivales
         {
             get { return jugadoresCPURivales; }
             set { jugadoresCPURivales = value; }
+        }
+
+        public List<TgcBox> Tribunas
+        {
+            get { return tribunas; }
+            set { tribunas = value; }
         }
 
         #endregion
@@ -85,14 +88,19 @@ namespace AlumnoEjemplos.MiGrupo.Model
             this.arcoVisitante.render();
             this.jugadorHumano.animateAndRender();
 
-            foreach (TgcSkeletalMesh jugador in this.jugadoresCPUAliados)
+            foreach (Jugador jugador in this.jugadoresCPUAliados)
             {
                 jugador.animateAndRender();
             }
 
-            foreach (TgcSkeletalMesh jugador in this.jugadoresCPURivales)
+            foreach (Jugador jugador in this.jugadoresCPURivales)
             {
                 jugador.animateAndRender();
+            }
+
+            foreach (TgcBox tribunas in this.Tribunas)
+            {
+                tribunas.render();
             }
         }
 
@@ -108,30 +116,20 @@ namespace AlumnoEjemplos.MiGrupo.Model
             this.arcoVisitante.dispose();
             this.jugadorHumano.dispose();
 
-            foreach (TgcSkeletalMesh jugador in this.jugadoresCPUAliados)
+            foreach (Jugador jugador in this.jugadoresCPUAliados)
             {
                 jugador.dispose();
             }
 
-            foreach (TgcSkeletalMesh jugador in this.jugadoresCPURivales)
+            foreach (Jugador jugador in this.jugadoresCPURivales)
             {
                 jugador.dispose();
             }
-        }
 
-        internal float VelocidadCaminarJugador()
-        {
-            return this.velocidadCaminar;
-        }
-
-        internal float VelocidadRotacion()
-        {
-            return this.velocidadRotacion;
-        }
-
-        internal Vector3 JugadorHumanoPosition()
-        {
-            return this.jugadorHumano.Position;
+            foreach (TgcBox tribunas in this.Tribunas)
+            {
+                tribunas.render();
+            }
         }
 
         #endregion

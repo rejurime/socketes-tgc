@@ -6,6 +6,7 @@ using Microsoft.DirectX.DirectInput;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.MiGrupo
 {
@@ -55,10 +56,9 @@ namespace AlumnoEjemplos.MiGrupo
         public override void init()
         {
             this.partido = PartidoFactory.Instance.CrearPartido(this.d3dDevice);
-
             //Configurar camara en Tercer Persona
-            //GuiController.Instance.ThirdPersonCamera.Enable = true;
-            GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumanoPosition(), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+            GuiController.Instance.ThirdPersonCamera.Enable = true;
+            GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
         }
 
         #endregion
@@ -93,28 +93,28 @@ namespace AlumnoEjemplos.MiGrupo
             //Adelante
             if (d3dInput.keyDown(Key.UpArrow))
             {
-                moveForward = -this.partido.VelocidadCaminarJugador();
+                moveForward = -this.partido.JugadorHumano.VelocidadCaminar;
                 moving = true;
             }
 
             //Atras
             if (d3dInput.keyDown(Key.DownArrow))
             {
-                moveForward = this.partido.VelocidadCaminarJugador();
+                moveForward = this.partido.JugadorHumano.VelocidadCaminar;
                 moving = true;
             }
 
             //Derecha
             if (d3dInput.keyDown(Key.RightArrow))
             {
-                rotate = this.partido.VelocidadRotacion();
+                rotate = this.partido.JugadorHumano.VelocidadRotacion;
                 rotating = true;
             }
 
             //Izquierda
             if (d3dInput.keyDown(Key.LeftArrow))
             {
-                rotate = -this.partido.VelocidadRotacion();
+                rotate = -this.partido.JugadorHumano.VelocidadRotacion;
                 rotating = true;
             }
 
@@ -162,28 +162,21 @@ namespace AlumnoEjemplos.MiGrupo
             //Detectar colisiones
             bool collide = false;
 
-            /* TODO René: aca es donde procesa las colisiones lo saque para terminar de armar el escenario y endriamoq eu pensar como vamos a hacer
-            para tener este tema de las coliciones a tono con todo el resto de las reglas no? antes los arcos eran parte de los obstaculos pro ejemplo
-            pero si no los tengo identificado a cada uno como se donde se hizo gol y esas cosas? jeje
-            foreach (TgcBox obstaculo in arcos)
+            foreach (TgcBox obstaculo in this.partido.Tribunas)
             {
-                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(this.jugadorHumano.BoundingBox, obstaculo.BoundingBox);
+                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(this.partido.JugadorHumano.BoundingBox, obstaculo.BoundingBox);
                 if (result == TgcCollisionUtils.BoxBoxResult.Adentro || result == TgcCollisionUtils.BoxBoxResult.Atravesando)
                 {
                     collide = true;
                     break;
                 }
             }
-            */
+
 
             //Si hubo colision, restaurar la posicion anterior
             if (collide)
             {
                 this.partido.JugadorHumano.Position = lastPos;
-            }
-            else
-            {
-
             }
         }
 
