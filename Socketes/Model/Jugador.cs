@@ -6,7 +6,7 @@ using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 
-namespace AlumnoEjemplos.MiGrupo.Model
+namespace AlumnoEjemplos.Socketes.Model
 {
     public class Jugador
     {

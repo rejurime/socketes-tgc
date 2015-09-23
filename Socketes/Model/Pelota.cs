@@ -5,23 +5,42 @@ using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
-namespace AlumnoEjemplos.MiGrupo
+namespace AlumnoEjemplos.Socketes
 {
     public class Pelota
     {
-        private string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
         TgcSphere sphere;
 
         bool mostrarBounding = true;
         bool mostrarNormal = true;
         TgcArrow normal = new TgcArrow();
-
         Vector3 rotation = new Vector3(0, 0, 0);
-
         float velocidadRotacion = 200;
 
-        public Pelota()
+        public TgcBoundingSphere BoundingSphere
+        {
+            get { return sphere.BoundingSphere; }
+        }
+
+        public Vector3 Position
+        {
+            get { return sphere.Position; }
+            set { sphere.Position = Position; }
+        }
+
+        public bool MostrarBounding
+        {
+            get { return mostrarBounding; }
+            set { mostrarBounding = value; }
+        }
+
+        public bool MostrarNormal
+        {
+            get { return mostrarNormal; }
+            set { mostrarNormal = value; }
+        }
+
+        public Pelota(string pathRecursos)
         {
             TgcTexture texture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall);
 
@@ -50,24 +69,6 @@ namespace AlumnoEjemplos.MiGrupo
             sphere.updateValues();
         }
 
-        public Vector3 Position
-        {
-            get { return sphere.Position; }
-            set { sphere.Position = Position; }
-        }
-
-        public bool MostrarBounding
-        {
-            get { return mostrarBounding; }
-            set { mostrarBounding = value; }
-        }
-
-        public bool MostrarNormal
-        {
-            get { return mostrarNormal; }
-            set { mostrarNormal = value; }
-        }
-
         /// <summary>
         /// Mueve la pelota hacia el punto indicado, 
         /// el movimiento hacia ese punto es lineal, 
@@ -81,10 +82,8 @@ namespace AlumnoEjemplos.MiGrupo
                 //Muevo la pelota hacia el punto dado
                 sphere.move(movimiento);
                 //arma la transformacion en base a el escalado + rotacion + traslacion
-                sphere.Transform = getScalingMatrix() *
-                    getRotationMatrix(movimiento, elapsedTime) * Matrix.Translation(sphere.Position);
+                sphere.Transform = getScalingMatrix() * getRotationMatrix(movimiento, elapsedTime) * Matrix.Translation(sphere.Position);
             }
-
         }
 
         /// <summary>
@@ -122,11 +121,9 @@ namespace AlumnoEjemplos.MiGrupo
             {
                 if (movimiento.Y > 0)
                     rotation.X += angulo;
-
                 else
                     rotation.X += -angulo;
                 mrot *= Matrix.RotationX(rotation.X);
-
             }
 
             if (movimiento.Z != 0)
@@ -137,7 +134,6 @@ namespace AlumnoEjemplos.MiGrupo
                 else
                     rotation.X += -angulo;
                 mrot *= Matrix.RotationX(rotation.X);
-
             }
 
             return mrot;
@@ -146,11 +142,6 @@ namespace AlumnoEjemplos.MiGrupo
         internal void dispose()
         {
             sphere.dispose();
-        }
-
-        public TgcBoundingSphere BoundingSphere
-        {
-            get { return sphere.BoundingSphere; }
         }
     }
 }

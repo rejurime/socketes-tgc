@@ -98,14 +98,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MiGrupo\Collision\PelotaCollisionManager.cs" />
-    <Compile Include="MiGrupo\EjemploAlumno.cs" />
-    <Compile Include="MiGrupo\BalomPie.cs" />
-    <Compile Include="MiGrupo\Model\Jugador.cs" />
-    <Compile Include="MiGrupo\Model\Partido.cs" />
-    <Compile Include="MiGrupo\Model\PartidoFactory.cs" />
-    <Compile Include="MiGrupo\Model\Pelota.cs" />
-    <Compile Include="MiGrupo\TestPelota.cs" />
+    <Compile Include="Socketes\Collision\CollisionManager.cs" />
+    <Compile Include="Socketes\EjemploAlumno.cs" />
+    <Compile Include="Socketes\BalomPie.cs" />
+    <Compile Include="Socketes\Model\Arco.cs" />
+    <Compile Include="Socketes\Model\Cancha.cs" />
+    <Compile Include="Socketes\Model\Jugador.cs" />
+    <Compile Include="Socketes\Model\Partido.cs" />
+    <Compile Include="Socketes\Model\PartidoFactory.cs" />
+    <Compile Include="Socketes\Model\Pelota.cs" />
+    <Compile Include="Socketes\TestPelota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -144,7 +146,7 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

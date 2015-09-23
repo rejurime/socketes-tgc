@@ -4,16 +4,16 @@ using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 
-namespace AlumnoEjemplos.MiGrupo.Model
+namespace AlumnoEjemplos.Socketes.Model
 {
     public class Partido
     {
         #region Miembros
 
-        private TgcBox cancha;
+        private Cancha cancha;
         private Pelota pelota;
-        private TgcBox arcoLocal;
-        private TgcBox arcoVisitante;
+        private Arco arcoLocal;
+        private Arco arcoVisitante;
         private Jugador jugadorHumano;
         private List<Jugador> jugadoresCPUAliados = new List<Jugador>();
         private List<Jugador> jugadoresCPURivales = new List<Jugador>();
@@ -23,7 +23,7 @@ namespace AlumnoEjemplos.MiGrupo.Model
 
         #region Propiedades
 
-        public TgcBox Cancha
+        public Cancha Cancha
         {
             get { return cancha; }
             set { cancha = value; }
@@ -35,13 +35,13 @@ namespace AlumnoEjemplos.MiGrupo.Model
             set { pelota = value; }
         }
 
-        public TgcBox ArcoLocal
+        public Arco ArcoLocal
         {
             get { return arcoLocal; }
             set { arcoLocal = value; }
         }
 
-        public TgcBox ArcoVisitante
+        public Arco ArcoVisitante
         {
             get { return arcoVisitante; }
             set { arcoVisitante = value; }
@@ -102,6 +102,20 @@ namespace AlumnoEjemplos.MiGrupo.Model
             {
                 tribunas.render();
             }
+        }
+
+        internal List<TgcBoundingBox> ObstaculosPelota()
+        {
+            List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
+
+            foreach (TgcBox obstaculo in this.tribunas)
+            {
+                obstaculos.Add(obstaculo.BoundingBox);
+            }
+
+            obstaculos.Add(this.cancha.BoundingBox);
+
+            return obstaculos;
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 
-namespace AlumnoEjemplos.MiGrupo.Model
+namespace AlumnoEjemplos.Socketes.Model
 {
     public class PartidoFactory
     {
@@ -43,16 +43,17 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// <summary>
         /// Crea un partido con todos sus componentes Cancha, Arcos, Jugadores y Pelota
         /// </summary>
-        /// <param name="d3dDevice"> Device donde esta el partido </param>
         /// <param name="alumnoEjemplosMediaDir"> Carpeta donde estan los recursos </param>
         /// <returns> Un partido listo para comenzar a jugar :)</returns>
-        public Partido CrearPartido(Device d3dDevice)
+        public Partido CrearPartido()
         {
             Partido partido = new Partido();
 
             partido.Cancha = this.CrearCancha(pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
-            this.CrearArcos(partido, pathRecursos);
+
+            partido.ArcoLocal = this.CrearArco(new Vector3(875, 75, 5), pathRecursos);
+            partido.ArcoVisitante = this.CrearArco(new Vector3(-875, 75, 5), pathRecursos);
             this.CrearJugadores(partido, pathRecursos);
             partido.Tribunas = this.CrearTribunas(pathRecursos);
 
@@ -64,10 +65,9 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// </summary>
         /// <param name="pathRecursos"></param>
         /// <returns></returns>
-        private TgcBox CrearCancha(string pathRecursos)
+        private Cancha CrearCancha(string pathRecursos)
         {
-            TgcTexture pisoTexture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField);
-            return TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), pisoTexture);
+            return new Cancha(pathRecursos);
         }
 
         /// <summary>
@@ -95,21 +95,15 @@ namespace AlumnoEjemplos.MiGrupo.Model
         /// <returns></returns>
         private Pelota CrearPelota(string pathRecursos)
         {
-            return new Pelota();
+            return new Pelota(pathRecursos);
         }
 
-        /// <summary>
-        /// Creo los 2 arcos
-        /// </summary>
-        /// <param name="partido"></param>
-        /// <param name="pathRecursos"></param>
-        private void CrearArcos(Partido partido, string pathRecursos)
+        private Arco CrearArco(Vector3 posicion, string pathRecursos)
         {
             TgcTexture texturaArco = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet);
-            Vector3 size = new Vector3(20, 170, 350);
+            Arco arco = new Arco(posicion, pathRecursos, texturaArco);
 
-            partido.ArcoLocal = TgcBox.fromSize(new Vector3(875, 75, 5), size, texturaArco);
-            partido.ArcoVisitante = TgcBox.fromSize(new Vector3(-875, 75, 5), size, texturaArco);
+            return arco;
         }
 
         /// <summary>

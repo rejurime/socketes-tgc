@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TgcViewer;
 using TgcViewer.Example;
 
-namespace AlumnoEjemplos.MiGrupo
+namespace AlumnoEjemplos.Socketes
 {
     /// <summary>
     /// Ejemplo del alumno

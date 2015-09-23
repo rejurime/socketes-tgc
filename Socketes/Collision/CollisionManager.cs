@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using TgcViewer.Utils.TgcGeometry;
 using Microsoft.DirectX;
-using TgcViewer;
+using System.Collections.Generic;
+using TgcViewer.Utils.TgcGeometry;
 
 namespace Examples.Collision.SphereCollision
 {
@@ -17,7 +14,7 @@ namespace Examples.Collision.SphereCollision
     /// a nivel de un BoundingBox con 6 caras rectangulares.
     /// 
     /// </summary>
-    public class PelotaCollisionManager
+    public class CollisionManager
     {
         const float EPSILON = 0.05f;
 
@@ -52,10 +49,9 @@ namespace Examples.Collision.SphereCollision
             set { slideFactor = value; }
         }
 
-
         List<TgcBoundingBox> objetosCandidatos = new List<TgcBoundingBox>();
 
-        public PelotaCollisionManager()
+        public CollisionManager()
         {
             gravityEnabled = true;
             gravityForce = new Vector3(0, -1.5f, 0);
@@ -116,7 +112,6 @@ namespace Examples.Collision.SphereCollision
             //Detectar colisiones y deplazar con sliding
             doCollideWithWorld(characterSphere, movementVector, objetosCandidatos, 0);
 
-
             //Manejo de error. No deberiamos colisionar con nadie si todo salio bien
             foreach (TgcBoundingBox obstaculo in objetosCandidatos)
             {
@@ -128,8 +123,6 @@ namespace Examples.Collision.SphereCollision
                 }
             }
         }
-
-
 
         /// <summary>
         /// Detección de colisiones recursiva
@@ -181,7 +174,6 @@ namespace Examples.Collision.SphereCollision
                     {
                         continue;
                     }
-
 
                     //Obtener punto de colisión en el plano, según la normal del plano
                     float pDist;
@@ -283,8 +275,6 @@ namespace Examples.Collision.SphereCollision
                 characterSphere.moveCenter(realMovementVector);
             }
 
-
-
             //Calcular plano de Sliding
             Vector3 slidePlaneOrigin = nearestPolygonIntersectionPoint;
             Vector3 slidePlaneNormal = characterSphere.Center - nearestPolygonIntersectionPoint;
@@ -324,9 +314,5 @@ namespace Examples.Collision.SphereCollision
             return p.X >= min.X && p.Y >= min.Y && p.Z >= min.Z &&
                p.X <= max.X && p.Y <= max.Y && p.Z <= max.Z;
         }
-
-
-
-
     }
 }

@@ -1,5 +1,5 @@
-using AlumnoEjemplos.MiGrupo.Model;
 using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
@@ -8,7 +8,7 @@ using TgcViewer.Example;
 using TgcViewer.Utils.Input;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.MiGrupo
+namespace AlumnoEjemplos.Socketes
 {
     /// <summary>
     /// Intentando ver que podemos inventar :)
@@ -45,7 +45,7 @@ namespace AlumnoEjemplos.MiGrupo
         /// <summary> Completar con la descripción del TP </summary>
         public override string getDescription()
         {
-            return "Pruebas locas para jugar al balómpie";
+            return "Juego de fútbol by Socketes";
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace AlumnoEjemplos.MiGrupo
         /// </summary>
         public override void init()
         {
-            this.partido = PartidoFactory.Instance.CrearPartido(this.d3dDevice);
+            this.partido = PartidoFactory.Instance.CrearPartido();
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
             GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
