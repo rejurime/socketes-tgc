@@ -98,7 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MiGrupo\Collision\SphereCollisionManager.cs" />
+    <Compile Include="MiGrupo\Collision\PelotaCollisionManager.cs" />
     <Compile Include="MiGrupo\EjemploAlumno.cs" />
     <Compile Include="MiGrupo\BalomPie.cs" />
     <Compile Include="MiGrupo\Model\Jugador.cs" />

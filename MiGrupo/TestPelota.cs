@@ -19,7 +19,7 @@ namespace AlumnoEjemplos.MiGrupo
         List<TgcBox> boxs;
         List<TgcBoundingBox> boundigboxs;
         Pelota pelota;
-        SphereCollisionManager collisionManager;
+        PelotaCollisionManager collisionManager;
 
         /// <summary>
         /// Categoría a la que pertenece el ejemplo.
@@ -56,8 +56,8 @@ namespace AlumnoEjemplos.MiGrupo
             piso = TgcBox.fromSize(new Vector3(0, -60, 0), new Vector3(1000, 5, 1000), pisoTexture);
 
             //Crear manejador de colisiones
-            collisionManager = new SphereCollisionManager();
-            collisionManager.GravityEnabled = false;
+            collisionManager = new PelotaCollisionManager();
+            collisionManager.GravityEnabled = true;
 
             //Cargar obstaculos y posicionarlos. Los obstáculos se crean con TgcBox en lugar de cargar un modelo.
             boxs = new List<TgcBox>();
@@ -87,7 +87,8 @@ namespace AlumnoEjemplos.MiGrupo
                 TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "Texturas\\granito.jpg"));
             boundigboxs.Add(obstaculo.BoundingBox);
             boxs.Add(obstaculo);
-
+            boxs.Add(piso);
+            boundigboxs.Add(piso.BoundingBox);
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
             GuiController.Instance.ThirdPersonCamera.setCamera(pelota.Position, 100, -150);
@@ -140,12 +141,8 @@ namespace AlumnoEjemplos.MiGrupo
                 movement.Z = -1;
             }
 
-            //Si hubo desplazamiento
-            if (moving)
-            {
-                Vector3 realMovement = collisionManager.moveCharacter(pelota.BoundingSphere, movement, boundigboxs);
-                pelota.mover(realMovement, elapsedTime);
-            }
+            Vector3 realMovement = collisionManager.moveCharacter(pelota.BoundingSphere, movement, boundigboxs); 
+            pelota.mover(realMovement, elapsedTime);
 
             //Hacer que la camara siga al personaje en su nueva posicion
             GuiController.Instance.ThirdPersonCamera.Target = pelota.Position;

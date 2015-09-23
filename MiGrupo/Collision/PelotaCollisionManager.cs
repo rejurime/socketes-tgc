@@ -17,7 +17,7 @@ namespace Examples.Collision.SphereCollision
     /// a nivel de un BoundingBox con 6 caras rectangulares.
     /// 
     /// </summary>
-    public class SphereCollisionManager
+    public class PelotaCollisionManager
     {
         const float EPSILON = 0.05f;
 
@@ -55,10 +55,10 @@ namespace Examples.Collision.SphereCollision
 
         List<TgcBoundingBox> objetosCandidatos = new List<TgcBoundingBox>();
 
-        public SphereCollisionManager()
+        public PelotaCollisionManager()
         {
             gravityEnabled = true;
-            gravityForce = new Vector3(0, -10, 0);
+            gravityForce = new Vector3(0, -1.5f, 0);
             slideFactor = 1.3f;
         }
 
