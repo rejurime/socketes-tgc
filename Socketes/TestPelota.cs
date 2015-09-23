@@ -1,8 +1,10 @@
-﻿using AlumnoEjemplos.Socketes.Model;
+﻿using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Model;
 using Examples.Collision.SphereCollision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System.Collections.Generic;
+using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Input;
@@ -46,7 +48,9 @@ namespace AlumnoEjemplos.Socketes
 
         public override void init()
         {
-            this.partido = PartidoFactory.Instance.CrearPartido();
+            string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
 
             //Crear manejador de colisiones
             collisionManager = new CollisionManager();

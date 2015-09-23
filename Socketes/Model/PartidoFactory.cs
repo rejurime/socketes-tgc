@@ -15,8 +15,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private static readonly PartidoFactory instance = new PartidoFactory();
 
-        private string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
         #endregion
 
         #region Constructores
@@ -45,17 +43,16 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         /// <param name="alumnoEjemplosMediaDir"> Carpeta donde estan los recursos </param>
         /// <returns> Un partido listo para comenzar a jugar :)</returns>
-        public Partido CrearPartido()
+        public Partido CrearPartido(string pathRecursos)
         {
             Partido partido = new Partido();
 
             partido.Cancha = this.CrearCancha(pathRecursos);
-            partido.Pelota = this.CrearPelota(pathRecursos);
-
-            partido.ArcoLocal = this.CrearArco(new Vector3(875, 75, 5), pathRecursos);
-            partido.ArcoVisitante = this.CrearArco(new Vector3(-875, 75, 5), pathRecursos);
-            this.CrearJugadores(partido, pathRecursos);
+            partido.ArcoLocal = this.CrearArco(new Vector3(940, 0, 25), pathRecursos);
+            partido.ArcoVisitante = this.CrearArco(new Vector3(-780, 0, 25), pathRecursos);
             partido.Tribunas = this.CrearTribunas(pathRecursos);
+            partido.Pelota = this.CrearPelota(pathRecursos);
+            this.CrearJugadores(partido, pathRecursos);
 
             return partido;
         }
@@ -67,7 +64,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns></returns>
         private Cancha CrearCancha(string pathRecursos)
         {
-            return new Cancha(pathRecursos);
+            return new Cancha(TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField)));
         }
 
         /// <summary>
@@ -80,10 +77,10 @@ namespace AlumnoEjemplos.Socketes.Model
             TgcTexture pisoTexture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.texturePeople);
 
             List<TgcBox> tribunas = new List<TgcBox>();
-            tribunas.Add(TgcBox.fromSize(new Vector3(900, 200, 0), new Vector3(0, 400, 1200), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 200, 0), new Vector3(0, 400, 1200), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 200, 580), new Vector3(1900, 400, 0), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 200, -580), new Vector3(1900, 400, 0), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0), pisoTexture));
 
             return tribunas;
         }
@@ -95,15 +92,26 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns></returns>
         private Pelota CrearPelota(string pathRecursos)
         {
-            return new Pelota(pathRecursos);
+            //Crear esfera
+            TgcSphere sphere = new TgcSphere();
+            sphere.Radius = 10;
+            sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
+            sphere.Position = new Vector3(0, 20, 0);
+            sphere.updateValues();
+
+            return new Pelota(sphere);
         }
 
         private Arco CrearArco(Vector3 posicion, string pathRecursos)
         {
-            TgcTexture texturaArco = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet);
-            Arco arco = new Arco(posicion, pathRecursos, texturaArco);
+            TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\arco-TgcScene.xml").Meshes[0];
+            arco.changeDiffuseMaps(new TgcTexture[] { TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet) });
+            arco.AutoUpdateBoundingBox = true;
+            arco.Position = posicion;
+            arco.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            arco.updateBoundingBox();
 
-            return arco;
+            return new Arco(arco);
         }
 
         /// <summary>

@@ -6,32 +6,30 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Arco
     {
-        public TgcMesh arco;
-        public TgcBoundingBox boundingBoxArco;
+        public TgcMesh mesh;
+
+        public bool mostrarBounding = true;
 
         private Arco() { }
 
-        public Arco(Vector3 posicion, string pathRecursos, TgcTexture texturaArco)
+        public Arco(TgcMesh arco)
         {
-            //Cargar modelos para el arco
-            this.arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\arco-TgcScene.xml").Meshes[0];
-            this.arco.changeDiffuseMaps(new TgcTexture[] { texturaArco });
-            this.arco.AutoUpdateBoundingBox = true;
-            this.arco.Position = posicion;
-            this.arco.Scale = new Vector3(1.25f, 1.25f, 1.25f);
-            this.arco.updateBoundingBox();
-            this.boundingBoxArco = arco.BoundingBox;
+            this.mesh = arco;
         }
 
         public void render()
         {
-            this.arco.render();
-            this.boundingBoxArco.render();
+            this.mesh.render();
+
+            if (mostrarBounding)
+            {
+                this.mesh.BoundingBox.render();
+            }
         }
 
         public void dispose()
         {
-            this.arco.dispose();
+            this.mesh.dispose();
         }
     }
 }

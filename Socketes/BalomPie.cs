@@ -1,8 +1,10 @@
 using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
+using Examples.Collision.SphereCollision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
+using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Input;
@@ -19,6 +21,7 @@ namespace AlumnoEjemplos.Socketes
 
         Microsoft.DirectX.Direct3D.Device d3dDevice = GuiController.Instance.D3dDevice;
         private Partido partido;
+        private CollisionManager collisionManager;
         private string animacionCorriendo = Settings.Default.animationRunPlayer;
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
         private string animacionParado = Settings.Default.animationStopPlayer;
@@ -55,7 +58,18 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void init()
         {
-            this.partido = PartidoFactory.Instance.CrearPartido();
+            string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+
+            //Musica
+            GuiController.Instance.Mp3Player.FileName = pathRecursos + "Audio\\Chumbawamba - Tubthumping.mp3";
+            GuiController.Instance.Mp3Player.play(true);
+
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
+
+            //Crear manejador de colisiones
+            collisionManager = new CollisionManager();
+            collisionManager.GravityEnabled = true;
+
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
             GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);

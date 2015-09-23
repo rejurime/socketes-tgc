@@ -7,27 +7,26 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Cancha
     {
-        TgcBox caja;
+        TgcBox box;
 
-        public Cancha(string pathRecursos)
+        public Cancha(TgcBox box)
         {
-            TgcTexture pisoTexture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField);
-            this.caja = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), pisoTexture);
+            this.box = box;
         }
 
         public TgcBoundingBox BoundingBox
         {
-            get { return this.caja.BoundingBox; }
+            get { return this.box.BoundingBox; }
         }
 
         internal void render()
         {
-            this.caja.render();
+            this.box.render();
         }
 
         internal void dispose()
         {
-            this.caja.dispose();
+            this.box.dispose();
         }
     }
 }

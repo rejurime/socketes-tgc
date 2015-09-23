@@ -12,8 +12,6 @@ namespace AlumnoEjemplos.Socketes
         TgcSphere sphere;
 
         bool mostrarBounding = true;
-        bool mostrarNormal = true;
-        TgcArrow normal = new TgcArrow();
         Vector3 rotation = new Vector3(0, 0, 0);
         float velocidadRotacion = 200;
 
@@ -34,24 +32,13 @@ namespace AlumnoEjemplos.Socketes
             set { mostrarBounding = value; }
         }
 
-        public bool MostrarNormal
+        public Pelota(TgcSphere sphere)
         {
-            get { return mostrarNormal; }
-            set { mostrarNormal = value; }
-        }
-
-        public Pelota(string pathRecursos)
-        {
-            TgcTexture texture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall);
-
-            //Crear esfera
-            sphere = new TgcSphere();
-            sphere.Radius = 10;
-            sphere.setTexture(texture);
-            sphere.Position = new Vector3(0, 90, 0);
             //apago el auto transformado, ya que la pelota lo maneja solo
             sphere.AutoTransformEnable = false;
             sphere.updateValues();
+
+            this.sphere = sphere;
         }
 
         public void render()
