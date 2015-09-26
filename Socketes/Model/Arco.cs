@@ -10,6 +10,11 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public bool mostrarBounding = true;
 
+        public TgcBoundingBox BoundingBox
+        {
+            get { return this.mesh.BoundingBox; }
+        }
+
         private Arco() { }
 
         public Arco(TgcMesh arco)

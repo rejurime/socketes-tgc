@@ -114,7 +114,20 @@ namespace AlumnoEjemplos.Socketes.Model
             }
 
             obstaculos.Add(this.cancha.BoundingBoxCesped);
+            obstaculos.Add(this.arcoLocal.BoundingBox);
+            obstaculos.Add(this.arcoVisitante.BoundingBox);
 
+            obstaculos.Add(jugadorHumano.BoundingBox);
+
+            foreach (Jugador jugador in this.jugadoresCPUAliados)
+            {
+                obstaculos.Add(jugador.BoundingBox);
+            }
+
+            foreach (Jugador jugador in this.jugadoresCPURivales)
+            {
+                obstaculos.Add(jugador.BoundingBox);
+            }
             return obstaculos;
         }
 

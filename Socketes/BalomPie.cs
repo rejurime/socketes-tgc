@@ -9,6 +9,7 @@ using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes
@@ -62,8 +63,8 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Musica
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
             GuiController.Instance.Mp3Player.FileName = pathRecursos + "Audio\\Chumbawamba - Tubthumping.mp3";
-            GuiController.Instance.Mp3Player.play(true);
 
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
 
@@ -88,6 +89,32 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="elapsedTime">Tiempo en segundos transcurridos desde el último frame</param>
         public override void render(float elapsedTime)
         {
+            //Contro del reproductor por Modifiers
+            TgcMp3Player player = GuiController.Instance.Mp3Player;
+
+            if ((bool)GuiController.Instance.Modifiers["Musica"])
+            {
+                if (player.getStatus() == TgcMp3Player.States.Open)
+                {
+                    //Reproducir MP3
+                    player.play(true);
+                }
+                if (player.getStatus() == TgcMp3Player.States.Stopped)
+                {
+                    //Parar y reproducir MP3
+                    player.closeFile();
+                    player.play(true);
+                }
+            }
+            else
+            {
+                if (player.getStatus() == TgcMp3Player.States.Playing)
+                {
+                    //Parar el MP3
+                    player.stop();
+                }
+            }
+
             this.CalcularPosicionSegunInput(elapsedTime);
             this.partido.render();
         }
