@@ -1,6 +1,7 @@
 ﻿using AlumnoEjemplos.Properties;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using System;
 using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
@@ -10,6 +11,8 @@ namespace AlumnoEjemplos.Socketes
     public class Pelota
     {
         TgcSphere sphere;
+
+        private float angulo = 0f;
 
         bool mostrarBounding = true;
         Vector3 rotation = new Vector3(0, 0, 0);
@@ -88,42 +91,51 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="movimiento"></param>
         /// <param name="elapsedTime"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Retorna la matriz de rotacion en base al movimiento dado
+        /// </summary>
+        /// <param name="movimiento"></param>
+        /// <param name="elapsedTime"></param>
+        /// <returns></returns>
         private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime)
         {
-            float angulo = Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
-            Matrix mrot = Matrix.Identity;
+            angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
+            return Matrix.RotationAxis(getVectorRotacion(movimiento), angulo);
+            ;
 
-            //TO DO mejorar if feos
-            //TO DO Ver diagonal
-            if (movimiento.X != 0)
-            {
-                if (movimiento.X > 0)
-                    rotation.Z += -angulo;
-                else
-                    rotation.Z += angulo;
-                mrot *= Matrix.RotationZ(rotation.Z);
-            }
+        }
 
+        /// <summary>
+        /// Retorna el vector de rotacion en base a la direccion de movimiento
+        /// 
+        /// </summary>
+        /// <param name="movimiento"></param>
+        /// <returns></returns>
+        private Vector3 getVectorRotacion(Vector3 movimiento)
+        {
+            Vector3 vectorrotacion = new Vector3(0, 0, 0);
             if (movimiento.Y != 0)
             {
-                if (movimiento.Y > 0)
-                    rotation.X += angulo;
-                else
-                    rotation.X += -angulo;
-                mrot *= Matrix.RotationX(rotation.X);
+                vectorrotacion.X = Math.Sign(movimiento.Y);
             }
 
             if (movimiento.Z != 0)
             {
-                if (movimiento.Z > 0)
-                    rotation.X += angulo;
-
-                else
-                    rotation.X += -angulo;
-                mrot *= Matrix.RotationX(rotation.X);
+                vectorrotacion.X = Math.Sign(movimiento.Z);
             }
 
-            return mrot;
+            if (movimiento.X != 0)
+            {
+                vectorrotacion.Z = -Math.Sign(movimiento.X);
+            }
+
+            if (movimiento.Z != 0 && movimiento.X != 0)
+            {
+                vectorrotacion.X = 0.7074f / Math.Sign(movimiento.Z);
+                vectorrotacion.Z = 0.7074f / -Math.Sign(movimiento.X);
+            }
+
+            return vectorrotacion;
         }
 
         internal void dispose()
