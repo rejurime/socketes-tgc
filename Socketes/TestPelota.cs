@@ -27,7 +27,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override string getCategory()
         {
-            return "AlumnoEjemplos";
+            return "Socketes";
         }
 
         /// <summary>
