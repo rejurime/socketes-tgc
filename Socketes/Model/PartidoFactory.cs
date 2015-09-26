@@ -67,24 +67,24 @@ namespace AlumnoEjemplos.Socketes.Model
         private Cancha CrearCancha(string pathRecursos)
         {
             TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
-            tribuna1.move(new Vector3(0, 10, 700));
+            tribuna1.move(new Vector3(0, 80, 800));
             tribuna1.rotateY(-(float)Math.PI / 2);
-            tribuna1.Scale = new Vector3(15, 15, 15);
+            tribuna1.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
-            tribuna2.move(new Vector3(0, 10, -700));
+            tribuna2.move(new Vector3(0, 80, -800));
             tribuna2.rotateY((float)Math.PI / 2);
-            tribuna2.Scale = new Vector3(15, 15, 15);
+            tribuna2.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
-            tribuna3.move(new Vector3(1100, 10, 0));
+            tribuna3.move(new Vector3(1000, 60, 0));
             tribuna3.rotateY(-(float)Math.PI / 2);
-            tribuna3.Scale = new Vector3(15, 15, 15);
+            tribuna3.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
-            tribuna4.move(new Vector3(-1100, 10, 20));
+            tribuna4.move(new Vector3(-1000, 60, 0));
             tribuna4.rotateY((float)Math.PI / 2);
-            tribuna4.Scale = new Vector3(15, 15, 15);
+            tribuna4.Scale = new Vector3(10, 10, 10);
 
             TgcBox box = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField));
             TgcBox box2 = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2048, 0, 1600), Color.SlateGray);
@@ -126,7 +126,7 @@ namespace AlumnoEjemplos.Socketes.Model
             TgcSphere sphere = new TgcSphere();
             sphere.Radius = 10;
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
-            sphere.Position = new Vector3(0, 20, 0);
+            sphere.Position = new Vector3(0, 30, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);
@@ -150,7 +150,7 @@ namespace AlumnoEjemplos.Socketes.Model
             float anguloEquipoHumano = 90f;
             float anguloEquipoCPU = 270f;
 
-            partido.JugadorHumano = this.CrearJugador(new Vector3(30, -8, 0), 125f, pathRecursos, Settings.Default.textureTeam1);
+            partido.JugadorHumano = this.CrearJugador(new Vector3(50, -8, 0), 125f, pathRecursos, Settings.Default.textureTeam1);
             partido.JugadoresCPUAliados.Add(this.CrearJugador(new Vector3(120, -8, 100), anguloEquipoHumano, pathRecursos, Settings.Default.textureTeam1));
 
             partido.JugadoresCPURivales.Add(this.CrearJugador(new Vector3(-130, -8, 160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
