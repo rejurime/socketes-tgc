@@ -4,6 +4,7 @@ using Examples.Collision.SphereCollision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
+using System;
 using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
@@ -98,63 +99,122 @@ namespace AlumnoEjemplos.Socketes
         public void CalcularPosicionSegunInput(float elapsedTime)
         {
             //Calcular proxima posicion de personaje segun Input
-            float moveForward = 0f;
-            float rotate = 0;
             TgcD3dInput d3dInput = GuiController.Instance.D3dInput;
+
+            Vector3 movimiento = new Vector3(0, 0, 0);
+            Vector3 direccion = new Vector3(0, 0, 0);
             bool moving = false;
-            bool rotating = false;
+            bool correr = false;
+
+            //Multiplicar la velocidad por el tiempo transcurrido, para no acoplarse al CPU
+            float velocidad = this.partido.JugadorHumano.VelocidadCaminar * elapsedTime;
+
+            //Si presiono W corre
+            if (d3dInput.keyDown(Key.W))
+            {
+                //Multiplicar la velocidad por el tiempo transcurrido, para no acoplarse al CPU
+                velocidad = this.partido.JugadorHumano.VelocidadCorrer * elapsedTime;
+                correr = true;
+            }
+
+            //Si suelto, vuelve a caminar
+            if (d3dInput.keyUp(Key.W))
+            {
+                correr = false;
+            }
 
             //Adelante
             if (d3dInput.keyDown(Key.UpArrow))
             {
-                moveForward = -this.partido.JugadorHumano.VelocidadCaminar;
+                movimiento.Z = velocidad;
+                direccion.Y = (float)Math.PI;
                 moving = true;
             }
 
             //Atras
             if (d3dInput.keyDown(Key.DownArrow))
             {
-                moveForward = this.partido.JugadorHumano.VelocidadCaminar;
+                movimiento.Z = -velocidad;
+                //No hago nada en este caso por la rotacion
                 moving = true;
             }
 
             //Derecha
             if (d3dInput.keyDown(Key.RightArrow))
             {
-                rotate = this.partido.JugadorHumano.VelocidadRotacion;
-                rotating = true;
+                movimiento.X = velocidad;
+                direccion.Y = -(float)Math.PI / 2;
+                moving = true;
             }
 
             //Izquierda
             if (d3dInput.keyDown(Key.LeftArrow))
             {
-                rotate = -this.partido.JugadorHumano.VelocidadRotacion;
-                rotating = true;
+                movimiento.X = -velocidad;
+                direccion.Y = (float)Math.PI / 2;
+                moving = true;
             }
 
-            //Si hubo rotacion
-            if (rotating)
+            //Diagonales, lo unico que hace es girar al jugador, el movimiento se calcula con el ingreso de cada tecla.
+            if (d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.Right))
             {
-                //Rotar personaje y la camara, hay que multiplicarlo por el tiempo transcurrido para no atarse a la velocidad el hardware
-                float rotAngle = Geometry.DegreeToRadian(rotate * elapsedTime);
-                this.partido.JugadorHumano.rotateY(rotAngle);
-                GuiController.Instance.ThirdPersonCamera.rotateY(rotAngle);
+                direccion.Y = (float)Math.PI * 5 / 4;
             }
+
+            if (d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.LeftArrow))
+            {
+                direccion.Y = (float)Math.PI * 3 / 4;
+            }
+            if (d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.LeftArrow))
+            {
+                direccion.Y = (float)Math.PI / 4;
+            }
+            if (d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.RightArrow))
+            {
+                direccion.Y = (float)Math.PI * 7 / 4;
+            }
+
+            //Si presiono S, paso la pelota
+            if (d3dInput.keyDown(Key.S))
+            {
+
+            }
+
+            //Si presiono D, comienzo a acumular cuanto patear
+            if (d3dInput.keyDown(Key.D))
+            {
+
+            }
+
+            //Si sueldo D pateo la pelota con la fuerza acumulada
+            if (d3dInput.keyUp(Key.D))
+            {
+
+            }
+
 
             //Si hubo desplazamiento
             if (moving)
             {
-                //Activar animacion de caminando
-                //this.jugadorHumano.playAnimation("Caminando", true);
-                this.partido.JugadorHumano.playAnimation(this.animacionCaminando, true);
+                //Activar animacion que corresponda
+                if (correr)
+                {
+                    this.partido.JugadorHumano.playAnimation(this.animacionCorriendo, true);
+                }
+                else
+                {
+                    this.partido.JugadorHumano.playAnimation(this.animacionCaminando, true);
+                }
 
                 //Aplicar movimiento hacia adelante o atras segun la orientacion actual del Mesh
                 Vector3 lastPos = this.partido.JugadorHumano.Position;
 
                 //La velocidad de movimiento tiene que multiplicarse por el elapsedTime para hacerse independiente de la velocida de CPU
                 //Ver Unidad 2: Ciclo acoplado vs ciclo desacoplado
-                this.partido.JugadorHumano.moveOrientedY(moveForward * elapsedTime);
+                this.partido.JugadorHumano.move(movimiento);
+                this.partido.JugadorHumano.Rotation = direccion;
 
+                //Detecto las colisiones
                 this.DetectarColisiones(lastPos);
             }
             //Si no se esta moviendo, activar animacion de Parado

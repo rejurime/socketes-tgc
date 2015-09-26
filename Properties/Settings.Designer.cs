@@ -73,7 +73,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("pelota.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pelota1.jpg")]
         public string textureBall {
             get {
                 return ((string)(this["textureBall"]));
@@ -97,7 +97,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("cancha.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("cancha1.jpg")]
         public string textureField {
             get {
                 return ((string)(this["textureField"]));
@@ -236,18 +236,6 @@ namespace AlumnoEjemplos.Properties {
             }
             set {
                 this["animationWalkPlayer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("people.jpg")]
-        public string texturePeople {
-            get {
-                return ((string)(this["texturePeople"]));
-            }
-            set {
-                this["texturePeople"] = value;
             }
         }
     }

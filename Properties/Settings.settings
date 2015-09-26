@@ -15,13 +15,13 @@
       <Value Profile="(Default)">Texturas\</Value>
     </Setting>
     <Setting Name="textureBall" Type="System.String" Scope="User">
-      <Value Profile="(Default)">pelota.jpg</Value>
+      <Value Profile="(Default)">pelota1.jpg</Value>
     </Setting>
     <Setting Name="textureNet" Type="System.String" Scope="User">
       <Value Profile="(Default)">red.jpg</Value>
     </Setting>
     <Setting Name="textureField" Type="System.String" Scope="User">
-      <Value Profile="(Default)">cancha.jpg</Value>
+      <Value Profile="(Default)">cancha1.jpg</Value>
     </Setting>
     <Setting Name="textureTeam1" Type="System.String" Scope="User">
       <Value Profile="(Default)">uvw.jpg</Value>
@@ -55,9 +55,6 @@
     </Setting>
     <Setting Name="animationWalkPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">Caminando</Value>
-    </Setting>
-    <Setting Name="texturePeople" Type="System.String" Scope="User">
-      <Value Profile="(Default)">people.jpg</Value>
     </Setting>
   </Settings>
 </SettingsFile>

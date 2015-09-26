@@ -10,10 +10,9 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Jugador
     {
-        TgcSkeletalMesh skeletalMesh;
-        float velocidadCaminar = 200f;
-        float velocidadCorrer = 300f;
-        float velocidadRotacion = 150f;
+        private TgcSkeletalMesh skeletalMesh;
+        private float velocidadCaminar = 200f;
+        private float velocidadCorrer = 500f;
 
         private Jugador() { }
 
@@ -27,53 +26,54 @@ namespace AlumnoEjemplos.Socketes.Model
             get { return skeletalMesh; }
         }
 
+        public Vector3 Position
+        {
+            get { return this.skeletalMesh.Position; }
+            set { this.skeletalMesh.Position = value; }
+        }
+
+        public TgcBoundingBox BoundingBox
+        {
+            get { return this.skeletalMesh.BoundingBox; }
+            set { this.skeletalMesh.BoundingBox = value; }
+        }
+
+        public Vector3 Rotation
+        {
+            get { return this.SkeletalMesh.Rotation; }
+            set { this.SkeletalMesh.Rotation = value; }
+        }
+
         public float VelocidadCaminar
         {
             get { return velocidadCaminar; }
             set { velocidadCaminar = value; }
         }
 
-        public float VelocidadRotacion
+        public float VelocidadCorrer
         {
-            get { return velocidadRotacion; }
-            set { velocidadRotacion = value; }
+            get { return velocidadCorrer; }
+            set { velocidadCorrer = value; }
         }
 
-        internal void animateAndRender()
+        public void animateAndRender()
         {
             this.skeletalMesh.animateAndRender();
         }
 
-        internal void dispose()
-        {
-            this.skeletalMesh.dispose();
-        }
-
-        internal void rotateY(float rotAngle)
-        {
-            this.skeletalMesh.rotateY(rotAngle);
-        }
-
-        internal void playAnimation(string animacion, bool v)
+        public void playAnimation(string animacion, bool v)
         {
             this.skeletalMesh.playAnimation(animacion, v);
         }
 
-        internal void moveOrientedY(float v)
+        public void move(Vector3 movimiento)
         {
-            this.skeletalMesh.moveOrientedY(v);
+            this.skeletalMesh.move(movimiento);
         }
 
-        internal Vector3 Position
+        public void dispose()
         {
-            get { return this.skeletalMesh.Position; }
-            set { this.skeletalMesh.Position = value; }
-        }
-
-        internal TgcBoundingBox BoundingBox
-        {
-            get { return this.skeletalMesh.BoundingBox; }
-            set { this.skeletalMesh.BoundingBox = value; }
+            this.skeletalMesh.dispose();
         }
     }
 }

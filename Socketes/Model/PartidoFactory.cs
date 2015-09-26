@@ -1,7 +1,9 @@
 ﻿using AlumnoEjemplos.Properties;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
@@ -61,10 +63,40 @@ namespace AlumnoEjemplos.Socketes.Model
         /// Creo la cancha donde van a estar parado los jugadores
         /// </summary>
         /// <param name="pathRecursos"></param>
-        /// <returns></returns>
+        /// <returns>Una Cancha</returns>
         private Cancha CrearCancha(string pathRecursos)
         {
-            return new Cancha(TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField)));
+            TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
+            tribuna1.move(new Vector3(0, 10, 700));
+            tribuna1.rotateY(-(float)Math.PI / 2);
+            tribuna1.Scale = new Vector3(15, 15, 15);
+
+            TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
+            tribuna2.move(new Vector3(0, 10, -700));
+            tribuna2.rotateY((float)Math.PI / 2);
+            tribuna2.Scale = new Vector3(15, 15, 15);
+
+            TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
+            tribuna3.move(new Vector3(1100, 10, 0));
+            tribuna3.rotateY(-(float)Math.PI / 2);
+            tribuna3.Scale = new Vector3(15, 15, 15);
+
+            TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
+            tribuna4.move(new Vector3(-1100, 10, 20));
+            tribuna4.rotateY((float)Math.PI / 2);
+            tribuna4.Scale = new Vector3(15, 15, 15);
+
+            TgcBox box = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField));
+            TgcBox box2 = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2048, 0, 1600), Color.SlateGray);
+
+            List<IRenderObject> componentes = new List<IRenderObject>();
+            componentes.Add(tribuna1);
+            componentes.Add(tribuna2);
+            componentes.Add(tribuna3);
+            componentes.Add(tribuna4);
+            componentes.Add(box2);
+
+            return new Cancha(box, componentes);
         }
 
         /// <summary>
@@ -74,13 +106,11 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns></returns>
         private List<TgcBox> CrearTribunas(string pathRecursos)
         {
-            TgcTexture pisoTexture = TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.texturePeople);
-
             List<TgcBox> tribunas = new List<TgcBox>();
-            tribunas.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0), pisoTexture));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0), pisoTexture));
+            tribunas.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200)));
+            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200)));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0)));
+            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0)));
 
             return tribunas;
         }
@@ -104,13 +134,9 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private Arco CrearArco(Vector3 posicion, string pathRecursos)
         {
-            TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\arco-TgcScene.xml").Meshes[0];
-            arco.changeDiffuseMaps(new TgcTexture[] { TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureNet) });
-            arco.AutoUpdateBoundingBox = true;
+            TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\Arco-TgcScene.xml").Meshes[0];
             arco.Position = posicion;
             arco.Scale = new Vector3(1.25f, 1.25f, 1.25f);
-            arco.updateBoundingBox();
-
             return new Arco(arco);
         }
 

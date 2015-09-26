@@ -1,5 +1,5 @@
-﻿using AlumnoEjemplos.Properties;
-using Microsoft.DirectX;
+﻿using System;
+using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
@@ -8,25 +8,41 @@ namespace AlumnoEjemplos.Socketes.Model
     public class Cancha
     {
         TgcBox box;
+        List<IRenderObject> componentes;
 
-        public Cancha(TgcBox box)
+        public Cancha(TgcBox box, List<IRenderObject> componentes)
         {
             this.box = box;
-        }
-
-        public TgcBoundingBox BoundingBox
-        {
-            get { return this.box.BoundingBox; }
+            this.componentes = componentes;
         }
 
         internal void render()
         {
-            this.box.render();
+            box.render();
+            //box.BoundingBox.render();
+
+            foreach (IRenderObject componente in componentes)
+            {
+                componente.render();
+            }
+        }
+
+        public TgcBoundingBox BoundingBoxCesped
+        {
+            get
+            {
+                return this.box.BoundingBox;
+            }
         }
 
         internal void dispose()
         {
-            this.box.dispose();
+            box.dispose();
+
+            foreach (IRenderObject componente in componentes)
+            {
+                componente.dispose();
+            }
         }
     }
 }

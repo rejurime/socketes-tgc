@@ -100,7 +100,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
             foreach (TgcBox tribunas in this.Tribunas)
             {
-                tribunas.render();
+                tribunas.BoundingBox.render();
             }
         }
 
@@ -113,7 +113,7 @@ namespace AlumnoEjemplos.Socketes.Model
                 obstaculos.Add(obstaculo.BoundingBox);
             }
 
-            obstaculos.Add(this.cancha.BoundingBox);
+            obstaculos.Add(this.cancha.BoundingBoxCesped);
 
             return obstaculos;
         }
