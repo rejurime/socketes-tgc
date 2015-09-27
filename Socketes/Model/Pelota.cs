@@ -5,6 +5,10 @@ using System;
 using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
+using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Fisica;
+using TgcViewer;
+using AlumnoEjemplos.Socketes.Collision.SphereCollision;
 
 namespace AlumnoEjemplos.Socketes
 {
@@ -15,8 +19,12 @@ namespace AlumnoEjemplos.Socketes
         private float angulo = 0f;
 
         bool mostrarBounding = true;
-        Vector3 rotation = new Vector3(0, 0, 0);
-        float velocidadRotacion = 200;
+
+        private Tiro tiro;
+        
+        private float coeficienteRotacion = 60;
+        
+        public CollisionManager collisionManager;
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -54,25 +62,50 @@ namespace AlumnoEjemplos.Socketes
             }
         }
 
-        public void updateValues()
+        public void updateValues(float elapsedTime)
         {
+            if (tiro != null && tiro.hayMovimiento())
+            {
+                Vector3 siguientespoisicion = tiro.siguienteMovimiento(elapsedTime);
+                mover(siguientespoisicion, elapsedTime, tiro.getFuerza());
+            }
+            else
+            {
+                //llamo a mover para que la pelota caiga por gravedad si no hay movimiento
+                mover(new Vector3(0, 0, 0), elapsedTime, 2);
+            }
             sphere.updateValues();
+
         }
 
+
+        /// <summary>
+        /// Metodo para patear una pelota, recibe el vector de direccion y la fuerza.
+        ///
+        /// </summary>
+        /// <param name="direccion"></param>
+        /// <param name="fuerza"></param>
+        public void patear(Vector3 direccion, float fuerza)
+        {
+            tiro = new TiroParabolicoSimple(direccion, fuerza);
+        }
         /// <summary>
         /// Mueve la pelota hacia el punto indicado, 
         /// el movimiento hacia ese punto es lineal, 
         /// en base a ese movimiento tambien hace la rotacion de la pelota
         /// </summary>
-        public void mover(Vector3 movimiento, float elapsedTime)
+        public void mover(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
+            Vector3 realMovement = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
             //valido que haya movimiento, sacar despues de que no se llame todo el tiempo
-            if (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0)
+            if (realMovement.X != 0 || realMovement.Y != 0 || realMovement.Z != 0)
             {
-                //Muevo la pelota hacia el punto dado
-                sphere.move(movimiento);
+                sphere.move(realMovement);
+
                 //arma la transformacion en base a el escalado + rotacion + traslacion
-                sphere.Transform = getScalingMatrix() * getRotationMatrix(movimiento, elapsedTime) * Matrix.Translation(sphere.Position);
+                sphere.Transform = getScalingMatrix() *
+                    getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) * 
+                    Matrix.Translation(sphere.Position);
             }
         }
 
@@ -97,12 +130,11 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="movimiento"></param>
         /// <param name="elapsedTime"></param>
         /// <returns></returns>
-        private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime)
+        private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
-            angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
-            return Matrix.RotationAxis(getVectorRotacion(movimiento), angulo);
-            ;
-
+            angulo += Geometry.DegreeToRadian(velocidadRotacion * coeficienteRotacion * elapsedTime);
+            Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(movimiento), angulo);
+            return matrixrotacion;
         }
 
         /// <summary>
@@ -114,11 +146,14 @@ namespace AlumnoEjemplos.Socketes
         private Vector3 getVectorRotacion(Vector3 movimiento)
         {
             Vector3 vectorrotacion = new Vector3(0, 0, 0);
-            if (movimiento.Y != 0)
-            {
-                vectorrotacion.X = Math.Sign(movimiento.Y);
-            }
 
+            //solo roto en Y si la pelota esta cayendo, si se esta moviendo en Z o X entonces no hago nada
+            if (movimiento.Y != 0 && movimiento.Z == 0 && movimiento.X == 0)
+            {
+                //caundo cae roto en un solo sentido
+                vectorrotacion.X = -1;
+            }
+            
             if (movimiento.Z != 0)
             {
                 vectorrotacion.X = Math.Sign(movimiento.Z);

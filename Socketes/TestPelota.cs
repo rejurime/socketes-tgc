@@ -1,6 +1,6 @@
 ﻿using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Collision.SphereCollision;
 using AlumnoEjemplos.Socketes.Model;
-using Examples.Collision.SphereCollision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System.Collections.Generic;
@@ -52,13 +52,14 @@ namespace AlumnoEjemplos.Socketes
 
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
 
+            //VER CON RENE, ahora la pelota maneja las colisiones, y debe conocer otdos los obstaculos, pero en la creaicon depende de caundo se crean las cosas
             //Crear manejador de colisiones
-            collisionManager = new CollisionManager();
+            collisionManager = new CollisionManager(this.partido.ObstaculosPelota());
             collisionManager.GravityEnabled = true;
-
+            this.partido.Pelota.collisionManager = collisionManager;
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
-            GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.Pelota.Position, 100, -150);
+            GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.Pelota.Position, 200, -250);
         }
 
         public override void render(float elapsedTime)
@@ -71,7 +72,8 @@ namespace AlumnoEjemplos.Socketes
             {
                 movement.X = -1;
             }
-            else if (input.keyDown(Key.Right) || input.keyDown(Key.D))
+            
+            if (input.keyDown(Key.Right) || input.keyDown(Key.D))
             {
                 movement.X = 1;
             }
@@ -79,14 +81,25 @@ namespace AlumnoEjemplos.Socketes
             {
                 movement.Z = 1;
             }
-            else if (input.keyDown(Key.Down) || input.keyDown(Key.S))
+            
+            if (input.keyDown(Key.Down) || input.keyDown(Key.S))
             {
                 movement.Z = -1;
             }
 
-            Vector3 realMovement = collisionManager.moveCharacter(this.partido.Pelota.BoundingSphere, movement, this.partido.ObstaculosPelota());
-            this.partido.Pelota.mover(realMovement, elapsedTime);
+            //Si presiono D, comienzo a acumular cuanto patear
+            if (input.keyDown(Key.Z))
+            {
+                this.partido.Pelota.patear(movement, 10);
+            }
 
+            //Si sueldo D pateo la pelota con la fuerza acumulada
+            if (input.keyUp(Key.Z))
+            {
+
+            }
+
+            this.partido.Pelota.updateValues(elapsedTime);
             //Hacer que la camara siga al personaje en su nueva posicion
             GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
 

@@ -2,7 +2,7 @@ using Microsoft.DirectX;
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace Examples.Collision.SphereCollision
+namespace AlumnoEjemplos.Socketes.Collision.SphereCollision
 {
     /// <summary>
     /// Herramienta para realizar el movimiento de una Esfera con detección de colisiones,
@@ -18,9 +18,12 @@ namespace Examples.Collision.SphereCollision
     {
         const float EPSILON = 0.05f;
 
+        List<TgcBoundingBox> obstaculos;
+
         private Vector3 gravityForce;
         /// <summary>
         /// Vector que representa la fuerza de gravedad.
+
         /// Debe tener un valor negativo en Y para que la fuerza atraiga hacia el suelo
         /// </summary>
         public Vector3 GravityForce
@@ -49,13 +52,17 @@ namespace Examples.Collision.SphereCollision
             set { slideFactor = value; }
         }
 
-        List<TgcBoundingBox> objetosCandidatos = new List<TgcBoundingBox>();
 
         public CollisionManager()
         {
             gravityEnabled = true;
             gravityForce = new Vector3(0, -1.5f, 0);
             slideFactor = 1.3f;
+        }
+
+        public CollisionManager(List<TgcBoundingBox> obstaculos) : this()
+        {
+            this.obstaculos = obstaculos;
         }
 
         /// <summary>
@@ -66,7 +73,7 @@ namespace Examples.Collision.SphereCollision
         /// <param name="movementVector">Movimiento a realizar</param>
         /// <param name="obstaculos">BoundingBox de obstáculos contra los cuales se puede colisionar</param>
         /// <returns>Desplazamiento relativo final efecutado al BoundingSphere</returns> 
-        public Vector3 moveCharacter(TgcBoundingSphere characterSphere, Vector3 movementVector, List<TgcBoundingBox> obstaculos)
+        public Vector3 moveCharacter(TgcBoundingSphere characterSphere, Vector3 movementVector)
         {
             Vector3 originalSphereCenter = characterSphere.Center;
 
@@ -87,11 +94,13 @@ namespace Examples.Collision.SphereCollision
         /// </summary>
         private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<TgcBoundingBox> obstaculos)
         {
+
             if (movementVector.LengthSq() < EPSILON)
             {
                 return;
             }
 
+            List<TgcBoundingBox> objetosCandidatos = new List<TgcBoundingBox>();
             Vector3 lastCenterSafePosition = characterSphere.Center;
 
             //Dejar solo los obstáculos que están dentro del radio de movimiento de la esfera
