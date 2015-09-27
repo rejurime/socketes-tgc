@@ -22,7 +22,7 @@ namespace AlumnoEjemplos.Socketes
 
         private Tiro tiro;
         
-        private float coeficienteRotacion = 60;
+            private float coeficienteRotacion = 60;
         
         public CollisionManager collisionManager;
 
@@ -132,8 +132,10 @@ namespace AlumnoEjemplos.Socketes
         /// <returns></returns>
         private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
+            Vector3 direccion = new Vector3 (movimiento.X, movimiento.Y, movimiento.Z);
+            direccion.Normalize();
             angulo += Geometry.DegreeToRadian(velocidadRotacion * coeficienteRotacion * elapsedTime);
-            Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(movimiento), angulo);
+            Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
             return matrixrotacion;
         }
 
@@ -176,6 +178,11 @@ namespace AlumnoEjemplos.Socketes
         internal void dispose()
         {
             sphere.dispose();
+        }
+
+        internal void pasar(Vector3 posicionJugador, float fuerza)
+        {
+            tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
     }
 }

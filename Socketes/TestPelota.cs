@@ -93,10 +93,10 @@ namespace AlumnoEjemplos.Socketes
                 this.partido.Pelota.patear(movement, 10);
             }
 
-            //Si sueldo D pateo la pelota con la fuerza acumulada
-            if (input.keyUp(Key.Z))
+            //pase de pelota
+            if (input.keyDown(Key.X))
             {
-
+                this.partido.Pelota.pasar(partido.getJugadoresCPUAliado().Position, 2);
             }
 
             this.partido.Pelota.updateValues(elapsedTime);

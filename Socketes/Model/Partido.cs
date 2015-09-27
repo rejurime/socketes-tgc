@@ -71,6 +71,12 @@ namespace AlumnoEjemplos.Socketes.Model
             set { tribunas = value; }
         }
 
+        public Jugador getJugadoresCPUAliado()
+        {
+            //RENE: medio feo, retornar el unico elemento de la lista de jugadores. Cuando haya mas se va a romper, plaa!
+            return jugadoresCPUAliados[0];
+        }
+
         #endregion
 
         #region Metodos
