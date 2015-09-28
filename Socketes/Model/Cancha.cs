@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Cancha
+    public class Cancha : IRenderObject
     {
         TgcBox box;
         List<IRenderObject> componentes;
@@ -16,7 +15,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.componentes = componentes;
         }
 
-        internal void render()
+        public void render()
         {
             box.render();
             //box.BoundingBox.render();
@@ -35,7 +34,26 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        internal void dispose()
+        public bool AlphaBlendEnable
+        {
+            get
+            {
+                //TODO estoy asumiendo que todos tienen el mismo alphablend :P
+                return this.box.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.box.AlphaBlendEnable = value;
+
+                foreach (IRenderObject componente in componentes)
+                {
+                    componente.AlphaBlendEnable = value;
+                }
+            }
+        }
+
+        public void dispose()
         {
             box.dispose();
 

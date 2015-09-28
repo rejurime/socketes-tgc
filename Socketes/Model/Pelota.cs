@@ -1,18 +1,15 @@
-﻿using AlumnoEjemplos.Properties;
+﻿using AlumnoEjemplos.Socketes.Collision.SphereCollision;
+using AlumnoEjemplos.Socketes.Fisica;
+using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
-using System.Reflection;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
-using AlumnoEjemplos.Socketes.Model;
-using AlumnoEjemplos.Socketes.Fisica;
-using TgcViewer;
-using AlumnoEjemplos.Socketes.Collision.SphereCollision;
 
 namespace AlumnoEjemplos.Socketes
 {
-    public class Pelota
+    public class Pelota : IRenderObject
     {
         TgcSphere sphere;
 
@@ -21,9 +18,9 @@ namespace AlumnoEjemplos.Socketes
         bool mostrarBounding = true;
 
         private Tiro tiro;
-        
-            private float coeficienteRotacion = 60;
-        
+
+        private float coeficienteRotacion = 60;
+
         public CollisionManager collisionManager;
 
         public TgcBoundingSphere BoundingSphere
@@ -41,6 +38,19 @@ namespace AlumnoEjemplos.Socketes
         {
             get { return mostrarBounding; }
             set { mostrarBounding = value; }
+        }
+
+        public bool AlphaBlendEnable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public Pelota(TgcSphere sphere)
@@ -104,7 +114,7 @@ namespace AlumnoEjemplos.Socketes
 
                 //arma la transformacion en base a el escalado + rotacion + traslacion
                 sphere.Transform = getScalingMatrix() *
-                    getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) * 
+                    getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) *
                     Matrix.Translation(sphere.Position);
             }
         }
@@ -132,7 +142,7 @@ namespace AlumnoEjemplos.Socketes
         /// <returns></returns>
         private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
-            Vector3 direccion = new Vector3 (movimiento.X, movimiento.Y, movimiento.Z);
+            Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             direccion.Normalize();
             angulo += Geometry.DegreeToRadian(velocidadRotacion * coeficienteRotacion * elapsedTime);
             Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
@@ -155,7 +165,7 @@ namespace AlumnoEjemplos.Socketes
                 //caundo cae roto en un solo sentido
                 vectorrotacion.X = -1;
             }
-            
+
             if (movimiento.Z != 0)
             {
                 vectorrotacion.X = Math.Sign(movimiento.Z);
@@ -183,6 +193,11 @@ namespace AlumnoEjemplos.Socketes
         internal void pasar(Vector3 posicionJugador, float fuerza)
         {
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
+        }
+
+        void IRenderObject.dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

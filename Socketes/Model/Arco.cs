@@ -1,10 +1,9 @@
-﻿using Microsoft.DirectX;
-using TgcViewer.Utils.TgcGeometry;
+﻿using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Arco
+    public class Arco : IRenderObject
     {
         public TgcMesh mesh;
 
@@ -13,6 +12,19 @@ namespace AlumnoEjemplos.Socketes.Model
         public TgcBoundingBox BoundingBox
         {
             get { return this.mesh.BoundingBox; }
+        }
+
+        public bool AlphaBlendEnable
+        {
+            get
+            {
+                return this.mesh.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.mesh.AlphaBlendEnable = value;
+            }
         }
 
         private Arco() { }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.DirectX;
+﻿using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Jugador
+    public class Jugador : IRenderObject
     {
         private TgcSkeletalMesh skeletalMesh;
         private float velocidadCaminar = 200f;
@@ -56,9 +53,17 @@ namespace AlumnoEjemplos.Socketes.Model
             set { velocidadCorrer = value; }
         }
 
-        public void animateAndRender()
+        public bool AlphaBlendEnable
         {
-            this.skeletalMesh.animateAndRender();
+            get
+            {
+                return this.skeletalMesh.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.skeletalMesh.AlphaBlendEnable = value;
+            }
         }
 
         public void playAnimation(string animacion, bool v)
@@ -74,6 +79,11 @@ namespace AlumnoEjemplos.Socketes.Model
         public void dispose()
         {
             this.skeletalMesh.dispose();
+        }
+
+        public void render()
+        {
+            this.skeletalMesh.animateAndRender();
         }
     }
 }
