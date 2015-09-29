@@ -4,7 +4,7 @@ using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Reflection;
+using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
@@ -49,14 +49,41 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             Partido partido = new Partido();
 
+            partido.Marcador = this.CrearMarcador();
             partido.Cancha = this.CrearCancha(pathRecursos);
             partido.ArcoLocal = this.CrearArco(new Vector3(940, 0, 25), pathRecursos);
             partido.ArcoVisitante = this.CrearArco(new Vector3(-780, 0, 25), pathRecursos);
-            partido.Tribunas = this.CrearTribunas(pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
-            this.CrearJugadores(partido, pathRecursos);
+            partido.JugadorHumano = this.CrearJugadorHumano(pathRecursos);
+            partido.JugadoresCPUAliados = this.CrearJugadoresAliados(pathRecursos);
+            partido.JugadoresCPURivales = this.CrearJugadoresRivales(pathRecursos);
 
             return partido;
+        }
+
+        /// <summary>
+        /// Crea el marcador del partido que tiene los goles y el tiempo
+        /// </summary>
+        /// <returns> Un Marcador con resultado y tiempo</returns>
+        private Marcador CrearMarcador()
+        {
+            //Marcador
+            TgcText2d marcador = new TgcText2d();
+            marcador.Color = Color.White;
+            marcador.Align = TgcText2d.TextAlign.CENTER;
+            marcador.Position = new Point(0, 20);
+            marcador.Size = new Size(150, 100);
+            marcador.changeFont(new System.Drawing.Font("Arial", 14, FontStyle.Bold));
+
+            //Contador de Tiempo
+            TgcText2d tiempo = new TgcText2d();
+            tiempo.Color = Color.White;
+            tiempo.Align = TgcText2d.TextAlign.CENTER;
+            tiempo.Position = new Point(0, 40);
+            tiempo.Size = new Size(150, 100);
+            tiempo.changeFont(new System.Drawing.Font("Arial", 14));
+
+            return new Marcador(marcador, tiempo, "SKTS", "TGCV");
         }
 
         /// <summary>
@@ -66,22 +93,22 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns>Una Cancha</returns>
         private Cancha CrearCancha(string pathRecursos)
         {
-            TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
+            TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
             tribuna1.move(new Vector3(0, 80, 800));
             tribuna1.rotateY(-(float)Math.PI / 2);
             tribuna1.Scale = new Vector3(10, 10, 10);
 
-            TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna1-TgcScene.xml").Meshes[0];
+            TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
             tribuna2.move(new Vector3(0, 80, -800));
             tribuna2.rotateY((float)Math.PI / 2);
             tribuna2.Scale = new Vector3(10, 10, 10);
 
-            TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
+            TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
             tribuna3.move(new Vector3(1000, 60, 0));
             tribuna3.rotateY(-(float)Math.PI / 2);
             tribuna3.Scale = new Vector3(10, 10, 10);
 
-            TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Tribunas\\Tribuna2-TgcScene.xml").Meshes[0];
+            TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
             tribuna4.move(new Vector3(-1000, 60, 0));
             tribuna4.rotateY((float)Math.PI / 2);
             tribuna4.Scale = new Vector3(10, 10, 10);
@@ -96,65 +123,92 @@ namespace AlumnoEjemplos.Socketes.Model
             componentes.Add(tribuna4);
             componentes.Add(box2);
 
-            return new Cancha(box, componentes);
+            return new Cancha(box, componentes, this.CrearLimitesCancha());
         }
 
         /// <summary>
-        /// Creo las tribunas que me sirven como limie de la cancla
+        /// Creo los limites de la cancha
         /// </summary>
-        /// <param name="pathRecursos"></param>
-        /// <returns></returns>
-        private List<TgcBox> CrearTribunas(string pathRecursos)
+        /// <returns> Lista con los limites de la cancha</returns>
+        private List<TgcBox> CrearLimitesCancha()
         {
-            List<TgcBox> tribunas = new List<TgcBox>();
-            tribunas.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200)));
-            tribunas.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200)));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0)));
-            tribunas.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0)));
+            List<TgcBox> limites = new List<TgcBox>();
+            limites.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200)));
+            limites.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200)));
+            limites.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0)));
+            limites.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0)));
 
-            return tribunas;
+            return limites;
         }
 
         /// <summary>
         /// Creo la pelota en el centro de la cancha
         /// </summary>
-        /// <param name="pathRecursos"></param>
-        /// <returns></returns>
+        /// <param name="pathRecursos"> De donde saco la textura</param>
+        /// <returns> Una pelota</returns>
         private Pelota CrearPelota(string pathRecursos)
         {
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
-            sphere.Radius = 10;
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
-            sphere.Position = new Vector3(0, 60, 0);
+            sphere.Radius = 10;
+            sphere.Position = new Vector3(0, 10, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);
         }
 
+        /// <summary>
+        /// Creo un arco
+        /// </summary>
+        /// <param name="posicion">Donde va a estar ubicado el Arco</param>
+        /// <param name="pathRecursos">De donde sacar el mesh</param>
+        /// <returns> Un arco</returns>
         private Arco CrearArco(Vector3 posicion, string pathRecursos)
         {
-            TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\Arco-TgcScene.xml").Meshes[0];
+            TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
             arco.Position = posicion;
             arco.Scale = new Vector3(1.25f, 1.25f, 1.25f);
             return new Arco(arco);
         }
 
         /// <summary>
-        /// Creo los 4 jugadores, 2 de cada equipo
+        /// Crea el jugador que hay que manejar manualmente
         /// </summary>
-        /// <param name="partido"></param>
-        /// <param name="pathRecursos"></param>
-        private void CrearJugadores(Partido partido, string pathRecursos)
+        /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// <returns> El jugador controlado manualmente</returns>
+        private Jugador CrearJugadorHumano(string pathRecursos)
+        {
+            return this.CrearJugador(new Vector3(50, 0, 0), 125f, pathRecursos, Settings.Default.textureTeam1);
+        }
+
+        /// <summary>
+        /// Crea los oponentes al equipo manejado por el jugador
+        /// </summary>
+        /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// <returns> Una lista de jugadores</returns>
+        private List<Jugador> CrearJugadoresRivales(string pathRecursos)
         {
             float anguloEquipoHumano = 90f;
+            List<Jugador> jugadores = new List<Jugador>();
+
+            jugadores.Add(this.CrearJugador(new Vector3(120, 0, 100), anguloEquipoHumano, pathRecursos, Settings.Default.textureTeam1));
+            return jugadores;
+        }
+
+        /// <summary>
+        /// Crea los compañeros del jugador humano
+        /// </summary>
+        /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// <returns> Una lista de jugadores</returns>
+        private List<Jugador> CrearJugadoresAliados(string pathRecursos)
+        {
             float anguloEquipoCPU = 270f;
+            List<Jugador> jugadores = new List<Jugador>();
 
-            partido.JugadorHumano = this.CrearJugador(new Vector3(50, -8, 0), 125f, pathRecursos, Settings.Default.textureTeam1);
-            partido.JugadoresCPUAliados.Add(this.CrearJugador(new Vector3(120, -8, 100), anguloEquipoHumano, pathRecursos, Settings.Default.textureTeam1));
-
-            partido.JugadoresCPURivales.Add(this.CrearJugador(new Vector3(-130, -8, 160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
-            partido.JugadoresCPURivales.Add(this.CrearJugador(new Vector3(-155, -8, -160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
+            jugadores.Add(this.CrearJugador(new Vector3(-130, 0, 160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
+            jugadores.Add(this.CrearJugador(new Vector3(-155, 0, -160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
+            return jugadores;
         }
 
         /// <summary>
@@ -180,7 +234,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
             //Le cambiamos la textura
             personaje.changeDiffuseMaps(new TgcTexture[] {
-                TgcTexture.createTexture(pathRecursos + Settings.Default.meshFolderPlayer + Settings.Default.meshTextureFolder + nombreTextura)
+                TgcTexture.createTexture(pathRecursos + Settings.Default.meshFolderPlayer + nombreTextura)
                 });
 
             //Configurar animacion inicial

@@ -76,14 +76,19 @@ namespace AlumnoEjemplos.Socketes.Model
             this.skeletalMesh.move(movimiento);
         }
 
-        public void dispose()
+        public void animateAndRender()
         {
-            this.skeletalMesh.dispose();
+            this.skeletalMesh.animateAndRender();
         }
 
         public void render()
         {
-            this.skeletalMesh.animateAndRender();
+            this.skeletalMesh.render();
+        }
+
+        public void dispose()
+        {
+            this.skeletalMesh.dispose();
         }
     }
 }

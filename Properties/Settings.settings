@@ -17,23 +17,17 @@
     <Setting Name="textureBall" Type="System.String" Scope="User">
       <Value Profile="(Default)">pelota1.jpg</Value>
     </Setting>
-    <Setting Name="textureNet" Type="System.String" Scope="User">
-      <Value Profile="(Default)">red.jpg</Value>
-    </Setting>
     <Setting Name="textureField" Type="System.String" Scope="User">
       <Value Profile="(Default)">cancha1.jpg</Value>
     </Setting>
     <Setting Name="textureTeam1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">uvw.jpg</Value>
+      <Value Profile="(Default)">Textures\uvw.jpg</Value>
     </Setting>
     <Setting Name="textureTeam2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">uvwGreen.jpg</Value>
+      <Value Profile="(Default)">Textures\uvwGreen.jpg</Value>
     </Setting>
     <Setting Name="meshFolderPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">SkeletalAnimations\Robot\</Value>
-    </Setting>
-    <Setting Name="meshTextureFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Textures\</Value>
     </Setting>
     <Setting Name="meshFilePlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">Robot-TgcSkeletalMesh.xml</Value>
@@ -55,6 +49,15 @@
     </Setting>
     <Setting Name="animationWalkPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">Caminando</Value>
+    </Setting>
+    <Setting Name="meshFileTribunePo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Tribuna\TribunaPopular-TgcScene.xml</Value>
+    </Setting>
+    <Setting Name="meshFileGoal" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Arco\Arco-TgcScene.xml</Value>
+    </Setting>
+    <Setting Name="meshFileTribunePl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Tribuna\TribunaPlatea-TgcScene.xml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

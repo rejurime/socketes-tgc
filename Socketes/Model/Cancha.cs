@@ -7,12 +7,14 @@ namespace AlumnoEjemplos.Socketes.Model
     public class Cancha : IRenderObject
     {
         TgcBox box;
-        List<IRenderObject> componentes;
+        List<IRenderObject> tribunas;
+        List<TgcBox> limitesCancha;
 
-        public Cancha(TgcBox box, List<IRenderObject> componentes)
+        public Cancha(TgcBox box, List<IRenderObject> componentes, List<TgcBox> limitesCancha)
         {
             this.box = box;
-            this.componentes = componentes;
+            this.tribunas = componentes;
+            this.limitesCancha = limitesCancha;
         }
 
         public void render()
@@ -20,9 +22,14 @@ namespace AlumnoEjemplos.Socketes.Model
             box.render();
             //box.BoundingBox.render();
 
-            foreach (IRenderObject componente in componentes)
+            foreach (IRenderObject componente in this.tribunas)
             {
                 componente.render();
+            }
+
+            foreach (TgcBox limite in this.limitesCancha)
+            {
+                limite.BoundingBox.render();
             }
         }
 
@@ -46,10 +53,24 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 this.box.AlphaBlendEnable = value;
 
-                foreach (IRenderObject componente in componentes)
+                foreach (IRenderObject componente in tribunas)
                 {
                     componente.AlphaBlendEnable = value;
                 }
+            }
+        }
+
+        public List<TgcBoundingBox> BoundingBoxes
+        {
+            get
+            {
+                List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
+
+                foreach (TgcBox box in this.limitesCancha)
+                {
+                    obstaculos.Add(box.BoundingBox);
+                }
+                return obstaculos;
             }
         }
 
@@ -57,9 +78,14 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             box.dispose();
 
-            foreach (IRenderObject componente in componentes)
+            foreach (IRenderObject componente in tribunas)
             {
                 componente.dispose();
+            }
+
+            foreach (TgcBox limite in this.limitesCancha)
+            {
+                limite.dispose();
             }
         }
     }

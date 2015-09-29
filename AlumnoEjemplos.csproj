@@ -99,6 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Socketes\Collision\CollisionManager.cs" />
+    <Compile Include="Socketes\Model\Marcador.cs" />
+    <Compile Include="Socketes\TestCamara.cs" />
     <Compile Include="Socketes\EjemploAlumno.cs" />
     <Compile Include="Socketes\BalomPie.cs" />
     <Compile Include="Socketes\Fisica\Tiro.cs" />
