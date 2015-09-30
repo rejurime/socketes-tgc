@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+using AlumnoEjemplos.Socketes.Collision;
+using System;
+using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Cancha : IRenderObject
+
+    public class Cancha : IRenderObject, Colisionable
     {
         TgcBox box;
         List<IRenderObject> tribunas;
@@ -87,6 +90,26 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 limite.dispose();
             }
+        }
+
+        public void colisionasteCon(Colisionable objetoColisionado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Microsoft.DirectX.Vector3 getDireccionDeRebote(Microsoft.DirectX.Vector3 vectorDeImpacto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float getFactorDeRebote()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TgcBoundingBox getTgcBoundingBox()
+        {
+            return this.box.BoundingBox;
         }
     }
 }

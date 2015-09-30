@@ -19,7 +19,6 @@ namespace AlumnoEjemplos.Socketes.Model
         private Vector3 fuerzaPorEje;
 
         private float fuerza;
-        private float distancia;
         private float factor = 0.98f;
 
 

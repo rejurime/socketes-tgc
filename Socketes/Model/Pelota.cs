@@ -1,15 +1,16 @@
-﻿using AlumnoEjemplos.Socketes.Collision.SphereCollision;
-using AlumnoEjemplos.Socketes.Fisica;
+﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
+using TgcViewer;
+using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes
 {
-    public class Pelota : IRenderObject
+    public class Pelota : IRenderObject, Colisionable
     {
         TgcSphere sphere;
 
@@ -106,7 +107,9 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public void mover(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
-            Vector3 realMovement = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
+            ColisionInfo colisionInfo = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
+
+            Vector3 realMovement = colisionInfo.getRealMovement();
             //valido que haya movimiento, sacar despues de que no se llame todo el tiempo
             if (realMovement.X != 0 || realMovement.Y != 0 || realMovement.Z != 0)
             {
@@ -195,9 +198,31 @@ namespace AlumnoEjemplos.Socketes
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
 
-        void IRenderObject.dispose()
+        public void colisionasteCon(Colisionable objetoColisionado)
         {
             throw new NotImplementedException();
+        }
+
+        public Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float getFactorDeRebote()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TgcBoundingBox getTgcBoundingBox()
+
+        {
+            throw new NotImplementedException();
+        }
+
+
+        void IRenderObject.dispose()
+        {
+            sphere.dispose();
         }
     }
 }
