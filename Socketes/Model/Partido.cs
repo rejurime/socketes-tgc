@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSkeletalAnimation;
+using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -110,29 +111,31 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        internal List<TgcBoundingBox> ObstaculosPelota()
+        internal List<Colisionable> ObstaculosPelota()
         {
-            List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
+            List<Colisionable> obstaculos = new List<Colisionable>();
 
+            //RENE ver con rene
+            /*
             foreach (TgcBox obstaculo in this.tribunas)
             {
-                obstaculos.Add(obstaculo.BoundingBox);
+                obstaculos.Add(obstaculo);
             }
+            */
+            obstaculos.Add(this.cancha);
+            obstaculos.Add(this.arcoLocal);
+            obstaculos.Add(this.arcoVisitante);
 
-            obstaculos.Add(this.cancha.BoundingBoxCesped);
-            obstaculos.Add(this.arcoLocal.BoundingBox);
-            obstaculos.Add(this.arcoVisitante.BoundingBox);
-
-            obstaculos.Add(jugadorHumano.BoundingBox);
+            obstaculos.Add(jugadorHumano);
 
             foreach (Jugador jugador in this.jugadoresCPUAliados)
             {
-                obstaculos.Add(jugador.BoundingBox);
+                obstaculos.Add(jugador);
             }
 
             foreach (Jugador jugador in this.jugadoresCPURivales)
             {
-                obstaculos.Add(jugador.BoundingBox);
+                obstaculos.Add(jugador);
             }
             return obstaculos;
         }

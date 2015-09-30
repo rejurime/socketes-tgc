@@ -12,7 +12,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
     /// 
     /// </summary>
 
-    interface Tiro
+    public interface Tiro
     {
 
         /// <summary>

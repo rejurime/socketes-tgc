@@ -5,10 +5,11 @@ using System.Text;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSkeletalAnimation;
+using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Jugador
+    public class Jugador : Colisionable
     {
         private TgcSkeletalMesh skeletalMesh;
         private float velocidadCaminar = 200f;
@@ -74,6 +75,26 @@ namespace AlumnoEjemplos.Socketes.Model
         public void dispose()
         {
             this.skeletalMesh.dispose();
+        }
+
+        public void colisionasteCon(Colisionable objetoColisionado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float getFactorDeRebote()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TgcBoundingBox getTgcBoundingBox()
+        {
+            return this.skeletalMesh.BoundingBox; 
         }
     }
 }

@@ -1,6 +1,6 @@
 using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
-using AlumnoEjemplos.Socketes.Collision.SphereCollision;
+using AlumnoEjemplos.Socketes.Collision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;

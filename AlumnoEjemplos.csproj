@@ -98,7 +98,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Socketes\Collision\ColisionInfo.cs" />
     <Compile Include="Socketes\Collision\CollisionManager.cs" />
+    <Compile Include="Socketes\Collision\Colisionable.cs" />
     <Compile Include="Socketes\EjemploAlumno.cs" />
     <Compile Include="Socketes\BalomPie.cs" />
     <Compile Include="Socketes\Fisica\Tiro.cs" />
