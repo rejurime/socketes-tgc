@@ -85,18 +85,6 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("red.jpg")]
-        public string textureNet {
-            get {
-                return ((string)(this["textureNet"]));
-            }
-            set {
-                this["textureNet"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("cancha1.jpg")]
         public string textureField {
             get {
@@ -109,7 +97,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("uvw.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvw.jpg")]
         public string textureTeam1 {
             get {
                 return ((string)(this["textureTeam1"]));
@@ -121,7 +109,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("uvwGreen.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvwGreen.jpg")]
         public string textureTeam2 {
             get {
                 return ((string)(this["textureTeam2"]));
@@ -140,18 +128,6 @@ namespace AlumnoEjemplos.Properties {
             }
             set {
                 this["meshFolderPlayer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\")]
-        public string meshTextureFolder {
-            get {
-                return ((string)(this["meshTextureFolder"]));
-            }
-            set {
-                this["meshTextureFolder"] = value;
             }
         }
         
@@ -236,6 +212,42 @@ namespace AlumnoEjemplos.Properties {
             }
             set {
                 this["animationWalkPlayer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tribuna\\TribunaPopular-TgcScene.xml")]
+        public string meshFileTribunePo {
+            get {
+                return ((string)(this["meshFileTribunePo"]));
+            }
+            set {
+                this["meshFileTribunePo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arco\\Arco-TgcScene.xml")]
+        public string meshFileGoal {
+            get {
+                return ((string)(this["meshFileGoal"]));
+            }
+            set {
+                this["meshFileGoal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Tribuna\\TribunaPlatea-TgcScene.xml")]
+        public string meshFileTribunePl {
+            get {
+                return ((string)(this["meshFileTribunePl"]));
+            }
+            set {
+                this["meshFileTribunePl"] = value;
             }
         }
     }

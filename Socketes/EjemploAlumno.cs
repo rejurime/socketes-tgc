@@ -122,7 +122,6 @@ namespace AlumnoEjemplos.Socketes
 
         }
 
-
         /// <summary>
         /// Método que se llama cada vez que hay que refrescar la pantalla.
         /// Escribir aquí todo el código referido al renderizado.
@@ -170,6 +169,5 @@ namespace AlumnoEjemplos.Socketes
         {
 
         }
-
     }
 }

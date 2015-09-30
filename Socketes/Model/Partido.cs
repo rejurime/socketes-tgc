@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSkeletalAnimation;
+using TgcViewer.Utils.TgcSceneLoader;
 using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Partido
+    public class Partido : IRenderObject
     {
         #region Miembros
 
+        private Marcador marcador;
         private Cancha cancha;
         private Pelota pelota;
         private Arco arcoLocal;
@@ -18,7 +20,6 @@ namespace AlumnoEjemplos.Socketes.Model
         private Jugador jugadorHumano;
         private List<Jugador> jugadoresCPUAliados = new List<Jugador>();
         private List<Jugador> jugadoresCPURivales = new List<Jugador>();
-        private List<TgcBox> tribunas = new List<TgcBox>();
 
         #endregion
 
@@ -66,10 +67,37 @@ namespace AlumnoEjemplos.Socketes.Model
             set { jugadoresCPURivales = value; }
         }
 
-        public List<TgcBox> Tribunas
+        public bool AlphaBlendEnable
         {
-            get { return tribunas; }
-            set { tribunas = value; }
+            get
+            {
+                return this.cancha.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.cancha.AlphaBlendEnable = value;
+                this.pelota.AlphaBlendEnable = value;
+                this.arcoLocal.AlphaBlendEnable = value;
+                this.arcoVisitante.AlphaBlendEnable = value;
+                this.jugadorHumano.AlphaBlendEnable = value;
+
+                foreach (Jugador jugador in this.jugadoresCPUAliados)
+                {
+                    jugador.AlphaBlendEnable = value;
+                }
+
+                foreach (Jugador jugador in this.JugadoresCPURivales)
+                {
+                    jugador.AlphaBlendEnable = value;
+                }
+            }
+        }
+
+        public Marcador Marcador
+        {
+            get { return marcador; }
+            set { marcador = value; }
         }
 
         public Jugador getJugadoresCPUAliado()
@@ -87,8 +115,9 @@ namespace AlumnoEjemplos.Socketes.Model
         /// Escribir aquí todo el código referido al renderizado.
         /// Borrar todo lo que no haga falta
         /// </summary>
-        internal void render()
+        public void render()
         {
+            this.marcador.render();
             this.cancha.render();
             this.pelota.render();
             this.arcoLocal.render();
@@ -104,18 +133,14 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 jugador.animateAndRender();
             }
-
-            foreach (TgcBox tribunas in this.Tribunas)
-            {
-                tribunas.BoundingBox.render();
-            }
         }
 
-        internal List<Colisionable> ObstaculosPelota()
+       internal List<Colisionable> ObstaculosPelota()
+
         {
             List<Colisionable> obstaculos = new List<Colisionable>();
 
-            //RENE ver con rene
+            //RENE ver con rene, hay que transformar tribunas en objetos colisionables
             /*
             foreach (TgcBox obstaculo in this.tribunas)
             {
@@ -127,6 +152,10 @@ namespace AlumnoEjemplos.Socketes.Model
             obstaculos.Add(this.arcoVisitante);
 
             obstaculos.Add(jugadorHumano);
+
+            //RENE ver con rene, hay que transformar los limites en objetos colisionables
+            //obstaculos.AddRange(this.cancha.BoundingBoxes);
+
 
             foreach (Jugador jugador in this.jugadoresCPUAliados)
             {
@@ -140,12 +169,25 @@ namespace AlumnoEjemplos.Socketes.Model
             return obstaculos;
         }
 
+        public List<TgcBoundingBox> ObstaculosJugadorHumano()
+        {
+            List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
+
+            obstaculos.AddRange(this.cancha.BoundingBoxes);
+            obstaculos.Add(this.cancha.BoundingBoxCesped);
+            obstaculos.Add(this.arcoLocal.BoundingBox);
+            obstaculos.Add(this.arcoVisitante.BoundingBox);
+
+            return obstaculos;
+        }
+
         /// <summary>
         /// Método que se llama cuando termina la ejecución del ejemplo.
         /// Hacer dispose() de todos los objetos creados.
         /// </summary>
-        internal void dispose()
+        public void dispose()
         {
+            this.marcador.render();
             this.cancha.dispose();
             this.pelota.dispose();
             this.arcoLocal.dispose();
@@ -160,11 +202,6 @@ namespace AlumnoEjemplos.Socketes.Model
             foreach (Jugador jugador in this.jugadoresCPURivales)
             {
                 jugador.dispose();
-            }
-
-            foreach (TgcBox tribunas in this.Tribunas)
-            {
-                tribunas.render();
             }
         }
 

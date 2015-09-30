@@ -1,8 +1,7 @@
 using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
 using System;
 using System.Reflection;
@@ -69,8 +68,11 @@ namespace AlumnoEjemplos.Socketes
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
 
             //Crear manejador de colisiones
-            collisionManager = new CollisionManager();
+            //TODOOOOOOOOO que onda con el collisionManager MATI BALA... :)
+            collisionManager = new CollisionManager(this.partido.ObstaculosPelota());
             collisionManager.GravityEnabled = true;
+
+            this.partido.Pelota.collisionManager = collisionManager;
 
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
@@ -116,6 +118,10 @@ namespace AlumnoEjemplos.Socketes
             }
 
             this.CalcularPosicionSegunInput(elapsedTime);
+
+            //TODOOOO cosa fea de la pelota de mati
+            this.partido.Pelota.updateValues(elapsedTime);
+
             this.partido.render();
         }
 
@@ -263,9 +269,9 @@ namespace AlumnoEjemplos.Socketes
             //Detectar colisiones
             bool collide = false;
 
-            foreach (TgcBox obstaculo in this.partido.Tribunas)
+            foreach (TgcBoundingBox obstaculo in this.partido.ObstaculosJugadorHumano())
             {
-                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(this.partido.JugadorHumano.BoundingBox, obstaculo.BoundingBox);
+                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(this.partido.JugadorHumano.BoundingBox, obstaculo);
                 if (result == TgcCollisionUtils.BoxBoxResult.Adentro || result == TgcCollisionUtils.BoxBoxResult.Atravesando)
                 {
                     collide = true;

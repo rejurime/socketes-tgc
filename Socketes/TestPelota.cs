@@ -72,7 +72,7 @@ namespace AlumnoEjemplos.Socketes
             {
                 movement.X = -1;
             }
-            
+
             if (input.keyDown(Key.Right) || input.keyDown(Key.D))
             {
                 movement.X = 1;
@@ -81,7 +81,7 @@ namespace AlumnoEjemplos.Socketes
             {
                 movement.Z = 1;
             }
-            
+
             if (input.keyDown(Key.Down) || input.keyDown(Key.S))
             {
                 movement.Z = -1;

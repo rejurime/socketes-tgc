@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.DirectX;
+﻿using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 using AlumnoEjemplos.Socketes.Collision;
+using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Jugador : Colisionable
+
+    public class Jugador : IRenderObject, Colisionable
     {
         private TgcSkeletalMesh skeletalMesh;
         private float velocidadCaminar = 200f;
@@ -57,9 +56,17 @@ namespace AlumnoEjemplos.Socketes.Model
             set { velocidadCorrer = value; }
         }
 
-        public void animateAndRender()
+        public bool AlphaBlendEnable
         {
-            this.skeletalMesh.animateAndRender();
+            get
+            {
+                return this.skeletalMesh.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.skeletalMesh.AlphaBlendEnable = value;
+            }
         }
 
         public void playAnimation(string animacion, bool v)
@@ -70,6 +77,16 @@ namespace AlumnoEjemplos.Socketes.Model
         public void move(Vector3 movimiento)
         {
             this.skeletalMesh.move(movimiento);
+        }
+
+        public void animateAndRender()
+        {
+            this.skeletalMesh.animateAndRender();
+        }
+
+        public void render()
+        {
+            this.skeletalMesh.render();
         }
 
         public void dispose()

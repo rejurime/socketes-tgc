@@ -5,7 +5,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Arco : Colisionable
+    public class Arco : IRenderObject, Colisionable
     {
         public TgcMesh mesh;
 
@@ -14,6 +14,19 @@ namespace AlumnoEjemplos.Socketes.Model
         public TgcBoundingBox BoundingBox
         {
             get { return this.mesh.BoundingBox; }
+        }
+
+        public bool AlphaBlendEnable
+        {
+            get
+            {
+                return this.mesh.AlphaBlendEnable;
+            }
+
+            set
+            {
+                this.mesh.AlphaBlendEnable = value;
+            }
         }
 
         private Arco() { }
