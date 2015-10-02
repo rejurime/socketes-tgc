@@ -59,5 +59,13 @@
     <Setting Name="meshFileTribunePl" Type="System.String" Scope="User">
       <Value Profile="(Default)">Tribuna\TribunaPlatea-TgcScene.xml</Value>
     </Setting>
+    <Setting Name="music" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;Audio\FIFA 1998 - Blur - Song 2.mp3&lt;/string&gt;
+  &lt;string&gt;Audio\FIFA World Cup 1998 - Chumbawamba - Tubthumping.mp3&lt;/string&gt;
+  &lt;string&gt;Audio\FIFA 1999 - Fatboy Slim - The Rockafeller Skank.mp3&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

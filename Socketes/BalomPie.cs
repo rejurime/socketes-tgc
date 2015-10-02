@@ -1,9 +1,9 @@
 using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System;
+using System.Drawing;
 using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
@@ -20,9 +20,8 @@ namespace AlumnoEjemplos.Socketes
     {
         #region Atributos
 
-        Microsoft.DirectX.Direct3D.Device d3dDevice = GuiController.Instance.D3dDevice;
+        private Menu menu;
         private Partido partido;
-        private CollisionManager collisionManager;
         private string animacionCorriendo = Settings.Default.animationRunPlayer;
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
         private string animacionParado = Settings.Default.animationStopPlayer;
@@ -59,24 +58,27 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void init()
         {
-            string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Musica
-            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
-            GuiController.Instance.Mp3Player.FileName = pathRecursos + "Audio\\Chumbawamba - Tubthumping.mp3";
+            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
 
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
-
-            //Crear manejador de colisiones
-            //TODOOOOOOOOO que onda con el collisionManager MATI BALA... :)
-            collisionManager = new CollisionManager(this.partido.ObstaculosPelota());
-            collisionManager.GravityEnabled = true;
-
-            this.partido.Pelota.collisionManager = collisionManager;
+            //Empiezo con un tema Random :)
+            int numbreTrack = new Random().Next(Settings.Default.music.Count);
+            GuiController.Instance.Mp3Player.FileName = pathRecursos + Settings.Default.music[numbreTrack];
 
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
-            GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+
+            //Creo el menu
+            this.menu = new Menu(pathRecursos, GuiController.Instance.ThirdPersonCamera);
+
+            //Creo el partido
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
+
+            //Color de fondo
+            GuiController.Instance.BackgroundColor = Color.Black;
         }
 
         #endregion
@@ -92,6 +94,27 @@ namespace AlumnoEjemplos.Socketes
         public override void render(float elapsedTime)
         {
             //Contro del reproductor por Modifiers
+            this.Player();
+
+            if(this.menu.Enable)
+            {
+                this.menu.render(elapsedTime);
+            }
+            else
+            {
+                this.CalcularPosicionSegunInput(elapsedTime);
+
+                //TODOOOO cosa fea de la pelota de mati
+                this.partido.Pelota.updateValues(elapsedTime);
+
+                this.partido.render();
+
+                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+            }
+        }
+
+        private void Player()
+        {
             TgcMp3Player player = GuiController.Instance.Mp3Player;
 
             if ((bool)GuiController.Instance.Modifiers["Musica"])
@@ -116,13 +139,6 @@ namespace AlumnoEjemplos.Socketes
                     player.stop();
                 }
             }
-
-            this.CalcularPosicionSegunInput(elapsedTime);
-
-            //TODOOOO cosa fea de la pelota de mati
-            this.partido.Pelota.updateValues(elapsedTime);
-
-            this.partido.render();
         }
 
         /// <summary>
@@ -296,6 +312,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void close()
         {
+            //Del menu ya hice dispose antes de empezar con el partido ;)
             this.partido.dispose();
         }
 

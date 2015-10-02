@@ -1,4 +1,5 @@
 ﻿using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Collision;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
@@ -57,6 +58,11 @@ namespace AlumnoEjemplos.Socketes.Model
             partido.JugadorHumano = this.CrearJugadorHumano(pathRecursos);
             partido.JugadoresCPUAliados = this.CrearJugadoresAliados(pathRecursos);
             partido.JugadoresCPURivales = this.CrearJugadoresRivales(pathRecursos);
+
+            //Crear manejador de colisiones
+            //TODOOOOOOOOO que onda con el collisionManager MATI BALA... :)
+            partido.Pelota.collisionManager = new CollisionManager(partido.ObstaculosPelota());
+            partido.Pelota.collisionManager.GravityEnabled = true;
 
             return partido;
         }
