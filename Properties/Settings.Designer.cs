@@ -250,5 +250,22 @@ namespace AlumnoEjemplos.Properties {
                 this["meshFileTribunePl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>Audio\FIFA 1998 - Blur - Song 2.mp3</string>
+  <string>Audio\FIFA World Cup 1998 - Chumbawamba - Tubthumping.mp3</string>
+  <string>Audio\FIFA 1999 - Fatboy Slim - The Rockafeller Skank.mp3</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection music {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["music"]));
+            }
+            set {
+                this["music"] = value;
+            }
+        }
     }
 }

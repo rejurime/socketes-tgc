@@ -101,6 +101,8 @@
     <Compile Include="Socketes\Collision\ColisionInfo.cs" />
     <Compile Include="Socketes\Collision\CollisionManager.cs" />
     <Compile Include="Socketes\Collision\Colisionable.cs" />
+    <Compile Include="Socketes\Menu\MenuItem.cs" />
+    <Compile Include="Socketes\Menu\Menu.cs" />
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\TestCamara.cs" />
     <Compile Include="Socketes\EjemploAlumno.cs" />
