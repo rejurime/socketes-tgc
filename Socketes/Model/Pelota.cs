@@ -7,6 +7,9 @@ using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer;
 using AlumnoEjemplos.Socketes.Collision;
+using TgcViewer.Utils.Sound;
+using System.Reflection;
+using AlumnoEjemplos.Properties;
 
 namespace AlumnoEjemplos.Socketes
 {
@@ -20,12 +23,17 @@ namespace AlumnoEjemplos.Socketes
 
         private Tiro tiro;
 
-        private float coeficienteRotacion = 60;
-
         public CollisionManager collisionManager;
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
         private bool piso = false;
+        private float ROTACION_DEFAULT = 60;
+
+        private float VELOCIDAD_DE_ROTACION_DEFAULT = 2;
+
+        //sonido para patear
+        private TgcMp3Player sonidoPatear;
+
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -63,6 +71,10 @@ namespace AlumnoEjemplos.Socketes
             sphere.AutoTransformEnable = false;
             sphere.updateValues();
 
+            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+
+            this.sonidoPatear = new TgcMp3Player();
+            this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
             this.sphere = sphere;
         }
 
@@ -86,7 +98,7 @@ namespace AlumnoEjemplos.Socketes
             else
             {
                 //llamo a mover para que la pelota caiga por gravedad si no hay movimiento
-                mover(new Vector3(0, 0, 0), elapsedTime, 2);
+                mover(new Vector3(0, 0, 0), elapsedTime);
             }
             sphere.updateValues();
 
@@ -102,7 +114,31 @@ namespace AlumnoEjemplos.Socketes
         public void patear(Vector3 direccion, float fuerza)
         {
             tiro = new TiroParabolicoSimple(direccion, fuerza);
+            reproducirSonidoPatear();
+
         }
+
+        private void reproducirSonidoPatear()
+        {
+            if (sonidoPatear.getStatus() == TgcMp3Player.States.Open)
+            {
+                sonidoPatear.play(false);
+            }
+            if (sonidoPatear.getStatus() == TgcMp3Player.States.Stopped)
+            {
+                sonidoPatear.closeFile();
+                sonidoPatear.play(false);
+            }
+
+            if (sonidoPatear.getStatus() == TgcMp3Player.States.Playing)
+            {
+                sonidoPatear.closeFile();
+                sonidoPatear.play(false);
+            }
+
+        }
+
+
         /// <summary>
         /// Mueve la pelota hacia el punto indicado, 
         /// el movimiento hacia ese punto es lineal, 
@@ -182,7 +218,7 @@ namespace AlumnoEjemplos.Socketes
         {
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             direccion.Normalize();
-            angulo += Geometry.DegreeToRadian(velocidadRotacion * coeficienteRotacion * elapsedTime);
+            angulo += Geometry.DegreeToRadian(velocidadRotacion * ROTACION_DEFAULT * elapsedTime);
             Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
             return matrixrotacion;
         }
@@ -228,6 +264,14 @@ namespace AlumnoEjemplos.Socketes
             sphere.dispose();
         }
 
+
+        /// <summary>
+        /// 
+        /// Tira la pelota hacia un punto al raz del piso
+        /// 
+        /// </summary>
+        /// <param name="posicionJugador"></param>
+        /// <param name="fuerza"></param>
         internal void pasar(Vector3 posicionJugador, float fuerza)
         {
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
@@ -244,6 +288,11 @@ namespace AlumnoEjemplos.Socketes
             piso = true;
             collisionManager.GravityEnabled = false;
 
+        }
+
+        internal void mover(Vector3 movement, float elapsedTime)
+        {
+            mover(movement, elapsedTime, VELOCIDAD_DE_ROTACION_DEFAULT);
         }
     }
 }
