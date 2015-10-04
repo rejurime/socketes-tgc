@@ -66,7 +66,7 @@ namespace AlumnoEjemplos.Socketes.Model
         public float getFactorDeRebote()
         {
             //factor de fuerza de rebote, hay q ver que onda estos valores.
-            return 0.70f;
+            return 0.50f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()

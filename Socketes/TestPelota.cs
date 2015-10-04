@@ -91,12 +91,16 @@ namespace AlumnoEjemplos.Socketes
             if (input.keyDown(Key.Z))
             {
                 this.partido.Pelota.patear(movement, 5);
-            }
-
-            //pase de pelota
-            if (input.keyDown(Key.X))
+            } else if (input.keyDown(Key.X))
             {
                 this.partido.Pelota.pasar(partido.getJugadoresCPUAliado().Position, 2);
+            }
+            else
+            {
+                this.partido.Pelota.mover(movement, elapsedTime);
+
+
+
             }
 
             this.partido.Pelota.updateValues(elapsedTime);

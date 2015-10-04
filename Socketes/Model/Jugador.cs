@@ -101,13 +101,22 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
-            //por ahora no rebota, asi que no retorna nada, con esto para la pelota como un campeon
-            return new Vector3(0, 0, 0);
+            //Ver esto, como pensamos las colisiones, los jugadores reciben la pelota y la pueden tener, si hacemos esto le rebotaria
+
+            //si la pelota se esta moviendo en X, entonces cambio esa direccion
+            if (movimiento.X != 0)
+                movimiento.X *= -1;
+
+            //si la pelota se mueve en Z, cambio esa direccion
+            if (movimiento.Z != 0)
+                movimiento.Z *= -1;
+
+            return movimiento;
         }
 
         public float getFactorDeRebote()
         {
-            return 0;
+            return 0.10f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()
