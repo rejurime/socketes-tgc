@@ -22,7 +22,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private float factor = 0.98f;
 
         //un factor de graveddad para que vaya cayendo en Y.
-        private float gravedad = 0.20f;
+        private float gravedad = 0.15f;
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)
         {

@@ -30,5 +30,10 @@ namespace AlumnoEjemplos.Socketes.Collision
         {
             return realMovementVector;
         }
+
+        internal List<Colisionable> getColisiones()
+        {
+            return collisiones;
+        }
     }
 }

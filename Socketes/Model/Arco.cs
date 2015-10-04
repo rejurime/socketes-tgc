@@ -51,19 +51,22 @@ namespace AlumnoEjemplos.Socketes.Model
             this.mesh.dispose();
         }
 
-        public void colisionasteCon(Colisionable objetoColisionado)
+        public void colisionasteConPelota(Pelota pelota)
         {
-            throw new System.NotImplementedException();
+            //por ahora nada, aca tendria que ir la logica de si la pelota hizo gol o no.
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto)
+        public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
-            throw new System.NotImplementedException();
+            //los arcos son planos parados sobre el eje X, asi q solo cambio coordenada X de movimiento.
+            movimiento.X *= -1;
+            return movimiento;
         }
 
         public float getFactorDeRebote()
         {
-            throw new System.NotImplementedException();
+            //factor de fuerza de rebote, hay q ver que onda estos valores.
+            return 0.70f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()

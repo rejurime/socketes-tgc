@@ -1,6 +1,8 @@
 using AlumnoEjemplos.Socketes.Collision;
+using Microsoft.DirectX;
 using System;
 using System.Collections.Generic;
+using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
@@ -92,19 +94,23 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        public void colisionasteCon(Colisionable objetoColisionado)
+        public void colisionasteConPelota(Pelota pelota)
         {
-            throw new NotImplementedException();
+            //le avisa a la pelota que esta tocando el piso, asi no intenta colisionar mas
+            pelota.estasEnElPiso();
         }
 
-        public Microsoft.DirectX.Vector3 getDireccionDeRebote(Microsoft.DirectX.Vector3 vectorDeImpacto)
+        public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
-            throw new NotImplementedException();
+            movimiento.Y *= -1;
+            return movimiento;
+
+
         }
 
         public float getFactorDeRebote()
         {
-            throw new NotImplementedException();
+            return 0.70f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()

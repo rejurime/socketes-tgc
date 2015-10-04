@@ -22,7 +22,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// se pasa ese objeto para que se puede hacer la logica necesaria.
         /// </summary>
         /// <param name="objetoColisionado"></param>
-       void colisionasteCon(Colisionable objetoColisionado);
+       void colisionasteConPelota(Pelota pelota);
 
         /// <summary>
         /// Todo objeto colisionable debe retornar el vector que indica el rebote.
@@ -32,7 +32,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// 
         /// </summary>
         /// <returns></returns>
-        Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto);
+       Vector3 getDireccionDeRebote(Vector3 movimiento);
 
         /// <summary>
         /// 
@@ -47,6 +47,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// </summary>
         /// <returns></returns>
         TgcBoundingBox getTgcBoundingBox();
+
 
     }
 }

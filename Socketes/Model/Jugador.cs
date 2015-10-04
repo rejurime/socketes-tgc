@@ -94,19 +94,20 @@ namespace AlumnoEjemplos.Socketes.Model
             this.skeletalMesh.dispose();
         }
 
-        public void colisionasteCon(Colisionable objetoColisionado)
+        public void colisionasteConPelota(Pelota pelota)
         {
-            throw new NotImplementedException();
+            //aca hay que meter la logica para que el tipo sepa que tiene la pelota.
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto)
+        public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
-            throw new NotImplementedException();
+            //por ahora no rebota, asi que no retorna nada, con esto para la pelota como un campeon
+            return new Vector3(0, 0, 0);
         }
 
         public float getFactorDeRebote()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public TgcBoundingBox getTgcBoundingBox()

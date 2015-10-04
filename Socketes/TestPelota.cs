@@ -90,7 +90,7 @@ namespace AlumnoEjemplos.Socketes
             //Si presiono D, comienzo a acumular cuanto patear
             if (input.keyDown(Key.Z))
             {
-                this.partido.Pelota.patear(movement, 10);
+                this.partido.Pelota.patear(movement, 5);
             }
 
             //pase de pelota

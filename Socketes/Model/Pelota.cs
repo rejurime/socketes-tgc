@@ -10,7 +10,7 @@ using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes
 {
-    public class Pelota : IRenderObject, Colisionable
+    public class Pelota : IRenderObject
     {
         TgcSphere sphere;
 
@@ -23,6 +23,9 @@ namespace AlumnoEjemplos.Socketes
         private float coeficienteRotacion = 60;
 
         public CollisionManager collisionManager;
+
+        //para controlar que no se intente colisionar todo el tiempo con el piso.
+        private bool piso = false;
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -75,7 +78,7 @@ namespace AlumnoEjemplos.Socketes
 
         public void updateValues(float elapsedTime)
         {
-            if (tiro != null && tiro.hayMovimiento())
+            if (hayTiro())
             {
                 Vector3 siguientespoisicion = tiro.siguienteMovimiento(elapsedTime);
                 mover(siguientespoisicion, elapsedTime, tiro.getFuerza());
@@ -107,19 +110,51 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public void mover(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
         {
+            if (!piso)
+            {
+                collisionManager.GravityEnabled = true;
+            }
             ColisionInfo colisionInfo = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
 
             Vector3 realMovement = colisionInfo.getRealMovement();
+            //si no se mueve en Y entonces se termino el movimiento por gravedad
+
             //valido que haya movimiento, sacar despues de que no se llame todo el tiempo
             if (realMovement.X != 0 || realMovement.Y != 0 || realMovement.Z != 0)
             {
+                if (realMovement.Y != 0)
+                {
+                    collisionManager.GravityEnabled = true;
+                    piso = false;
+                }
+
                 sphere.move(realMovement);
 
                 //arma la transformacion en base a el escalado + rotacion + traslacion
                 sphere.Transform = getScalingMatrix() *
                     getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) *
                     Matrix.Translation(sphere.Position);
+
+                foreach (Colisionable objetoColisionado in colisionInfo.getColisiones())
+                {
+                    //aviso a todos los objetos con los cuales colisione que lo hice, asi cambian sus estado
+                    objetoColisionado.colisionasteConPelota(this);
+
+                    if (hayTiro())
+                    {
+                        tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
+                            objetoColisionado.getFactorDeRebote() * tiro.getFuerza());
+                    }
+
+                }
             }
+
+
+        }
+
+        private bool hayTiro()
+        {
+            return tiro != null && tiro.hayMovimiento();
         }
 
         /// <summary>
@@ -166,7 +201,7 @@ namespace AlumnoEjemplos.Socketes
             if (movimiento.Y != 0 && movimiento.Z == 0 && movimiento.X == 0)
             {
                 //caundo cae roto en un solo sentido
-                vectorrotacion.X = -1;
+                vectorrotacion.X = -Math.Sign(movimiento.Y);
             }
 
             if (movimiento.Z != 0)
@@ -198,31 +233,17 @@ namespace AlumnoEjemplos.Socketes
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
 
-        public void colisionasteCon(Colisionable objetoColisionado)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Vector3 getDireccionDeRebote(Vector3 vectorDeImpacto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public float getFactorDeRebote()
-        {
-            throw new NotImplementedException();
-        }
-
-        public TgcBoundingBox getTgcBoundingBox()
-
-        {
-            throw new NotImplementedException();
-        }
-
 
         void IRenderObject.dispose()
         {
             sphere.dispose();
+        }
+
+        internal void estasEnElPiso()
+        {
+            piso = true;
+            collisionManager.GravityEnabled = false;
+
         }
     }
 }
