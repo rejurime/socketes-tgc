@@ -7,7 +7,8 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 {
     public class JugadorManualStrategy : IJugadorMoveStrategy
     {
-        TgcD3dInput d3dInput;
+        private TgcD3dInput d3dInput;
+        private float acumuladoPatear = 0;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -99,22 +100,26 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 direccion.Y = (float)Math.PI * 7 / 4;
             }
 
-            //Si presiono S, paso la pelota
-            if (this.d3dInput.keyDown(Key.S))
+            if (jugador.PelotaDominada)
             {
+                //Si presiono S, paso la pelota
+                if (this.d3dInput.keyDown(Key.S))
+                {
+                    jugador.Pelota.pasar(jugador.Companero.Position, 2);
+                }
 
-            }
+                //Si presiono D, comienzo a acumular cuanto patear
+                if (this.d3dInput.keyDown(Key.D))
+                {
+                    this.acumuladoPatear += elapsedTime;
+                }
 
-            //Si presiono D, comienzo a acumular cuanto patear
-            if (this.d3dInput.keyDown(Key.D))
-            {
-
-            }
-
-            //Si sueldo D pateo la pelota con la fuerza acumulada
-            if (this.d3dInput.keyUp(Key.D))
-            {
-
+                //Si sueldo D pateo la pelota con la fuerza acumulada
+                if (this.d3dInput.keyUp(Key.D))
+                {
+                    jugador.Pelota.patear(movimiento, this.acumuladoPatear);
+                    this.acumuladoPatear = 0;
+                }
             }
 
             //Si hubo desplazamiento
@@ -139,7 +144,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 jugador.Rotation = direccion;
 
                 //Detecto las colisiones                
-                if (jugador.CollisionManager.DetectarColisiones(jugador.BoundingBox, lastPos))
+                if (jugador.CollisionManager.DetectarColisiones(jugador, lastPos))
                 {
                     //Si hubo colision, restaurar la posicion anterior
                     jugador.Position = lastPos;

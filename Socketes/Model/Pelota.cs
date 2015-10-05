@@ -13,11 +13,11 @@ namespace AlumnoEjemplos.Socketes
 {
     public class Pelota
     {
-        TgcSphere sphere;
+        private TgcSphere sphere;
         private float angulo = 0f;
-        bool mostrarBounding = true;
+        private bool mostrarBounding = true;
         private Tiro tiro;
-        public SphereCollisionManager collisionManager;
+        private SphereCollisionManager collisionManager;
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
         private bool piso = false;
@@ -42,6 +42,12 @@ namespace AlumnoEjemplos.Socketes
         {
             get { return mostrarBounding; }
             set { mostrarBounding = value; }
+        }
+
+        public SphereCollisionManager CollisionManager
+        {
+            get { return collisionManager; }
+            set { collisionManager = value; }
         }
 
         public Pelota(TgcSphere sphere)

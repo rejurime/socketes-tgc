@@ -1,15 +1,11 @@
 ﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
-using System.Collections.Generic;
 using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Input;
-using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes
 {
@@ -19,7 +15,6 @@ namespace AlumnoEjemplos.Socketes
     public class TestPelota : TgcExample
     {
         private Partido partido;
-        private SphereCollisionManager collisionManager;
 
         /// <summary>
         /// Categoría a la que pertenece el ejemplo.
@@ -52,11 +47,6 @@ namespace AlumnoEjemplos.Socketes
 
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
 
-            //VER CON RENE, ahora la pelota maneja las colisiones, y debe conocer otdos los obstaculos, pero en la creaicon depende de caundo se crean las cosas
-            //Crear manejador de colisiones
-            collisionManager = new SphereCollisionManager(this.partido.ObstaculosPelota());
-            collisionManager.GravityEnabled = true;
-            this.partido.Pelota.collisionManager = collisionManager;
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
             GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.Pelota.Position, 200, -250);

@@ -1,4 +1,5 @@
 ﻿using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
@@ -8,7 +9,9 @@ namespace AlumnoEjemplos.Socketes.Model
     public class Partido
     {
         #region Miembros
+
         private bool mostrarBounding;
+        private bool inteligenciaArtificial;
         private Marcador marcador;
         private Cancha cancha;
         private Pelota pelota;
@@ -93,6 +96,26 @@ namespace AlumnoEjemplos.Socketes.Model
                 }
             }
         }
+
+        public bool InteligenciaArtificial
+        {
+            get
+            {
+                return inteligenciaArtificial;
+            }
+
+            set
+            {
+                inteligenciaArtificial = value;
+                ((JugadorIAStrategy)this.jugadorIAAliado.Strategy).InteligenciaArtificial = value;
+
+                foreach (Jugador jugador in this.jugadoresIARivales)
+                {
+                    ((JugadorIAStrategy)jugador.Strategy).InteligenciaArtificial = value;
+                }
+            }
+        }
+
 
         #endregion
 

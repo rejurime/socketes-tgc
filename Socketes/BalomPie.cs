@@ -54,11 +54,15 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Musica
-            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
             //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
+
+            //Inteligencia Artificial
+            //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
+            GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
 
             //Empiezo con un tema Random :)
             int numbreTrack = new Random().Next(Settings.Default.music.Count);
@@ -100,6 +104,9 @@ namespace AlumnoEjemplos.Socketes
             {
                 //BoundingBox
                 this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
+
+                //Inteligencia Artificial
+                this.partido.InteligenciaArtificial = (bool)GuiController.Instance.Modifiers["IA"];
 
                 this.partido.render(elapsedTime);
 

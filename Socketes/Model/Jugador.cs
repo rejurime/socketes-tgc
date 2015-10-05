@@ -13,7 +13,7 @@ namespace AlumnoEjemplos.Socketes.Model
         #region Miembros
 
         private TgcSkeletalMesh skeletalMesh;
-        private float velocidadCaminar = 200f;
+        private float velocidadCaminar = 100f;
         private float velocidadCorrer = 500f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
@@ -23,6 +23,9 @@ namespace AlumnoEjemplos.Socketes.Model
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
         private string animacionParado = Settings.Default.animationStopPlayer;
         private bool mostrarBounding;
+        //TODO ver si esta se puede mejorar con un state :)
+        private bool pelotaDominada;
+        private bool atacando;
 
         #endregion
 
@@ -118,6 +121,24 @@ namespace AlumnoEjemplos.Socketes.Model
             set { mostrarBounding = value; }
         }
 
+        public IJugadorMoveStrategy Strategy
+        {
+            get { return strategy; }
+            set { strategy = value; }
+        }
+
+        public bool PelotaDominada
+        {
+            get { return pelotaDominada; }
+            set { pelotaDominada = value; }
+        }
+
+        public bool Atacando
+        {
+            get { return atacando; }
+            set { atacando = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -160,7 +181,9 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void colisionasteConPelota(Pelota pelota)
         {
-            //aca hay que meter la logica para que el tipo sepa que tiene la pelota.
+            this.pelotaDominada = true;
+            this.atacando = true;
+            this.companero.Atacando = true;
         }
 
         public Vector3 getDireccionDeRebote(Vector3 movimiento)

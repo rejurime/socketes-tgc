@@ -8,15 +8,15 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Cancha : IRenderObject, IColisionable
     {
-        TgcBox box;
-        List<IRenderObject> tribunas;
-        List<LimiteCancha> limitesCancha;
+        private TgcBox box;
+        private List<IRenderObject> tribunas;
+        private List<LimiteCancha> limitesCancha;
         private bool mostrarBounding;
 
-        public Cancha(TgcBox box, List<IRenderObject> componentes, List<LimiteCancha> limitesCancha)
+        public Cancha(TgcBox box, List<IRenderObject> tribunas, List<LimiteCancha> limitesCancha)
         {
             this.box = box;
-            this.tribunas = componentes;
+            this.tribunas = tribunas;
             this.limitesCancha = limitesCancha;
         }
 
@@ -90,6 +90,12 @@ namespace AlumnoEjemplos.Socketes.Model
                     limite.MostrarBounding = value;
                 }
             }
+        }
+
+        public List<LimiteCancha> LimitesCancha
+        {
+            get { return limitesCancha; }
+            set { limitesCancha = value; }
         }
 
         public void dispose()

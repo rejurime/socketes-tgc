@@ -66,49 +66,49 @@ namespace AlumnoEjemplos.Socketes.Model
             partido.JugadoresIARivales = this.CrearJugadoresRivales(pathRecursos, partido.Pelota);
 
             //Crear manejador de colisiones
-            partido.Pelota.collisionManager = new SphereCollisionManager(partido.ObstaculosPelota());
-            partido.Pelota.collisionManager.GravityEnabled = true;
+            partido.Pelota.CollisionManager = new SphereCollisionManager(partido.ObstaculosPelota());
+            partido.Pelota.CollisionManager.GravityEnabled = true;
 
             //Le paso los obstaculos a cada jugador
             //TODO hay que mejorar este codigo para la proxima entrega
             BoxCollisionManager collisionManager1 = new BoxCollisionManager();
-            collisionManager1.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
-            collisionManager1.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
-            collisionManager1.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
-            collisionManager1.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
-            collisionManager1.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
-            collisionManager1.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
-            collisionManager1.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            collisionManager1.Obstaculos.Add(partido.JugadorIAAliado);
+            collisionManager1.Obstaculos.AddRange(partido.JugadoresIARivales);
+            collisionManager1.Obstaculos.AddRange(partido.Cancha.LimitesCancha);
+            //collisionManager1.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager1.Obstaculos.Add(partido.Cancha);
+            collisionManager1.Obstaculos.Add(partido.ArcoLocal);
+            collisionManager1.Obstaculos.Add(partido.ArcoVisitante);
             partido.JugadorHumano.CollisionManager = collisionManager1;
 
             BoxCollisionManager collisionManager2 = new BoxCollisionManager();
-            collisionManager2.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
-            collisionManager2.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
-            collisionManager2.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
-            collisionManager2.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
-            collisionManager2.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
-            collisionManager2.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
-            collisionManager2.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            collisionManager2.Obstaculos.Add(partido.JugadorHumano);
+            collisionManager2.Obstaculos.AddRange(partido.JugadoresIARivales);
+            collisionManager2.Obstaculos.AddRange(partido.Cancha.LimitesCancha);
+            //collisionManager2.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager2.Obstaculos.Add(partido.Cancha);
+            collisionManager2.Obstaculos.Add(partido.ArcoLocal);
+            collisionManager2.Obstaculos.Add(partido.ArcoVisitante);
             partido.JugadorIAAliado.CollisionManager = collisionManager2;
 
             BoxCollisionManager collisionManager3 = new BoxCollisionManager();
-            collisionManager3.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
-            collisionManager3.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
-            collisionManager3.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
-            collisionManager3.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
-            collisionManager3.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
-            collisionManager3.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
-            collisionManager3.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            collisionManager3.Obstaculos.Add(partido.JugadorHumano);
+            collisionManager3.Obstaculos.Add(partido.JugadorIAAliado);
+            collisionManager3.Obstaculos.Add(partido.JugadoresIARivales[1]);
+            collisionManager3.Obstaculos.AddRange(partido.Cancha.LimitesCancha);
+            //collisionManager3.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager3.Obstaculos.Add(partido.ArcoLocal);
+            collisionManager3.Obstaculos.Add(partido.ArcoVisitante);
             partido.JugadoresIARivales[0].CollisionManager = collisionManager3;
 
             BoxCollisionManager collisionManager4 = new BoxCollisionManager();
-            collisionManager4.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
-            collisionManager4.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
-            collisionManager4.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
-            collisionManager4.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
-            collisionManager4.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
-            collisionManager4.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
-            collisionManager4.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            collisionManager4.Obstaculos.Add(partido.JugadorHumano);
+            collisionManager4.Obstaculos.Add(partido.JugadorIAAliado);
+            collisionManager4.Obstaculos.Add(partido.JugadoresIARivales[0]);
+            collisionManager4.Obstaculos.AddRange(partido.Cancha.LimitesCancha);
+            //collisionManager4.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager4.Obstaculos.Add(partido.ArcoLocal);
+            collisionManager4.Obstaculos.Add(partido.ArcoVisitante);
             partido.JugadoresIARivales[1].CollisionManager = collisionManager4;
 
             return partido;
