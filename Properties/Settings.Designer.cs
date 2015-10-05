@@ -267,5 +267,77 @@ namespace AlumnoEjemplos.Properties {
                 this["music"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\picadito.png")]
+        public string picadito1 {
+            get {
+                return ((string)(this["picadito1"]));
+            }
+            set {
+                this["picadito1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\picadito-seleccionado.png")]
+        public string picadito2 {
+            get {
+                return ((string)(this["picadito2"]));
+            }
+            set {
+                this["picadito2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\opciones.png")]
+        public string opciones1 {
+            get {
+                return ((string)(this["opciones1"]));
+            }
+            set {
+                this["opciones1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\opciones-seleccionado.png")]
+        public string opciones2 {
+            get {
+                return ((string)(this["opciones2"]));
+            }
+            set {
+                this["opciones2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\salir.png")]
+        public string salir1 {
+            get {
+                return ((string)(this["salir1"]));
+            }
+            set {
+                this["salir1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\salir-seleccionado.png")]
+        public string salir2 {
+            get {
+                return ((string)(this["salir2"]));
+            }
+            set {
+                this["salir2"] = value;
+            }
+        }
     }
 }

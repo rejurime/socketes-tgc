@@ -56,9 +56,9 @@ namespace AlumnoEjemplos.Socketes
 
             //Menu
             this.menus = new List<MenuItem>();
-            this.menus.Add(new MenuItem(new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + "Menu\\picadito.png", pathRecursos + "Menu\\picadito-seleccionado.png"));
-            this.menus.Add(new MenuItem(new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + "Menu\\opciones.png", pathRecursos + "Menu\\opciones-seleccionado.png"));
-            this.menus.Add(new MenuItem(new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + "Menu\\salir.png", pathRecursos + "Menu\\salir-seleccionado.png"));
+            this.menus.Add(new MenuItem(new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.picadito1, pathRecursos + Settings.Default.picadito2));
+            this.menus.Add(new MenuItem(new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.opciones1, pathRecursos + Settings.Default.opciones2));
+            this.menus.Add(new MenuItem(new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.salir1, pathRecursos + Settings.Default.salir2));
             this.menus[0].Select();
 
             //Pongo la camara en posicion

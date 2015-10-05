@@ -1,11 +1,9 @@
 using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
-using Microsoft.DirectX.DirectInput;
 using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
-using TgcViewer.Utils.Input;
 
 namespace AlumnoEjemplos.Socketes
 {
@@ -49,7 +47,7 @@ namespace AlumnoEjemplos.Socketes
         public override void init()
         {
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             //Camara en primera persona, tipo videojuego FPS
@@ -68,7 +66,7 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="elapsedTime">Tiempo en segundos transcurridos desde el último frame</param>
         public override void render(float elapsedTime)
         {
-            this.partido.render();
+            this.partido.render(elapsedTime);
         }
 
         /// <summary>

@@ -1,28 +1,22 @@
 ﻿using Microsoft.DirectX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Collision
 {
-
     /// <summary>
     /// Todo objeto que puede ser colisionable debe implementar esta interface.
     /// 
     /// Esta interface se usa desde el CollisionManager para definir los objetos colisionables.
     /// 
     /// </summary>
-    public interface Colisionable
+    public interface IColisionable
     {
-
         /// <summary>
         /// Le informa al objeto colisonable que colisiono con algo, 
         /// se pasa ese objeto para que se puede hacer la logica necesaria.
         /// </summary>
         /// <param name="objetoColisionado"></param>
-       void colisionasteConPelota(Pelota pelota);
+        void colisionasteConPelota(Pelota pelota);
 
         /// <summary>
         /// Todo objeto colisionable debe retornar el vector que indica el rebote.
@@ -32,7 +26,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// 
         /// </summary>
         /// <returns></returns>
-       Vector3 getDireccionDeRebote(Vector3 movimiento);
+        Vector3 getDireccionDeRebote(Vector3 movimiento);
 
         /// <summary>
         /// 
@@ -47,7 +41,5 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// </summary>
         /// <returns></returns>
         TgcBoundingBox getTgcBoundingBox();
-
-
     }
 }

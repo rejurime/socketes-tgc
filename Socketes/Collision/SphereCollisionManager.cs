@@ -1,6 +1,7 @@
 using Microsoft.DirectX;
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
+
 namespace AlumnoEjemplos.Socketes.Collision
 {
     /// <summary>
@@ -13,16 +14,16 @@ namespace AlumnoEjemplos.Socketes.Collision
     /// a nivel de un BoundingBox con 6 caras rectangulares.
     /// 
     /// </summary>
-    public class CollisionManager
+    public class SphereCollisionManager
     {
-        const float EPSILON = 0.05f;
-
-        List<Colisionable> obstaculos;
-
+        private const float EPSILON = 0.05f;
+        private List<IColisionable> obstaculos;
         private Vector3 gravityForce;
+        private bool gravityEnabled;
+        private float slideFactor;
+
         /// <summary>
         /// Vector que representa la fuerza de gravedad.
-
         /// Debe tener un valor negativo en Y para que la fuerza atraiga hacia el suelo
         /// </summary>
         public Vector3 GravityForce
@@ -31,7 +32,6 @@ namespace AlumnoEjemplos.Socketes.Collision
             set { gravityForce = value; }
         }
 
-        private bool gravityEnabled;
         /// <summary>
         /// Habilita o deshabilita la aplicación de fuerza de gravedad
         /// </summary>
@@ -41,7 +41,6 @@ namespace AlumnoEjemplos.Socketes.Collision
             set { gravityEnabled = value; }
         }
 
-        private float slideFactor;
         /// <summary>
         /// Multiplicador de la fuerza de Sliding
         /// </summary>
@@ -51,15 +50,14 @@ namespace AlumnoEjemplos.Socketes.Collision
             set { slideFactor = value; }
         }
 
-
-        public CollisionManager()
+        public SphereCollisionManager()
         {
             gravityEnabled = true;
             gravityForce = new Vector3(0, -1.5f, 0);
             slideFactor = 1.3f;
         }
 
-        public CollisionManager(List<Colisionable> obstaculos)
+        public SphereCollisionManager(List<IColisionable> obstaculos)
             : this()
         {
             this.obstaculos = obstaculos;
@@ -93,7 +91,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// <summary>
         /// Detección de colisiones, filtrando los obstaculos que se encuentran dentro del radio de movimiento
         /// </summary>
-        private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<Colisionable> obstaculos, ColisionInfo colisionInfo)
+        private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionable> obstaculos, ColisionInfo colisionInfo)
         {
 
             if (movementVector.LengthSq() < EPSILON)
@@ -101,7 +99,7 @@ namespace AlumnoEjemplos.Socketes.Collision
                 return;
             }
 
-            List<Colisionable> objetosCandidatos = new List<Colisionable>();
+            List<IColisionable> objetosCandidatos = new List<IColisionable>();
             Vector3 lastCenterSafePosition = characterSphere.Center;
 
             //Dejar solo los obstáculos que están dentro del radio de movimiento de la esfera
@@ -111,7 +109,7 @@ namespace AlumnoEjemplos.Socketes.Collision
                 halfMovementVec.Length() + characterSphere.Radius
                 );
             objetosCandidatos.Clear();
-            foreach (Colisionable obstaculo in obstaculos)
+            foreach (IColisionable obstaculo in obstaculos)
             {
                 if (TgcCollisionUtils.testSphereAABB(testSphere, obstaculo.getTgcBoundingBox()))
                 {
@@ -123,7 +121,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             doCollideWithWorld(characterSphere, movementVector, objetosCandidatos, 0, colisionInfo);
 
             //Manejo de error. No deberiamos colisionar con nadie si todo salio bien
-            foreach (Colisionable obstaculo in objetosCandidatos)
+            foreach (IColisionable obstaculo in objetosCandidatos)
             {
                 if (TgcCollisionUtils.testSphereAABB(characterSphere, obstaculo.getTgcBoundingBox()))
                 {
@@ -137,7 +135,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// <summary>
         /// Detección de colisiones recursiva
         /// </summary>
-        public void doCollideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<Colisionable> obstaculos, int recursionDepth, ColisionInfo colisionInfo)
+        public void doCollideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionable> obstaculos, int recursionDepth, ColisionInfo colisionInfo)
         {
             //Limitar recursividad
             if (recursionDepth > 5)
@@ -160,9 +158,9 @@ namespace AlumnoEjemplos.Socketes.Collision
             float minCollisionDistSq = float.MaxValue;
             Vector3 realMovementVector = movementVector;
             TgcBoundingBox.Face collisionFace = null;
-            Colisionable collisionObstacle = null;
+            IColisionable collisionObstacle = null;
             Vector3 nearestPolygonIntersectionPoint = Vector3.Empty;
-            foreach (Colisionable obstaculoBB in obstaculos)
+            foreach (IColisionable obstaculoBB in obstaculos)
             {
                 //Obtener los polígonos que conforman las 6 caras del BoundingBox
                 TgcBoundingBox.Face[] bbFaces = obstaculoBB.getTgcBoundingBox().computeFaces();

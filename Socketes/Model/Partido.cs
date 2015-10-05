@@ -1,25 +1,22 @@
-﻿using System;
+﻿using AlumnoEjemplos.Socketes.Collision;
 using System.Collections.Generic;
-using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSkeletalAnimation;
 using TgcViewer.Utils.TgcSceneLoader;
-using AlumnoEjemplos.Socketes.Collision;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Partido : IRenderObject
+    public class Partido
     {
         #region Miembros
-
+        private bool mostrarBounding;
         private Marcador marcador;
         private Cancha cancha;
         private Pelota pelota;
         private Arco arcoLocal;
         private Arco arcoVisitante;
         private Jugador jugadorHumano;
-        private List<Jugador> jugadoresCPUAliados = new List<Jugador>();
-        private List<Jugador> jugadoresCPURivales = new List<Jugador>();
+        private Jugador jugadorIAAliado;
+        private List<Jugador> jugadoresIARivales = new List<Jugador>();
 
         #endregion
 
@@ -55,43 +52,16 @@ namespace AlumnoEjemplos.Socketes.Model
             set { jugadorHumano = value; }
         }
 
-        public List<Jugador> JugadoresCPUAliados
+        public Jugador JugadorIAAliado
         {
-            get { return jugadoresCPUAliados; }
-            set { jugadoresCPUAliados = value; }
+            get { return jugadorIAAliado; }
+            set { jugadorIAAliado = value; }
         }
 
-        public List<Jugador> JugadoresCPURivales
+        public List<Jugador> JugadoresIARivales
         {
-            get { return jugadoresCPURivales; }
-            set { jugadoresCPURivales = value; }
-        }
-
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                return this.cancha.AlphaBlendEnable;
-            }
-
-            set
-            {
-                this.cancha.AlphaBlendEnable = value;
-                this.pelota.AlphaBlendEnable = value;
-                this.arcoLocal.AlphaBlendEnable = value;
-                this.arcoVisitante.AlphaBlendEnable = value;
-                this.jugadorHumano.AlphaBlendEnable = value;
-
-                foreach (Jugador jugador in this.jugadoresCPUAliados)
-                {
-                    jugador.AlphaBlendEnable = value;
-                }
-
-                foreach (Jugador jugador in this.JugadoresCPURivales)
-                {
-                    jugador.AlphaBlendEnable = value;
-                }
-            }
+            get { return jugadoresIARivales; }
+            set { jugadoresIARivales = value; }
         }
 
         public Marcador Marcador
@@ -100,10 +70,28 @@ namespace AlumnoEjemplos.Socketes.Model
             set { marcador = value; }
         }
 
-        public Jugador getJugadoresCPUAliado()
+        public bool MostrarBounding
         {
-            //RENE: medio feo, retornar el unico elemento de la lista de jugadores. Cuando haya mas se va a romper, plaa!
-            return jugadoresCPUAliados[0];
+            get
+            {
+                return mostrarBounding;
+            }
+
+            set
+            {
+                mostrarBounding = value;
+                this.cancha.MostrarBounding = value;
+                this.pelota.MostrarBounding = value;
+                this.arcoLocal.MostrarBounding = value;
+                this.arcoVisitante.MostrarBounding = value;
+                this.jugadorHumano.MostrarBounding = value;
+                this.jugadorIAAliado.MostrarBounding = value;
+
+                foreach (Jugador jugador in this.jugadoresIARivales)
+                {
+                    jugador.MostrarBounding = value;
+                }
+            }
         }
 
         #endregion
@@ -115,68 +103,43 @@ namespace AlumnoEjemplos.Socketes.Model
         /// Escribir aquí todo el código referido al renderizado.
         /// Borrar todo lo que no haga falta
         /// </summary>
-        public void render()
+        public void render(float elapsedTime)
         {
+            this.pelota.updateValues(elapsedTime);
+
             this.marcador.render();
             this.cancha.render();
             this.pelota.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
-            this.jugadorHumano.animateAndRender();
+            this.jugadorHumano.animateAndRender(elapsedTime);
+            this.jugadorIAAliado.animateAndRender(elapsedTime);
 
-            foreach (Jugador jugador in this.jugadoresCPUAliados)
+            foreach (Jugador jugador in this.jugadoresIARivales)
             {
-                jugador.animateAndRender();
-            }
-
-            foreach (Jugador jugador in this.jugadoresCPURivales)
-            {
-                jugador.animateAndRender();
+                jugador.animateAndRender(elapsedTime);
             }
         }
 
-       internal List<Colisionable> ObstaculosPelota()
+        internal List<IColisionable> ObstaculosPelota()
 
         {
-            List<Colisionable> obstaculos = new List<Colisionable>();
+            List<IColisionable> obstaculos = new List<IColisionable>();
 
-            //RENE ver con rene, hay que transformar tribunas en objetos colisionables
-            /*
-            foreach (TgcBox obstaculo in this.tribunas)
-            {
-                obstaculos.Add(obstaculo);
-            }
-            */
             obstaculos.Add(this.cancha);
             obstaculos.Add(this.arcoLocal);
             obstaculos.Add(this.arcoVisitante);
 
-            obstaculos.Add(jugadorHumano);
+            obstaculos.Add(this.jugadorHumano);
+            obstaculos.Add(this.jugadorIAAliado);
 
             //RENE ver con rene, hay que transformar los limites en objetos colisionables
             //obstaculos.AddRange(this.cancha.BoundingBoxes);
 
-
-            foreach (Jugador jugador in this.jugadoresCPUAliados)
+            foreach (Jugador jugador in this.jugadoresIARivales)
             {
                 obstaculos.Add(jugador);
             }
-
-            foreach (Jugador jugador in this.jugadoresCPURivales)
-            {
-                obstaculos.Add(jugador);
-            }
-            return obstaculos;
-        }
-
-        public List<TgcBoundingBox> ObstaculosJugadorHumano()
-        {
-            List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
-
-            obstaculos.AddRange(this.cancha.BoundingBoxes);
-            obstaculos.Add(this.cancha.BoundingBoxCesped);
-            obstaculos.Add(this.arcoLocal.BoundingBox);
-            obstaculos.Add(this.arcoVisitante.BoundingBox);
 
             return obstaculos;
         }
@@ -193,13 +156,9 @@ namespace AlumnoEjemplos.Socketes.Model
             this.arcoLocal.dispose();
             this.arcoVisitante.dispose();
             this.jugadorHumano.dispose();
+            this.jugadorIAAliado.dispose();
 
-            foreach (Jugador jugador in this.jugadoresCPUAliados)
-            {
-                jugador.dispose();
-            }
-
-            foreach (Jugador jugador in this.jugadoresCPURivales)
+            foreach (Jugador jugador in this.jugadoresIARivales)
             {
                 jugador.dispose();
             }

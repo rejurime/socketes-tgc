@@ -98,11 +98,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Socketes\Collision\BoxCollisionManager.cs" />
     <Compile Include="Socketes\Collision\ColisionInfo.cs" />
-    <Compile Include="Socketes\Collision\CollisionManager.cs" />
-    <Compile Include="Socketes\Collision\Colisionable.cs" />
+    <Compile Include="Socketes\Collision\SphereCollisionManager.cs" />
+    <Compile Include="Socketes\Collision\IColisionable.cs" />
     <Compile Include="Socketes\Menu\MenuItem.cs" />
     <Compile Include="Socketes\Menu\Menu.cs" />
+    <Compile Include="Socketes\Model\JugadorStrategy\IJugadorMoveStrategy.cs" />
+    <Compile Include="Socketes\Model\JugadorStrategy\JugadorIAStrategy.cs" />
+    <Compile Include="Socketes\Model\JugadorStrategy\JugadorManualStrategy.cs" />
+    <Compile Include="Socketes\Model\LimiteCancha.cs" />
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\TestCamara.cs" />
     <Compile Include="Socketes\EjemploAlumno.cs" />
@@ -155,6 +160,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,14 +1,11 @@
 ﻿using Microsoft.DirectX;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AlumnoEjemplos.Socketes.Collision
 {
     public class ColisionInfo
     {
-        private List<Colisionable> collisiones = new List<Colisionable>();
+        private List<IColisionable> collisiones = new List<IColisionable>();
         private Vector3 realMovementVector = Vector3.Empty;
 
         public ColisionInfo()
@@ -16,22 +13,22 @@ namespace AlumnoEjemplos.Socketes.Collision
 
         }
 
-        internal void Add(Colisionable colision)
+        public void Add(IColisionable colision)
         {
             collisiones.Add(colision);
         }
 
-        internal void addMovimientoRelativo(Vector3 realMovementVector)
+        public void addMovimientoRelativo(Vector3 realMovementVector)
         {
             this.realMovementVector = realMovementVector;
         }
 
-        internal Vector3 getRealMovement()
+        public Vector3 getRealMovement()
         {
             return realMovementVector;
         }
 
-        internal List<Colisionable> getColisiones()
+        public List<IColisionable> getColisiones()
         {
             return collisiones;
         }

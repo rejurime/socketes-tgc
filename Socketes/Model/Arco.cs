@@ -5,11 +5,10 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Arco : IRenderObject, Colisionable
+    public class Arco : IRenderObject, IColisionable
     {
-        public TgcMesh mesh;
-
-        public bool mostrarBounding = true;
+        private TgcMesh mesh;
+        private bool mostrarBounding;
 
         public TgcBoundingBox BoundingBox
         {
@@ -29,6 +28,12 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
+        public bool MostrarBounding
+        {
+            get { return mostrarBounding; }
+            set { mostrarBounding = value; }
+        }
+
         private Arco() { }
 
         public Arco(TgcMesh arco)
@@ -40,7 +45,7 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             this.mesh.render();
 
-            if (mostrarBounding)
+            if (this.mostrarBounding)
             {
                 this.mesh.BoundingBox.render();
             }

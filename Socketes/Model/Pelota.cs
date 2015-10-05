@@ -1,39 +1,31 @@
-﻿using AlumnoEjemplos.Socketes.Fisica;
+﻿using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
-using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSceneLoader;
-using TgcViewer;
-using AlumnoEjemplos.Socketes.Collision;
-using TgcViewer.Utils.Sound;
 using System.Reflection;
-using AlumnoEjemplos.Properties;
+using TgcViewer.Utils.Sound;
+using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes
 {
-    public class Pelota : IRenderObject
+    public class Pelota
     {
         TgcSphere sphere;
-
         private float angulo = 0f;
-
         bool mostrarBounding = true;
-
         private Tiro tiro;
-
-        public CollisionManager collisionManager;
+        public SphereCollisionManager collisionManager;
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
         private bool piso = false;
         private float ROTACION_DEFAULT = 60;
-
         private float VELOCIDAD_DE_ROTACION_DEFAULT = 2;
 
         //sonido para patear
         private TgcMp3Player sonidoPatear;
-
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -50,19 +42,6 @@ namespace AlumnoEjemplos.Socketes
         {
             get { return mostrarBounding; }
             set { mostrarBounding = value; }
-        }
-
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public Pelota(TgcSphere sphere)
@@ -82,7 +61,7 @@ namespace AlumnoEjemplos.Socketes
         {
             sphere.render();
 
-            if (mostrarBounding)
+            if (this.mostrarBounding)
             {
                 sphere.BoundingSphere.render();
             }
@@ -101,13 +80,10 @@ namespace AlumnoEjemplos.Socketes
                 mover(new Vector3(0, 0, 0), elapsedTime);
             }
             sphere.updateValues();
-
         }
-
 
         /// <summary>
         /// Metodo para patear una pelota, recibe el vector de direccion y la fuerza.
-        ///
         /// </summary>
         /// <param name="direccion"></param>
         /// <param name="fuerza"></param>
@@ -115,7 +91,6 @@ namespace AlumnoEjemplos.Socketes
         {
             tiro = new TiroParabolicoSimple(direccion, fuerza);
             reproducirSonidoPatear();
-
         }
 
         private void reproducirSonidoPatear()
@@ -135,9 +110,7 @@ namespace AlumnoEjemplos.Socketes
                 sonidoPatear.closeFile();
                 sonidoPatear.play(false);
             }
-
         }
-
 
         /// <summary>
         /// Mueve la pelota hacia el punto indicado, 
@@ -171,7 +144,7 @@ namespace AlumnoEjemplos.Socketes
                     getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) *
                     Matrix.Translation(sphere.Position);
 
-                foreach (Colisionable objetoColisionado in colisionInfo.getColisiones())
+                foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
                 {
                     //aviso a todos los objetos con los cuales colisione que lo hice, asi cambian sus estado
                     objetoColisionado.colisionasteConPelota(this);
@@ -181,11 +154,8 @@ namespace AlumnoEjemplos.Socketes
                         tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
                             objetoColisionado.getFactorDeRebote() * tiro.getFuerza());
                     }
-
                 }
             }
-
-
         }
 
         private bool hayTiro()
@@ -225,7 +195,6 @@ namespace AlumnoEjemplos.Socketes
 
         /// <summary>
         /// Retorna el vector de rotacion en base a la direccion de movimiento
-        /// 
         /// </summary>
         /// <param name="movimiento"></param>
         /// <returns></returns>
@@ -259,38 +228,28 @@ namespace AlumnoEjemplos.Socketes
             return vectorrotacion;
         }
 
-        internal void dispose()
+        public void dispose()
         {
             sphere.dispose();
         }
 
-
         /// <summary>
-        /// 
         /// Tira la pelota hacia un punto al raz del piso
-        /// 
         /// </summary>
         /// <param name="posicionJugador"></param>
         /// <param name="fuerza"></param>
-        internal void pasar(Vector3 posicionJugador, float fuerza)
+        public void pasar(Vector3 posicionJugador, float fuerza)
         {
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
 
-
-        void IRenderObject.dispose()
-        {
-            sphere.dispose();
-        }
-
-        internal void estasEnElPiso()
+        public void estasEnElPiso()
         {
             piso = true;
             collisionManager.GravityEnabled = false;
-
         }
 
-        internal void mover(Vector3 movement, float elapsedTime)
+        public void mover(Vector3 movement, float elapsedTime)
         {
             mover(movement, elapsedTime, VELOCIDAD_DE_ROTACION_DEFAULT);
         }

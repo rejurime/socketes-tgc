@@ -19,7 +19,7 @@ namespace AlumnoEjemplos.Socketes
     public class TestPelota : TgcExample
     {
         private Partido partido;
-        private CollisionManager collisionManager;
+        private SphereCollisionManager collisionManager;
 
         /// <summary>
         /// Categoría a la que pertenece el ejemplo.
@@ -50,11 +50,11 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos);
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
 
             //VER CON RENE, ahora la pelota maneja las colisiones, y debe conocer otdos los obstaculos, pero en la creaicon depende de caundo se crean las cosas
             //Crear manejador de colisiones
-            collisionManager = new CollisionManager(this.partido.ObstaculosPelota());
+            collisionManager = new SphereCollisionManager(this.partido.ObstaculosPelota());
             collisionManager.GravityEnabled = true;
             this.partido.Pelota.collisionManager = collisionManager;
             //Configurar camara en Tercer Persona
@@ -91,24 +91,21 @@ namespace AlumnoEjemplos.Socketes
             if (input.keyDown(Key.Z))
             {
                 this.partido.Pelota.patear(movement, 5);
-            } else if (input.keyDown(Key.X))
+            }
+            else if (input.keyDown(Key.X))
             {
-                this.partido.Pelota.pasar(partido.getJugadoresCPUAliado().Position, 2);
+                this.partido.Pelota.pasar(partido.JugadorIAAliado.Position, 2);
             }
             else
             {
                 this.partido.Pelota.mover(movement, elapsedTime);
-
-
-
             }
 
-            this.partido.Pelota.updateValues(elapsedTime);
             //Hacer que la camara siga al personaje en su nueva posicion
             GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
 
             //Render de todos los elementos del partido
-            this.partido.render();
+            this.partido.render(elapsedTime);
         }
 
         public override void close()

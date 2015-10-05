@@ -1,11 +1,13 @@
 ﻿using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using TgcViewer.Utils._2D;
+using TgcViewer.Utils.Input;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
@@ -46,7 +48,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         /// <param name="alumnoEjemplosMediaDir"> Carpeta donde estan los recursos </param>
         /// <returns> Un partido listo para comenzar a jugar :)</returns>
-        public Partido CrearPartido(string pathRecursos)
+        public Partido CrearPartido(string pathRecursos, TgcD3dInput input)
         {
             Partido partido = new Partido();
 
@@ -55,14 +57,59 @@ namespace AlumnoEjemplos.Socketes.Model
             partido.ArcoLocal = this.CrearArco(new Vector3(940, 0, 25), pathRecursos);
             partido.ArcoVisitante = this.CrearArco(new Vector3(-780, 0, 25), pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
-            partido.JugadorHumano = this.CrearJugadorHumano(pathRecursos);
-            partido.JugadoresCPUAliados = this.CrearJugadoresAliados(pathRecursos);
-            partido.JugadoresCPURivales = this.CrearJugadoresRivales(pathRecursos);
+            partido.JugadorHumano = this.CrearJugadorHumano(pathRecursos, partido.Pelota, input);
+            partido.JugadorIAAliado = this.CrearJugadorAliado(pathRecursos, partido.Pelota);
+
+            //Le agrego el aliado que corresponde a cada uno
+            partido.JugadorHumano.Companero = partido.JugadorIAAliado;
+            partido.JugadorIAAliado.Companero = partido.JugadorHumano;
+            partido.JugadoresIARivales = this.CrearJugadoresRivales(pathRecursos, partido.Pelota);
 
             //Crear manejador de colisiones
-            //TODOOOOOOOOO que onda con el collisionManager MATI BALA... :)
-            partido.Pelota.collisionManager = new CollisionManager(partido.ObstaculosPelota());
+            partido.Pelota.collisionManager = new SphereCollisionManager(partido.ObstaculosPelota());
             partido.Pelota.collisionManager.GravityEnabled = true;
+
+            //Le paso los obstaculos a cada jugador
+            //TODO hay que mejorar este codigo para la proxima entrega
+            BoxCollisionManager collisionManager1 = new BoxCollisionManager();
+            collisionManager1.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
+            collisionManager1.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
+            collisionManager1.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
+            collisionManager1.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
+            collisionManager1.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager1.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
+            collisionManager1.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            partido.JugadorHumano.CollisionManager = collisionManager1;
+
+            BoxCollisionManager collisionManager2 = new BoxCollisionManager();
+            collisionManager2.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
+            collisionManager2.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
+            collisionManager2.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
+            collisionManager2.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
+            collisionManager2.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager2.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
+            collisionManager2.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            partido.JugadorIAAliado.CollisionManager = collisionManager2;
+
+            BoxCollisionManager collisionManager3 = new BoxCollisionManager();
+            collisionManager3.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
+            collisionManager3.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
+            collisionManager3.Obstaculos.Add(partido.JugadoresIARivales[1].BoundingBox);
+            collisionManager3.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
+            collisionManager3.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager3.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
+            collisionManager3.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            partido.JugadoresIARivales[0].CollisionManager = collisionManager3;
+
+            BoxCollisionManager collisionManager4 = new BoxCollisionManager();
+            collisionManager4.Obstaculos.Add(partido.JugadorHumano.BoundingBox);
+            collisionManager4.Obstaculos.Add(partido.JugadorIAAliado.BoundingBox);
+            collisionManager4.Obstaculos.Add(partido.JugadoresIARivales[0].BoundingBox);
+            collisionManager4.Obstaculos.AddRange(partido.Cancha.BoundingBoxes);
+            collisionManager4.Obstaculos.Add(partido.Cancha.BoundingBoxCesped);
+            collisionManager4.Obstaculos.Add(partido.ArcoLocal.BoundingBox);
+            collisionManager4.Obstaculos.Add(partido.ArcoVisitante.BoundingBox);
+            partido.JugadoresIARivales[1].CollisionManager = collisionManager4;
 
             return partido;
         }
@@ -136,13 +183,13 @@ namespace AlumnoEjemplos.Socketes.Model
         /// Creo los limites de la cancha
         /// </summary>
         /// <returns> Lista con los limites de la cancha</returns>
-        private List<TgcBox> CrearLimitesCancha()
+        private List<LimiteCancha> CrearLimitesCancha()
         {
-            List<TgcBox> limites = new List<TgcBox>();
-            limites.Add(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200)));
-            limites.Add(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200)));
-            limites.Add(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0)));
-            limites.Add(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0)));
+            List<LimiteCancha> limites = new List<LimiteCancha>();
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0))));
 
             return limites;
         }
@@ -175,6 +222,7 @@ namespace AlumnoEjemplos.Socketes.Model
             TgcMesh arco = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
             arco.Position = posicion;
             arco.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+
             return new Arco(arco);
         }
 
@@ -182,38 +230,44 @@ namespace AlumnoEjemplos.Socketes.Model
         /// Crea el jugador que hay que manejar manualmente
         /// </summary>
         /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// /// /// <param name="pelota">La pelota del partido</param>
         /// <returns> El jugador controlado manualmente</returns>
-        private Jugador CrearJugadorHumano(string pathRecursos)
+        private Jugador CrearJugadorHumano(string pathRecursos, Pelota pelota, TgcD3dInput input)
         {
-            return this.CrearJugador(new Vector3(50, 0, 0), 125f, pathRecursos, Settings.Default.textureTeam1);
+            return this.CrearJugador(new Vector3(50, 0, 0), 125f, pathRecursos, Settings.Default.textureTeam1, new JugadorManualStrategy(input), pelota);
+        }
+
+        /// /// <summary>
+        /// Crea el compañero del jugador humano
+        /// </summary>
+        /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// /// <param name="pelota">La pelota del partido</param>
+        /// <returns> Una lista de jugadores</returns>
+        private Jugador CrearJugadorAliado(string pathRecursos, Pelota pelota)
+        {
+            return this.CrearJugador(new Vector3(120, 0, 100), 90f, pathRecursos, Settings.Default.textureTeam1, new JugadorIAStrategy(), pelota);
         }
 
         /// <summary>
         /// Crea los oponentes al equipo manejado por el jugador
         /// </summary>
         /// <param name="pathRecursos"> De donde saco el mesh</param>
+        /// /// /// <param name="pelota">La pelota del partido</param>
         /// <returns> Una lista de jugadores</returns>
-        private List<Jugador> CrearJugadoresRivales(string pathRecursos)
-        {
-            float anguloEquipoHumano = 90f;
-            List<Jugador> jugadores = new List<Jugador>();
-
-            jugadores.Add(this.CrearJugador(new Vector3(120, 0, 100), anguloEquipoHumano, pathRecursos, Settings.Default.textureTeam1));
-            return jugadores;
-        }
-
-        /// <summary>
-        /// Crea los compañeros del jugador humano
-        /// </summary>
-        /// <param name="pathRecursos"> De donde saco el mesh</param>
-        /// <returns> Una lista de jugadores</returns>
-        private List<Jugador> CrearJugadoresAliados(string pathRecursos)
+        private List<Jugador> CrearJugadoresRivales(string pathRecursos, Pelota pelota)
         {
             float anguloEquipoCPU = 270f;
             List<Jugador> jugadores = new List<Jugador>();
 
-            jugadores.Add(this.CrearJugador(new Vector3(-130, 0, 160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
-            jugadores.Add(this.CrearJugador(new Vector3(-155, 0, -160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2));
+            Jugador jugador1 = this.CrearJugador(new Vector3(-130, 0, 160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2, new JugadorIAStrategy(), pelota);
+            Jugador jugador2 = this.CrearJugador(new Vector3(-155, 0, -160), anguloEquipoCPU, pathRecursos, Settings.Default.textureTeam2, new JugadorIAStrategy(), pelota);
+
+            jugador1.Companero = jugador2;
+            jugador2.Companero = jugador1;
+
+            jugadores.Add(jugador1);
+            jugadores.Add(jugador2);
+
             return jugadores;
         }
 
@@ -225,7 +279,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <param name="pathRecursos"></param>
         /// <param name="nombreTextura">Que textura va a tener</param>
         /// <returns></returns>
-        private Jugador CrearJugador(Vector3 posicion, float angulo, string pathRecursos, string nombreTextura)
+        private Jugador CrearJugador(Vector3 posicion, float angulo, string pathRecursos, string nombreTextura, IJugadorMoveStrategy strategy, Pelota pelota)
         {
             //Cargar personaje con animaciones
             TgcSkeletalMesh personaje = new TgcSkeletalLoader().loadMeshAndAnimationsFromFile(
@@ -251,7 +305,7 @@ namespace AlumnoEjemplos.Socketes.Model
             personaje.Scale = new Vector3(0.75f, 0.75f, 0.75f);
             personaje.rotateY(Geometry.DegreeToRadian(angulo));
 
-            return new Jugador(personaje);
+            return new Jugador(personaje, strategy, pelota);
         }
 
         #endregion

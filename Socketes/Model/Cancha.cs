@@ -1,21 +1,19 @@
 using AlumnoEjemplos.Socketes.Collision;
 using Microsoft.DirectX;
-using System;
 using System.Collections.Generic;
-using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-
-    public class Cancha : IRenderObject, Colisionable
+    public class Cancha : IRenderObject, IColisionable
     {
         TgcBox box;
         List<IRenderObject> tribunas;
-        List<TgcBox> limitesCancha;
+        List<LimiteCancha> limitesCancha;
+        private bool mostrarBounding;
 
-        public Cancha(TgcBox box, List<IRenderObject> componentes, List<TgcBox> limitesCancha)
+        public Cancha(TgcBox box, List<IRenderObject> componentes, List<LimiteCancha> limitesCancha)
         {
             this.box = box;
             this.tribunas = componentes;
@@ -25,25 +23,26 @@ namespace AlumnoEjemplos.Socketes.Model
         public void render()
         {
             box.render();
-            //box.BoundingBox.render();
+
+            if (this.mostrarBounding)
+            {
+                box.BoundingBox.render();
+            }
 
             foreach (IRenderObject componente in this.tribunas)
             {
                 componente.render();
             }
 
-            foreach (TgcBox limite in this.limitesCancha)
+            foreach (LimiteCancha limite in this.limitesCancha)
             {
-                limite.BoundingBox.render();
+                limite.render();
             }
         }
 
         public TgcBoundingBox BoundingBoxCesped
         {
-            get
-            {
-                return this.box.BoundingBox;
-            }
+            get { return this.box.BoundingBox; }
         }
 
         public bool AlphaBlendEnable
@@ -71,11 +70,25 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 List<TgcBoundingBox> obstaculos = new List<TgcBoundingBox>();
 
-                foreach (TgcBox box in this.limitesCancha)
+                foreach (LimiteCancha limite in this.limitesCancha)
                 {
-                    obstaculos.Add(box.BoundingBox);
+                    obstaculos.Add(limite.BoundingBox);
                 }
                 return obstaculos;
+            }
+        }
+
+        public bool MostrarBounding
+        {
+            get { return mostrarBounding; }
+            set
+            {
+                mostrarBounding = value;
+
+                foreach (LimiteCancha limite in this.limitesCancha)
+                {
+                    limite.MostrarBounding = value;
+                }
             }
         }
 
@@ -88,7 +101,7 @@ namespace AlumnoEjemplos.Socketes.Model
                 componente.dispose();
             }
 
-            foreach (TgcBox limite in this.limitesCancha)
+            foreach (LimiteCancha limite in this.limitesCancha)
             {
                 limite.dispose();
             }
@@ -104,8 +117,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             movimiento.Y *= -1;
             return movimiento;
-
-
         }
 
         public float getFactorDeRebote()
@@ -115,7 +126,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public TgcBoundingBox getTgcBoundingBox()
         {
-            return this.box.BoundingBox;
+            return this.BoundingBoxCesped;
         }
     }
 }

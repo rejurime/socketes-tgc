@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.DirectX;
-using TgcViewer.Utils._2D;
+﻿using Microsoft.DirectX;
+using System;
 using TgcViewer.Utils.TgcGeometry;
-using System.Drawing;
 using TgcViewer.Utils.TgcSceneLoader;
-using Microsoft.DirectX.Direct3D;
-using TgcViewer.Utils.Shaders;
-using TgcViewer;
-using AlumnoEjemplos.Properties;
-using System.Reflection;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -70,7 +60,6 @@ namespace AlumnoEjemplos.Socketes.Model
             this.select = false;
             this.opcionSelect.Enabled = false;
             this.opcion.Enabled = true;
-
         }
 
         public bool isSelect()

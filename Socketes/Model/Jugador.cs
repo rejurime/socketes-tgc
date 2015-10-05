@@ -1,30 +1,45 @@
-﻿using Microsoft.DirectX;
+﻿using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
-using AlumnoEjemplos.Socketes.Collision;
-using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-
-    public class Jugador : IRenderObject, Colisionable
+    public class Jugador : IRenderObject, IColisionable
     {
+        #region Miembros
+
         private TgcSkeletalMesh skeletalMesh;
         private float velocidadCaminar = 200f;
         private float velocidadCorrer = 500f;
+        private IJugadorMoveStrategy strategy;
+        private Pelota pelota;
+        private Jugador companero;
+        private BoxCollisionManager collisionManager;
+        private string animacionCorriendo = Settings.Default.animationRunPlayer;
+        private string animacionCaminando = Settings.Default.animationWalkPlayer;
+        private string animacionParado = Settings.Default.animationStopPlayer;
+        private bool mostrarBounding;
+
+        #endregion
+
+        #region Constructores
 
         private Jugador() { }
 
-        public Jugador(TgcSkeletalMesh skeletalMesh)
+        public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota)
         {
             this.skeletalMesh = skeletalMesh;
+            this.strategy = strategy;
+            this.pelota = pelota;
         }
 
-        public TgcSkeletalMesh SkeletalMesh
-        {
-            get { return skeletalMesh; }
-        }
+        #endregion
+
+        #region Propiedades
 
         public Vector3 Position
         {
@@ -32,16 +47,22 @@ namespace AlumnoEjemplos.Socketes.Model
             set { this.skeletalMesh.Position = value; }
         }
 
-        public TgcBoundingBox BoundingBox
+        public bool AlphaBlendEnable
         {
-            get { return this.skeletalMesh.BoundingBox; }
-            set { this.skeletalMesh.BoundingBox = value; }
+            get { return this.skeletalMesh.AlphaBlendEnable; }
+            set { this.skeletalMesh.AlphaBlendEnable = value; }
         }
 
         public Vector3 Rotation
         {
-            get { return this.SkeletalMesh.Rotation; }
-            set { this.SkeletalMesh.Rotation = value; }
+            get { return this.skeletalMesh.Rotation; }
+            set { this.skeletalMesh.Rotation = value; }
+        }
+
+        public Jugador Companero
+        {
+            get { return companero; }
+            set { companero = value; }
         }
 
         public float VelocidadCaminar
@@ -56,18 +77,50 @@ namespace AlumnoEjemplos.Socketes.Model
             set { velocidadCorrer = value; }
         }
 
-        public bool AlphaBlendEnable
+        public string AnimacionCorriendo
         {
-            get
-            {
-                return this.skeletalMesh.AlphaBlendEnable;
-            }
-
-            set
-            {
-                this.skeletalMesh.AlphaBlendEnable = value;
-            }
+            get { return animacionCorriendo; }
+            set { animacionCorriendo = value; }
         }
+
+        public string AnimacionCaminando
+        {
+            get { return animacionCaminando; }
+            set { animacionCaminando = value; }
+        }
+
+        public string AnimacionParado
+        {
+            get { return animacionParado; }
+            set { animacionParado = value; }
+        }
+
+        public TgcBoundingBox BoundingBox
+        {
+            get { return this.skeletalMesh.BoundingBox; }
+        }
+
+        public BoxCollisionManager CollisionManager
+        {
+            get { return this.collisionManager; }
+            set { this.collisionManager = value; }
+        }
+
+        public Pelota Pelota
+        {
+            get { return pelota; }
+            set { pelota = value; }
+        }
+
+        public bool MostrarBounding
+        {
+            get { return mostrarBounding; }
+            set { mostrarBounding = value; }
+        }
+
+        #endregion
+
+        #region Metodos
 
         public void playAnimation(string animacion, bool v)
         {
@@ -79,14 +132,25 @@ namespace AlumnoEjemplos.Socketes.Model
             this.skeletalMesh.move(movimiento);
         }
 
-        public void animateAndRender()
+        public void animateAndRender(float elapsedTime)
         {
+            this.strategy.Move(this, elapsedTime);
             this.skeletalMesh.animateAndRender();
+
+            if (this.mostrarBounding)
+            {
+                this.skeletalMesh.BoundingBox.render();
+            }
         }
 
         public void render()
         {
             this.skeletalMesh.render();
+
+            if (this.mostrarBounding)
+            {
+                this.skeletalMesh.BoundingBox.render();
+            }
         }
 
         public void dispose()
@@ -121,7 +185,9 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public TgcBoundingBox getTgcBoundingBox()
         {
-            return this.skeletalMesh.BoundingBox; 
+            return this.BoundingBox;
         }
+
+        #endregion
     }
 }
