@@ -97,7 +97,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvw.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvw.png")]
         public string textureTeam1 {
             get {
                 return ((string)(this["textureTeam1"]));
@@ -109,7 +109,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvwGreen.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvwGreen.png")]
         public string textureTeam2 {
             get {
                 return ((string)(this["textureTeam2"]));

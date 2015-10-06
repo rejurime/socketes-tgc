@@ -22,6 +22,8 @@ namespace AlumnoEjemplos.Socketes
         private TgcSphere pelota;
         private TgcBox cancha;
         private List<MenuItem> menus;
+        private float tiempoDeAnimacion = 0.1f;
+        private float tiempoTranscurridoDeAnimacion = 0;
 
         public bool Enable
         {
@@ -56,9 +58,10 @@ namespace AlumnoEjemplos.Socketes
 
             //Menu
             this.menus = new List<MenuItem>();
-            this.menus.Add(new MenuItem(new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.picadito1, pathRecursos + Settings.Default.picadito2));
-            this.menus.Add(new MenuItem(new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.opciones1, pathRecursos + Settings.Default.opciones2));
-            this.menus.Add(new MenuItem(new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.salir1, pathRecursos + Settings.Default.salir2));
+            this.menus.Add(new MenuItem("picadito", new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.picadito1, pathRecursos + Settings.Default.picadito2));
+            this.menus.Add(new MenuItem("configuracion", new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.opciones1, pathRecursos + Settings.Default.opciones2));
+            this.menus.Add(new MenuItem("salir", new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.salir1, pathRecursos + Settings.Default.salir2));
+
             this.menus[0].Select();
 
             //Pongo la camara en posicion
@@ -76,55 +79,84 @@ namespace AlumnoEjemplos.Socketes
         {
             TgcD3dInput d3dInput = GuiController.Instance.D3dInput;
 
-            //Adelante
-            if (d3dInput.keyDown(Key.UpArrow))
+            //TODO hay que mejorar esto porque no anda bien pero por lo menos ahora es usable, el problema de la dependencia de frames.
+            //Tiene que haber alguna forma mejor y sino por lo menos hay que mejorarlo capturando el Keyup no solo press
+            if (this.tiempoTranscurridoDeAnimacion >= this.tiempoDeAnimacion)
             {
-                for (int i = 0; i < this.menus.Count; i++)
-                {
-                    if (this.menus[i].isSelect())
-                    {
-                        this.menus[i].Unselect();
+                this.tiempoTranscurridoDeAnimacion = 0;
 
-                        if (i == 0)
+                //Adelante
+                if (d3dInput.keyDown(Key.UpArrow))
+                {
+                    for (int i = 0; i < this.menus.Count; i++)
+                    {
+                        if (this.menus[i].isSelect())
                         {
-                            this.menus[this.menus.Count - 1].Select();
+                            this.menus[i].Unselect();
+
+                            if (i == 0)
+                            {
+                                this.menus[this.menus.Count - 1].Select();
+                            }
+                            else
+                            {
+                                this.menus[i - 1].Select();
+                            }
+                            break;
                         }
-                        else
+                    }
+                }
+
+                //Atras
+                if (d3dInput.keyDown(Key.DownArrow))
+                {
+                    for (int i = 0; i < this.menus.Count; i++)
+                    {
+                        if (this.menus[i].isSelect())
                         {
-                            this.menus[i - 1].Select();
+                            this.menus[i].Unselect();
+
+                            if (i == this.menus.Count - 1)
+                            {
+                                this.menus[0].Select();
+                            }
+                            else
+                            {
+                                this.menus[i + 1].Select();
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }
-
-            //Atras
-            if (d3dInput.keyDown(Key.DownArrow))
+            else
             {
-                for (int i = 0; i < this.menus.Count; i++)
-                {
-                    if (this.menus[i].isSelect())
-                    {
-                        this.menus[i].Unselect();
-
-                        if (i == this.menus.Count - 1)
-                        {
-                            this.menus[0].Select();
-                        }
-                        else
-                        {
-                            this.menus[i + 1].Select();
-                        }
-                        break;
-                    }
-                }
+                this.tiempoTranscurridoDeAnimacion += elapsedTime;
             }
 
             //Enter
             if (d3dInput.keyDown(Key.Return))
             {
-                this.close();
-                return;
+                //TODO esto es muy horrible
+                foreach (MenuItem item in this.menus)
+                {
+                    if (item.isSelect())
+                    {
+                        if (item.Nombre.Equals("picadito"))
+                        {
+                            this.close();
+                            return;
+                        }
+                        if (item.Nombre.Equals("conifguracion"))
+                        {
+                            return;
+                        }
+                        if (item.Nombre.Equals("salir"))
+                        {
+                            return;
+                        }
+                    }
+                }
             }
 
             this.titulo.render();

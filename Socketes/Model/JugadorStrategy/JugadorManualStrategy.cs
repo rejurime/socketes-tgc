@@ -9,6 +9,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
     {
         private TgcD3dInput d3dInput;
         private float acumuladoPatear = 0;
+        private float maximoFuerzaPatear = 5;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -111,7 +112,16 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 //Si presiono D, comienzo a acumular cuanto patear
                 if (this.d3dInput.keyDown(Key.D))
                 {
-                    this.acumuladoPatear += elapsedTime;
+                    if (this.acumuladoPatear < this.maximoFuerzaPatear)
+                    {
+                        this.acumuladoPatear += elapsedTime;
+                    }
+                    else
+                    {
+                        jugador.Pelota.patear(movimiento, this.maximoFuerzaPatear);
+                        this.acumuladoPatear = 0;
+
+                    }
                 }
 
                 //Si sueldo D pateo la pelota con la fuerza acumulada
@@ -138,8 +148,6 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 //Aplicar movimiento hacia adelante o atras segun la orientacion actual del Mesh
                 Vector3 lastPos = jugador.Position;
 
-                //La velocidad de movimiento tiene que multiplicarse por el elapsedTime para hacerse independiente de la velocida de CPU
-                //Ver Unidad 2: Ciclo acoplado vs ciclo desacoplado
                 jugador.move(movimiento);
                 jugador.Rotation = direccion;
 

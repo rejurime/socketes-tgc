@@ -21,10 +21,10 @@
       <Value Profile="(Default)">cancha1.jpg</Value>
     </Setting>
     <Setting Name="textureTeam1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Textures\uvw.jpg</Value>
+      <Value Profile="(Default)">Textures\uvw.png</Value>
     </Setting>
     <Setting Name="textureTeam2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Textures\uvwGreen.jpg</Value>
+      <Value Profile="(Default)">Textures\uvwGreen.png</Value>
     </Setting>
     <Setting Name="meshFolderPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">SkeletalAnimations\Robot\</Value>
