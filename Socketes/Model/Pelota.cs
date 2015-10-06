@@ -150,16 +150,17 @@ namespace AlumnoEjemplos.Socketes
                     getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) *
                     Matrix.Translation(sphere.Position);
 
-                foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
-                {
-                    //aviso a todos los objetos con los cuales colisione que lo hice, asi cambian sus estado
-                    objetoColisionado.colisionasteConPelota(this);
+            }
 
-                    if (hayTiro())
-                    {
-                        tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
-                            objetoColisionado.getFactorDeRebote() * tiro.getFuerza());
-                    }
+            foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
+            {
+                //aviso a todos los objetos con los cuales colisione que lo hice, asi cambian sus estado
+                objetoColisionado.colisionasteConPelota(this);
+
+                if (hayTiro())
+                {
+                    tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
+                        objetoColisionado.getFactorDeRebote() * tiro.getFuerza());
                 }
             }
         }
