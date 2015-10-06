@@ -19,6 +19,9 @@ namespace AlumnoEjemplos.Socketes
         private Menu menu;
         private Partido partido;
 
+        //TODO Parche feo para el tiempo
+        private bool tiempo = false;
+
         #endregion
 
         #region Creacion
@@ -29,7 +32,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override string getCategory()
         {
-            return "AlumnoEjemplos";
+            return "Socketes";
         }
 
         /// <summary> Socketes </summary>
@@ -102,6 +105,11 @@ namespace AlumnoEjemplos.Socketes
             }
             else
             {
+                if (!this.tiempo)
+                {
+                    this.tiempo = true;
+                    this.partido.Marcador.IniciarTiempo();
+                }
                 //BoundingBox
                 this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
 

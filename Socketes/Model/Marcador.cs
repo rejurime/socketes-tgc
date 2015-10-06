@@ -4,7 +4,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Marcador : IRenderObject
+    public class Marcador
     {
         private TgcText2d marcador;
         private TgcText2d tiempo;
@@ -14,23 +14,8 @@ namespace AlumnoEjemplos.Socketes.Model
         private int golesEquipo2;
         private TimeSpan tiempoInicial;
 
-        //TODO TGCV me pide esto para que sea IRender...
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public Marcador(TgcText2d marcador, TgcText2d tiempo, string nombreEquipo1, string nombreEquipo2)
         {
-            this.tiempoInicial = DateTime.Now.TimeOfDay;
             this.nombreEquipo1 = nombreEquipo1;
             this.golesEquipo1 = 0;
             this.nombreEquipo2 = nombreEquipo2;
@@ -52,6 +37,11 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             this.marcador.dispose();
             this.tiempo.dispose();
+        }
+
+        public void IniciarTiempo()
+        {
+            this.tiempoInicial = DateTime.Now.TimeOfDay;
         }
 
         public void ActualizarMarcador()

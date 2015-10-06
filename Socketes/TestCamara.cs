@@ -55,7 +55,7 @@ namespace AlumnoEjemplos.Socketes
             //Por default la camara FPS viene desactivada
             GuiController.Instance.FpsCamera.Enable = true;
             //Configurar posicion y hacia donde se mira
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -10), new Vector3(0, 0, 0));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -20), new Vector3(0, 0, 0));
         }
 
         /// <summary>

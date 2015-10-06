@@ -140,29 +140,6 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        internal List<IColisionable> ObstaculosPelota()
-
-        {
-            List<IColisionable> obstaculos = new List<IColisionable>();
-
-            obstaculos.Add(this.cancha);
-            obstaculos.Add(this.arcoLocal);
-            obstaculos.Add(this.arcoVisitante);
-
-            obstaculos.Add(this.jugadorHumano);
-            obstaculos.Add(this.jugadorIAAliado);
-
-            //RENE ver con rene, hay que transformar los limites en objetos colisionables
-            //obstaculos.AddRange(this.cancha.BoundingBoxes);
-
-            foreach (Jugador jugador in this.jugadoresIARivales)
-            {
-                obstaculos.Add(jugador);
-            }
-
-            return obstaculos;
-        }
-
         /// <summary>
         /// Método que se llama cuando termina la ejecución del ejemplo.
         /// Hacer dispose() de todos los objetos creados.

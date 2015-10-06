@@ -65,8 +65,17 @@ namespace AlumnoEjemplos.Socketes.Model
             partido.JugadorIAAliado.Companero = partido.JugadorHumano;
             partido.JugadoresIARivales = this.CrearJugadoresRivales(pathRecursos, partido.Pelota);
 
-            //Crear manejador de colisiones
-            partido.Pelota.CollisionManager = new SphereCollisionManager(partido.ObstaculosPelota());
+            //Creo la pelota con todos sus obstaculos
+            List<IColisionable> obstaculosPelota = new List<IColisionable>();
+            obstaculosPelota.Add(partido.ArcoLocal);
+            obstaculosPelota.Add(partido.ArcoVisitante);
+            obstaculosPelota.Add(partido.JugadorHumano);
+            obstaculosPelota.Add(partido.JugadorIAAliado);
+            obstaculosPelota.AddRange(partido.JugadoresIARivales);
+            obstaculosPelota.Add(partido.Cancha);
+            obstaculosPelota.AddRange(partido.Cancha.LimitesCancha);
+
+            partido.Pelota.CollisionManager = new SphereCollisionManager(obstaculosPelota);
             partido.Pelota.CollisionManager.GravityEnabled = true;
 
             //Le paso los obstaculos a cada jugador
