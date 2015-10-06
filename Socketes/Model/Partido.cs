@@ -99,11 +99,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public bool InteligenciaArtificial
         {
-            get
-            {
-                return inteligenciaArtificial;
-            }
-
+            get { return inteligenciaArtificial; }
             set
             {
                 inteligenciaArtificial = value;

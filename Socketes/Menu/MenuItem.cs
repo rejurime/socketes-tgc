@@ -7,6 +7,7 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class MenuItem : IRenderObject
     {
+        private string nombre;
         private TgcBox opcion;
         private TgcBox opcionSelect;
         private bool select;
@@ -24,13 +25,21 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        public MenuItem(Vector3 vectorOrigen, Vector3 vectorFin, string texturaSelect, string texturaUnselect)
+        public string Nombre
         {
+            get { return nombre; }
+            set { nombre = value; }
+        }
+
+        public MenuItem(string nombre, Vector3 vectorOrigen, Vector3 vectorFin, string texturaSelect, string texturaUnselect)
+        {
+            this.nombre = nombre;
             this.opcion = TgcBox.fromSize(vectorOrigen, vectorFin, TgcTexture.createTexture(texturaUnselect));
             this.opcionSelect = TgcBox.fromSize(new Vector3(vectorOrigen.X + 0.4f, vectorOrigen.Y, vectorOrigen.Z), vectorFin, TgcTexture.createTexture(texturaSelect));
 
             this.select = false;
-            this.opcion.Enabled = false;
+            this.opcion.Enabled = true;
+            this.opcionSelect.Enabled = false;
 
             //this.opcion.Effect = TgcShaders.loadEffect(GuiController.Instance.ExamplesDir + "Shaders\\WorkshopShaders\\Shaders\\BasicShader.fx");
             //this.opcion.Technique = "RenderScene";
