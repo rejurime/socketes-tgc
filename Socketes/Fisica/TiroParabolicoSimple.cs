@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AlumnoEjemplos.Socketes.Fisica;
-using Microsoft.DirectX;
+﻿using Microsoft.DirectX;
 
 namespace AlumnoEjemplos.Socketes.Fisica
 {
@@ -40,7 +35,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         /// <returns></returns>
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
-            
+
             Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X, fuerzaPorEje.Y, direccion.Z * fuerzaPorEje.Z);
 
             //decremento segun el factor la fuerza de cada eje
@@ -51,7 +46,6 @@ namespace AlumnoEjemplos.Socketes.Fisica
 
             return movimiento;
         }
-
 
         /// <summary>
         /// Determinar si sigue existiendo movimiento, 

@@ -1,29 +1,15 @@
 ﻿using Microsoft.DirectX;
-using System;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Menu
 {
-    public class MenuItem : IRenderObject
+    public class MenuItem
     {
         private string nombre;
         private TgcBox opcion;
         private TgcBox opcionSelect;
         private bool select;
-
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         public string Nombre
         {

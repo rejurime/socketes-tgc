@@ -103,7 +103,7 @@
     <Compile Include="Socketes\Collision\SphereCollisionManager.cs" />
     <Compile Include="Socketes\Collision\IColisionable.cs" />
     <Compile Include="Socketes\Menu\MenuItem.cs" />
-    <Compile Include="Socketes\Menu\Menu.cs" />
+    <Compile Include="Socketes\Menu\MenuInicial.cs" />
     <Compile Include="Socketes\Model\JugadorStrategy\IJugadorMoveStrategy.cs" />
     <Compile Include="Socketes\Model\JugadorStrategy\JugadorIAStrategy.cs" />
     <Compile Include="Socketes\Model\JugadorStrategy\JugadorManualStrategy.cs" />

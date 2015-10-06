@@ -1,4 +1,5 @@
-﻿using Microsoft.DirectX;
+﻿using AlumnoEjemplos.Socketes.Model;
+using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Collision

@@ -1,4 +1,5 @@
 using AlumnoEjemplos.Properties;
+using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
 using System;
 using System.Drawing;
@@ -16,7 +17,7 @@ namespace AlumnoEjemplos.Socketes
     {
         #region Atributos
 
-        private Menu menu;
+        private MenuInicial menu;
         private Partido partido;
 
         //TODO Parche feo para el tiempo
@@ -75,7 +76,7 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.ThirdPersonCamera.Enable = true;
 
             //Creo el menu
-            this.menu = new Menu(pathRecursos, GuiController.Instance.ThirdPersonCamera);
+            this.menu = new MenuInicial(pathRecursos, GuiController.Instance.ThirdPersonCamera);
 
             //Creo el partido            
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);

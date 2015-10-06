@@ -194,13 +194,13 @@ namespace AlumnoEjemplos.Socketes.Model
             if (movimiento.X != 0)
             {
                 movimiento.X *= -1;
-            }                
+            }
 
             //si la pelota se mueve en Z, cambio esa direccion
             if (movimiento.Z != 0)
             {
                 movimiento.Z *= -1;
-            }                
+            }
 
             return movimiento;
         }

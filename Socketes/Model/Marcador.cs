@@ -1,6 +1,5 @@
 ﻿using System;
 using TgcViewer.Utils._2D;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {

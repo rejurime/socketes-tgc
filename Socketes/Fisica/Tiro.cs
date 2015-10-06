@@ -1,8 +1,4 @@
 ﻿using Microsoft.DirectX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AlumnoEjemplos.Socketes.Fisica
 {
@@ -14,7 +10,6 @@ namespace AlumnoEjemplos.Socketes.Fisica
 
     public interface Tiro
     {
-
         /// <summary>
         /// Retoran el siguiente movimiento del tiro
         /// </summary>

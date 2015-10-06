@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AlumnoEjemplos.Socketes.Fisica;
-using Microsoft.DirectX;
+﻿using Microsoft.DirectX;
+using System;
 
 namespace AlumnoEjemplos.Socketes.Fisica
 {
@@ -51,7 +47,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         /// <returns></returns>
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
-            Vector3 position = new Vector3(0,0,0);
+            Vector3 position = new Vector3(0, 0, 0);
 
             //acumulo el tiempo
             tiempototal += elapsedTime;
@@ -59,7 +55,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
             position.Y = posicionInicial.Y + (fuerza * (float)Math.Sin(alpha) * tiempototal - ((gravedad * (float)Math.Pow(tiempototal, 2) / 2)));
             position.Z = posicionInicial.Z + (fuerza * (float)Math.Cos(alpha) * (float)Math.Cos(beta) * tiempototal);
             position.X = posicionInicial.X + (fuerza * (float)Math.Cos(alpha) * (float)Math.Sin(beta) * tiempototal);
-            
+
             return position;
         }
 
@@ -67,7 +63,6 @@ namespace AlumnoEjemplos.Socketes.Fisica
         {
             throw new NotImplementedException();
         }
-
 
         public float getFuerza()
         {
