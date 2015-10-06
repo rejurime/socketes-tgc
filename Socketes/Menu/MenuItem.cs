@@ -3,7 +3,7 @@ using System;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
-namespace AlumnoEjemplos.Socketes.Model
+namespace AlumnoEjemplos.Socketes.Menu
 {
     public class MenuItem : IRenderObject
     {

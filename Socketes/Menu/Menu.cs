@@ -10,7 +10,7 @@ using TgcViewer.Utils.Input;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
-namespace AlumnoEjemplos.Socketes
+namespace AlumnoEjemplos.Socketes.Menu
 {
     /// <summary>
     /// Ejemplo del alumno

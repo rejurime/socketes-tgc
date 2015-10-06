@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AlumnoEjemplos.Socketes.Model
+namespace AlumnoEjemplos.Socketes.Fisica
 {
     /// <summary>
     /// Movimiento linea de un punto a otro.

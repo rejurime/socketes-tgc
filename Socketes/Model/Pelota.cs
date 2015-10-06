@@ -9,7 +9,7 @@ using System.Reflection;
 using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.Socketes
+namespace AlumnoEjemplos.Socketes.Model
 {
     public class Pelota
     {

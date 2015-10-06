@@ -5,7 +5,7 @@ using System.Text;
 using AlumnoEjemplos.Socketes.Fisica;
 using Microsoft.DirectX;
 
-namespace AlumnoEjemplos.Socketes.Model
+namespace AlumnoEjemplos.Socketes.Fisica
 {
     class TiroParabolicoSimple : Tiro
     {

@@ -1,8 +1,5 @@
-﻿using AlumnoEjemplos.Socketes.Collision;
-using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+﻿using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using System.Collections.Generic;
-using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -131,6 +128,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.pelota.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
+
             this.jugadorHumano.animateAndRender(elapsedTime);
             this.jugadorIAAliado.animateAndRender(elapsedTime);
 
@@ -146,7 +144,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         public void dispose()
         {
-            this.marcador.render();
+            this.marcador.dispose();
             this.cancha.dispose();
             this.pelota.dispose();
             this.arcoLocal.dispose();
