@@ -94,13 +94,13 @@ namespace AlumnoEjemplos.Socketes.Collision
         private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionable> obstaculos, ColisionInfo colisionInfo)
         {
             
-            /**
-             * DEJO que al menos se haga una iteracion aunque la pelota no se mueva, fix bug de colision con pelota quieta.
+            /*
+            // DEJO que al menos se haga una iteracion aunque la pelota no se mueva, fix bug de colision con pelota quieta.
             if (movementVector.LengthSq() < EPSILON)
             {
                 return;
             }
-            **/
+            */
             List<IColisionable> objetosCandidatos = new List<IColisionable>();
             Vector3 lastCenterSafePosition = characterSphere.Center;
 
@@ -254,6 +254,9 @@ namespace AlumnoEjemplos.Socketes.Collision
                             newMovementVector = polygonIntersectionPoint - sphereIntersectionPoint;
                             newMoveDistSq = newMovementVector.LengthSq();
 
+                            //se colisiono con algo, lo agrego a la lista
+                            colisionInfo.Add(obstaculoBB);
+
                             if (newMoveDistSq <= distanceToTravelSq && newMoveDistSq < minCollisionDistSq)
                             {
                                 minCollisionDistSq = newMoveDistSq;
@@ -261,7 +264,6 @@ namespace AlumnoEjemplos.Socketes.Collision
                                 nearestPolygonIntersectionPoint = polygonIntersectionPoint;
                                 collisionFace = bbFace;
                                 collisionObstacle = obstaculoBB;
-                                colisionInfo.Add(collisionObstacle);
 
                             }
                         }

@@ -45,6 +45,8 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
+            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
+
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
 
             //Configurar camara en Tercer Persona
@@ -80,15 +82,15 @@ namespace AlumnoEjemplos.Socketes
             //Si presiono D, comienzo a acumular cuanto patear
             if (input.keyDown(Key.Z))
             {
-                this.partido.Pelota.patear(movement, 5);
+                this.partido.Pelota.patear(movement, 10);
             }
             else if (input.keyDown(Key.X))
             {
                 this.partido.Pelota.pasar(partido.JugadorIAAliado.Position, 2);
             }
-            else
+            else if (movement.X != 0 || movement.Z != 0)
             {
-                this.partido.Pelota.mover(movement, elapsedTime);
+                this.partido.Pelota.mover(movement);
             }
 
             //Hacer que la camara siga al personaje en su nueva posicion

@@ -2,10 +2,12 @@
 using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
 using System.Reflection;
+using TgcViewer;
 using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
 
@@ -21,11 +23,11 @@ namespace AlumnoEjemplos.Socketes
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
         private bool piso = false;
-        private float ROTACION_DEFAULT = 60;
-        private float VELOCIDAD_DE_ROTACION_DEFAULT = 2;
+        private float VELOCIDAD_DE_ROTACION_DEFAULT = 100;
 
         //sonido para patear
         private TgcMp3Player sonidoPatear;
+        private Vector3 movimiento = Vector3.Empty;
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -75,17 +77,45 @@ namespace AlumnoEjemplos.Socketes
 
         public void updateValues(float elapsedTime)
         {
+            //activo o no gravedad si esta en el piso
+            collisionManager.GravityEnabled = !piso;
+
+            //calulo el movimiento
+            Vector3 movimiento = calcularMovimiento(elapsedTime);
+
+            //muevo la pelota, y el mismo metodo retornar las colisiones
+            ColisionInfo colisionInfo = mover(movimiento, elapsedTime);
+
+            //informo a todos los objetos que se colisiono
+            foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
+            {
+                objetoColisionado.colisionasteConPelota(this);
+            }
+                
+            sphere.updateValues();
+        }
+
+        private Vector3 calcularMovimiento(float elapsedTime)
+        {
+            Vector3 movimiento = Vector3.Empty;
+
             if (hayTiro())
             {
-                Vector3 siguientespoisicion = tiro.siguienteMovimiento(elapsedTime);
-                mover(siguientespoisicion, elapsedTime, tiro.getFuerza());
+                //existe un tiro en proceso
+                movimiento = tiro.siguienteMovimiento(elapsedTime);
             }
-            else
+            else if (hayMovimiento())
             {
-                //llamo a mover para que la pelota caiga por gravedad si no hay movimiento
-                mover(new Vector3(0, 0, 0), elapsedTime);
+                movimiento = this.movimiento;
+                this.movimiento = Vector3.Empty;
             }
-            sphere.updateValues();
+
+            return movimiento;
+        }
+
+        private bool hayMovimiento()
+        {
+            return movimiento != Vector3.Empty;
         }
 
         /// <summary>
@@ -123,47 +153,59 @@ namespace AlumnoEjemplos.Socketes
         /// el movimiento hacia ese punto es lineal, 
         /// en base a ese movimiento tambien hace la rotacion de la pelota
         /// </summary>
-        public void mover(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
+        private ColisionInfo mover(Vector3 movimiento, float elapsedTime)
         {
-            if (!piso)
-            {
-                collisionManager.GravityEnabled = true;
-            }
             ColisionInfo colisionInfo = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
-
             Vector3 realMovement = colisionInfo.getRealMovement();
-            //si no se mueve en Y entonces se termino el movimiento por gravedad
 
-            //valido que haya movimiento, sacar despues de que no se llame todo el tiempo
-            if (realMovement.X != 0 || realMovement.Y != 0 || realMovement.Z != 0)
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
+
+            if (hayMovimiento(realMovement))
             {
+                //si hay que mover Y, entonces NO estoy en el piso
                 if (realMovement.Y != 0)
                 {
-                    collisionManager.GravityEnabled = true;
                     piso = false;
                 }
 
                 sphere.move(realMovement);
 
-                //arma la transformacion en base a el escalado + rotacion + traslacion
+                //arma la transformacion en base al escalado + rotacion + traslacion
                 sphere.Transform = getScalingMatrix() *
-                    getRotationMatrix(realMovement, elapsedTime, velocidadRotacion) *
-                    Matrix.Translation(sphere.Position);
+                   getRotationMatrix(realMovement, elapsedTime) *
+                   Matrix.Translation(sphere.Position);
 
-            }
-
-            foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
-            {
-                //aviso a todos los objetos con los cuales colisione que lo hice, asi cambian sus estado
-                objetoColisionado.colisionasteConPelota(this);
-
-                if (hayTiro())
+                foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
                 {
-                    tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
-                        objetoColisionado.getFactorDeRebote() * tiro.getFuerza());
+                    if (isLogEnable())
+                        GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
+
+                    if (hayTiro())
+                    {
+                        //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
+                        tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
+                            objetoColisionado.getFuerzaRebote(movimiento) * tiro.getFuerza());
+                    }
                 }
             }
+
+            return colisionInfo;
         }
+
+        private bool isLogEnable()
+        {
+
+            return (bool)GuiController.Instance.Modifiers["Log"];
+        }
+
+        private bool hayMovimiento(Vector3 movimiento)
+        {
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Movimiento: " + VectorUtils.printVectorSinSaltos(movimiento) + ", hay movimiento?: " + (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0));
+            return movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0;
+        }
+
 
         private bool hayTiro()
         {
@@ -191,11 +233,12 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="movimiento"></param>
         /// <param name="elapsedTime"></param>
         /// <returns></returns>
-        private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime, float velocidadRotacion)
+        private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime)
         {
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
+            float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
             direccion.Normalize();
-            angulo += Geometry.DegreeToRadian(velocidadRotacion * ROTACION_DEFAULT * elapsedTime);
+            angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
             Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
             return matrixrotacion;
         }
@@ -253,12 +296,11 @@ namespace AlumnoEjemplos.Socketes
         public void estasEnElPiso()
         {
             piso = true;
-            collisionManager.GravityEnabled = false;
         }
 
-        public void mover(Vector3 movement, float elapsedTime)
+        public void mover(Vector3 movement)
         {
-            mover(movement, elapsedTime, VELOCIDAD_DE_ROTACION_DEFAULT);
+            this.movimiento = movement;
         }
     }
 }

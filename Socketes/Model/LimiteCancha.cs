@@ -42,7 +42,7 @@ namespace AlumnoEjemplos.Socketes.Model
             return movimiento;
         }
 
-        public float getFactorDeRebote()
+        public float getFuerzaRebote(Vector3 movimiento)
         {
             return 0.1f;
         }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using AlumnoEjemplos.Socketes.Fisica;
 using Microsoft.DirectX;
+using TgcViewer;
+using AlumnoEjemplos.Socketes.Utils;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -26,10 +28,14 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)
         {
+
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Direccion: " + VectorUtils.printVectorSinSaltos(direccion) + ", fuerza: " + fuerza);
+
             this.direccion = direccion;
             this.fuerza = fuerza;
 
-            this.fuerzaPorEje = new Vector3(fuerza, fuerza, fuerza);
+            this.fuerzaPorEje = new Vector3(fuerza, fuerza * 0.8f, fuerza);
         }
 
         /// <summary>
@@ -61,12 +67,19 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns></returns>
         public bool hayMovimiento()
         {
-            return !(fuerza < 0.02f && fuerza > -0.02f);
+            return !(fuerza < 0.5f && fuerza > -0.02f);
         }
 
         public float getFuerza()
         {
             return fuerza;
+        }
+
+
+        private bool isLogEnable()
+        {
+
+            return (bool)GuiController.Instance.Modifiers["Log"];
         }
     }
 }

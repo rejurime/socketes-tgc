@@ -64,14 +64,15 @@ namespace AlumnoEjemplos.Socketes.Model
         public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
             //los arcos son planos parados sobre el eje X, asi q solo cambio coordenada X de movimiento.
+            movimiento.Normalize();
             movimiento.X *= -1;
             return movimiento;
         }
 
-        public float getFactorDeRebote()
+        public float getFuerzaRebote(Vector3 movimiento)
         {
             //factor de fuerza de rebote, hay q ver que onda estos valores.
-            return 0.50f;
+            return 0.9f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()

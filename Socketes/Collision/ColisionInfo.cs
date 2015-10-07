@@ -5,7 +5,7 @@ namespace AlumnoEjemplos.Socketes.Collision
 {
     public class ColisionInfo
     {
-        private List<IColisionable> collisiones = new List<IColisionable>();
+        private HashSet<IColisionable> collisiones = new HashSet<IColisionable>();
         private Vector3 realMovementVector = Vector3.Empty;
 
         public ColisionInfo()
@@ -28,7 +28,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             return realMovementVector;
         }
 
-        public List<IColisionable> getColisiones()
+        public HashSet<IColisionable> getColisiones()
         {
             return collisiones;
         }

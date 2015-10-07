@@ -121,18 +121,24 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
-            movimiento.Y *= -1;
+            movimiento.Normalize();
+            movimiento.Y = 1;
             return movimiento;
         }
 
-        public float getFactorDeRebote()
+        public float getFuerzaRebote(Vector3 movimiento)
         {
-            return 0.70f;
+            return 0.9f;
         }
 
         public TgcBoundingBox getTgcBoundingBox()
         {
             return this.BoundingBoxCesped;
+        }
+
+        public virtual string toString()
+        {
+            return "Cancha";
         }
     }
 }

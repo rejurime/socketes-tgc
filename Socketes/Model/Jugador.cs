@@ -189,7 +189,7 @@ namespace AlumnoEjemplos.Socketes.Model
         public Vector3 getDireccionDeRebote(Vector3 movimiento)
         {
             //Ver esto, como pensamos las colisiones, los jugadores reciben la pelota y la pueden tener, si hacemos esto le rebotaria
-
+            movimiento.Normalize();
             //si la pelota se esta moviendo en X, entonces cambio esa direccion
             if (movimiento.X != 0)
                 movimiento.X *= -1;
@@ -201,7 +201,7 @@ namespace AlumnoEjemplos.Socketes.Model
             return movimiento;
         }
 
-        public float getFactorDeRebote()
+        public float getFuerzaRebote(Vector3 movimiento)
         {
             return 0.10f;
         }

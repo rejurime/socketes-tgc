@@ -34,7 +34,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// 
         /// </summary>
         /// <returns></returns>
-        float getFactorDeRebote();
+        float getFuerzaRebote(Vector3 movimiento);
 
         /// <summary>
         /// Se debe retornar el boundingbox del objeto colisionable.

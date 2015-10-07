@@ -60,6 +60,9 @@ namespace AlumnoEjemplos.Socketes
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
+            //para prender y apagar logs
+            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
+            
             //Inteligencia Artificial
             //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
             GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
