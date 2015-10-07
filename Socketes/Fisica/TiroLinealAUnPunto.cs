@@ -1,11 +1,6 @@
-﻿using AlumnoEjemplos.Socketes.Fisica;
-using Microsoft.DirectX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.DirectX;
 
-namespace AlumnoEjemplos.Socketes.Model
+namespace AlumnoEjemplos.Socketes.Fisica
 {
     /// <summary>
     /// Movimiento linea de un punto a otro.
@@ -20,7 +15,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private float fuerza;
         private float factor = 0.98f;
-
 
         public TiroLinealAUnPunto(Vector3 posicionActual, Vector3 posicionDestino, float fuerza)
         {

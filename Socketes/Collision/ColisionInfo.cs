@@ -14,7 +14,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         }
 
         public void Add(IColisionable colision)
-        {      
+        {
             collisiones.Add(colision);
         }
 

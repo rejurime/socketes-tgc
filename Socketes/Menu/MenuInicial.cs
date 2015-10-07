@@ -1,5 +1,4 @@
 using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Model;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System.Collections.Generic;
@@ -10,12 +9,12 @@ using TgcViewer.Utils.Input;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
-namespace AlumnoEjemplos.Socketes
+namespace AlumnoEjemplos.Socketes.Menu
 {
     /// <summary>
     /// Ejemplo del alumno
     /// </summary>
-    public class Menu
+    public class MenuInicial
     {
         private bool enable;
         private TgcText2d titulo;
@@ -31,7 +30,7 @@ namespace AlumnoEjemplos.Socketes
             set { enable = value; }
         }
 
-        public Menu(string pathRecursos, TgcThirdPersonCamera camara)
+        public MenuInicial(string pathRecursos, TgcThirdPersonCamera camara)
         {
             this.enable = true;
 

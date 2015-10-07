@@ -7,7 +7,7 @@ using Microsoft.DirectX;
 using TgcViewer;
 using AlumnoEjemplos.Socketes.Utils;
 
-namespace AlumnoEjemplos.Socketes.Model
+namespace AlumnoEjemplos.Socketes.Fisica
 {
     class TiroParabolicoSimple : Tiro
     {
@@ -46,7 +46,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <returns></returns>
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
-            
+
             Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X, fuerzaPorEje.Y, direccion.Z * fuerzaPorEje.Z);
 
             //decremento segun el factor la fuerza de cada eje
@@ -57,7 +57,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
             return movimiento;
         }
-
 
         /// <summary>
         /// Determinar si sigue existiendo movimiento, 

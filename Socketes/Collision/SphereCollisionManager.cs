@@ -148,12 +148,12 @@ namespace AlumnoEjemplos.Socketes.Collision
 
             //Ver si la distancia a recorrer es para tener en cuenta
             float distanceToTravelSq = movementVector.LengthSq();
-            
+
             if (distanceToTravelSq < EPSILON)
             {
                 return;
             }
-            
+
             //Posicion deseada
             Vector3 originalSphereCenter = characterSphere.Center;
             Vector3 nextSphereCenter = originalSphereCenter + movementVector;

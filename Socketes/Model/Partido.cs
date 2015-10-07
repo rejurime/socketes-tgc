@@ -1,8 +1,5 @@
-﻿using AlumnoEjemplos.Socketes.Collision;
-using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+﻿using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using System.Collections.Generic;
-using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -131,6 +128,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.pelota.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
+
             this.jugadorHumano.animateAndRender(elapsedTime);
             this.jugadorIAAliado.animateAndRender(elapsedTime);
 
@@ -140,36 +138,13 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        internal List<IColisionable> ObstaculosPelota()
-
-        {
-            List<IColisionable> obstaculos = new List<IColisionable>();
-
-            obstaculos.Add(this.cancha);
-            obstaculos.Add(this.arcoLocal);
-            obstaculos.Add(this.arcoVisitante);
-
-            obstaculos.Add(this.jugadorHumano);
-            obstaculos.Add(this.jugadorIAAliado);
-
-            //RENE ver con rene, hay que transformar los limites en objetos colisionables
-            //obstaculos.AddRange(this.cancha.BoundingBoxes);
-
-            foreach (Jugador jugador in this.jugadoresIARivales)
-            {
-                obstaculos.Add(jugador);
-            }
-
-            return obstaculos;
-        }
-
         /// <summary>
         /// Método que se llama cuando termina la ejecución del ejemplo.
         /// Hacer dispose() de todos los objetos creados.
         /// </summary>
         public void dispose()
         {
-            this.marcador.render();
+            this.marcador.dispose();
             this.cancha.dispose();
             this.pelota.dispose();
             this.arcoLocal.dispose();
