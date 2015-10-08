@@ -10,7 +10,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
     /// http://ingciv-sandrus.blogspot.com.ar/2008/05/tiro-parablico-en-tres-dimensiones.html
     /// http://www.fisicanet.com.ar/fisica/cinematica/ap06_tiro_parabolico.php
     /// </summary>
-    class TiroParabolicoConFormulas : Tiro
+    class TiroParabolicoConFormulas : ITiro
     {
         private Vector3 posicionInicial;
         private Vector3 direccion;

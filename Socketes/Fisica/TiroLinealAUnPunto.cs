@@ -6,7 +6,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
     /// Movimiento linea de un punto a otro.
     /// 
     /// </summary>
-    class TiroLinealAUnPunto : Tiro
+    class TiroLinealAUnPunto : ITiro
     {
         private Vector3 posicionActual;
         private Vector3 posicionDestino;

@@ -43,6 +43,11 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             }
         }
 
+        public void PelotaDominada(Jugador jugador, float elapsedTimePelota, Pelota pelota)
+        {
+            //pelota.Patear(new Vector3(1, 0, 1), 2);
+        }
+
         private void CalcularRotacion(Jugador jugador, Vector3 movimiento)
         {
             if (movimiento.X < 0)

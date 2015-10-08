@@ -1,32 +1,15 @@
 ﻿using AlumnoEjemplos.Socketes.Collision;
 using Microsoft.DirectX;
+using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Arco : IRenderObject, IColisionable
+    public class Arco
     {
-        private TgcMesh mesh;
+        private List<TgcMesh> palos;
         private bool mostrarBounding;
-
-        public TgcBoundingBox BoundingBox
-        {
-            get { return this.mesh.BoundingBox; }
-        }
-
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                return this.mesh.AlphaBlendEnable;
-            }
-
-            set
-            {
-                this.mesh.AlphaBlendEnable = value;
-            }
-        }
 
         public bool MostrarBounding
         {
@@ -34,34 +17,38 @@ namespace AlumnoEjemplos.Socketes.Model
             set { mostrarBounding = value; }
         }
 
-        private Arco() { }
-
-        public Arco(TgcMesh arco)
+        public Arco(List<TgcMesh> palos)
         {
-            this.mesh = arco;
+            this.palos = palos;
         }
 
         public void render()
         {
-            this.mesh.render();
-
-            if (this.mostrarBounding)
+            foreach (TgcMesh palo in this.palos)
             {
-                this.mesh.BoundingBox.render();
+                palo.render();
+
+                if (this.mostrarBounding)
+                {
+                    palo.BoundingBox.render();
+                }
             }
         }
 
         public void dispose()
         {
-            this.mesh.dispose();
+            foreach (TgcMesh palo in this.palos)
+            {
+                palo.dispose();
+            }
         }
 
-        public void colisionasteConPelota(Pelota pelota)
+        public void ColisionasteConPelota(Pelota pelota)
         {
             //por ahora nada, aca tendria que ir la logica de si la pelota hizo gol o no.
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 movimiento)
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             //los arcos son planos parados sobre el eje X, asi q solo cambio coordenada X de movimiento.
             movimiento.Normalize();
@@ -69,15 +56,10 @@ namespace AlumnoEjemplos.Socketes.Model
             return movimiento;
         }
 
-        public float getFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento)
         {
             //factor de fuerza de rebote, hay q ver que onda estos valores.
             return 0.9f;
-        }
-
-        public TgcBoundingBox getTgcBoundingBox()
-        {
-            return this.mesh.BoundingBox;
         }
     }
 }

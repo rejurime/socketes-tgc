@@ -3,13 +3,13 @@
 ## Synopsis
 Ultra precario juego de fútbol :stuck_out_tongue_closed_eyes:
 ## Motivation
-*Trabajo Práctico de la materia* **"Teoría de Gráficos por Computadora"**. *Segundo Cuatrimestre 2015.*
+*Trabajo Práctico de la materia* **"Técnicas de Gráficos por Computadora"**. *Segundo Cuatrimestre 2015.*
 ## Installation
 Se pisa la carpeta AlumnoEjemplos del proyecto TGCViewer.
 ### Consejo:
 Para que tgc-viewer inicie por defecto nuestro proyecto y ahorrar muchisisisimo tiempo cambiar el constructor de la clase `TgcViewerConfig` (es una clase del proyecto TGCViewer) por lo de abajo.
 
-```csharp	
+```csharp
 /// <summary>
 /// Crear con configuracion default
 /// </summary>

@@ -1,5 +1,6 @@
 using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Model.Creacion;
 using Microsoft.DirectX;
 using System.Reflection;
 using TgcViewer;

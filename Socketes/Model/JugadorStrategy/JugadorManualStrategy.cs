@@ -21,11 +21,49 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             this.CalcularPosicionSegunInput(jugador, elapsedTime);
         }
 
+        //TODO esto lo deberia ejecutar desde el animate and render o desde colisionastecon
+        public void PelotaDominada(Jugador jugador, float elapsedTime, Pelota pelota)
+        {
+            Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime);
+
+            //Si presiono S, paso la pelota
+            if (this.d3dInput.keyDown(Key.S))
+            {
+                //jugador.Pelota.pasar(jugador.Companero.Position, 2);
+                return;
+            }
+
+            //Si presiono D, comienzo a acumular cuanto patear
+            if (this.d3dInput.keyDown(Key.D))
+            {
+                if (this.acumuladoPatear < this.maximoFuerzaPatear)
+                {
+                    this.acumuladoPatear += elapsedTime;
+                }
+                else
+                {
+                    jugador.Pelota.Patear(movimiento, this.maximoFuerzaPatear);
+                    this.acumuladoPatear = 0;
+                }
+
+                return;
+            }
+
+            //Si suelto D pateo la pelota con la fuerza acumulada
+            if (this.d3dInput.keyUp(Key.D))
+            {
+                jugador.Pelota.Patear(movimiento, this.acumuladoPatear);
+                this.acumuladoPatear = 0;
+                return;
+            }
+            pelota.Mover(movimiento);
+        }
+
         /// <summary>
         /// Calculo cual es la proxima posicion en base a lo que tocan en el teclado
         /// </summary>
         /// <param name="elapsedTime"> Tiempo en segundos transcurridos desde el último frame</param>
-        public void CalcularPosicionSegunInput(Jugador jugador, float elapsedTime)
+        public Vector3 CalcularPosicionSegunInput(Jugador jugador, float elapsedTime)
         {
             //Calcular proxima posicion de personaje segun Input
             Vector3 movimiento = new Vector3(0, 0, 0);
@@ -101,37 +139,6 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 direccion.Y = (float)Math.PI * 7 / 4;
             }
 
-            if (jugador.PelotaDominada)
-            {
-                //Si presiono S, paso la pelota
-                if (this.d3dInput.keyDown(Key.S))
-                {
-                    jugador.Pelota.pasar(jugador.Companero.Position, 2);
-                }
-
-                //Si presiono D, comienzo a acumular cuanto patear
-                if (this.d3dInput.keyDown(Key.D))
-                {
-                    if (this.acumuladoPatear < this.maximoFuerzaPatear)
-                    {
-                        this.acumuladoPatear += elapsedTime;
-                    }
-                    else
-                    {
-                        jugador.Pelota.patear(movimiento, this.maximoFuerzaPatear);
-                        this.acumuladoPatear = 0;
-
-                    }
-                }
-
-                //Si sueldo D pateo la pelota con la fuerza acumulada
-                if (this.d3dInput.keyUp(Key.D))
-                {
-                    jugador.Pelota.patear(movimiento, this.acumuladoPatear);
-                    this.acumuladoPatear = 0;
-                }
-            }
-
             //Si hubo desplazamiento
             if (moving)
             {
@@ -163,6 +170,9 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             {
                 jugador.playAnimation(jugador.AnimacionParado, true);
             }
+
+            return movimiento;
         }
+
     }
 }

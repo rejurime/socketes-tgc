@@ -113,25 +113,25 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        public void colisionasteConPelota(Pelota pelota)
+        public void ColisionasteConPelota(Pelota pelota)
         {
             //le avisa a la pelota que esta tocando el piso, asi no intenta colisionar mas
-            pelota.estasEnElPiso();
+            pelota.EstasEnElPiso();
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 movimiento)
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             movimiento.Normalize();
             movimiento.Y = 1;
             return movimiento;
         }
 
-        public float getFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento)
         {
             return 0.9f;
         }
 
-        public TgcBoundingBox getTgcBoundingBox()
+        public TgcBoundingBox GetTgcBoundingBox()
         {
             return this.BoundingBoxCesped;
         }

@@ -1,6 +1,7 @@
 using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Model.Creacion;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -66,7 +67,7 @@ namespace AlumnoEjemplos.Socketes
 
             //para prender y apagar logs
             GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
-            
+
             //Inteligencia Artificial
             //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
             GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
@@ -122,11 +123,11 @@ namespace AlumnoEjemplos.Socketes
 
                 this.partido.render(elapsedTime);
 
-                //TODO que onda esto porque esta aca? revisar
-                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.JugadorHumano.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+                //TODO que onda esto porque esta aca? revisar //TODO horrible pero ya el partido no tiene mas el jugador humano
+                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.EquipoLocal.Jugadores[0].Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
 
                 //Hacer que la camara siga al personaje en su nueva posicion
-                GuiController.Instance.ThirdPersonCamera.Target = this.partido.JugadorHumano.Position;
+                GuiController.Instance.ThirdPersonCamera.Target = this.partido.EquipoLocal.Jugadores[0].Position;
             }
         }
 

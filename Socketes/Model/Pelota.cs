@@ -18,7 +18,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private TgcSphere sphere;
         private float angulo = 0f;
         private bool mostrarBounding = true;
-        private Tiro tiro;
+        private ITiro tiro;
         private SphereCollisionManager collisionManager;
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
@@ -89,9 +89,9 @@ namespace AlumnoEjemplos.Socketes.Model
             //informo a todos los objetos que se colisiono
             foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
             {
-                objetoColisionado.colisionasteConPelota(this);
+                objetoColisionado.ColisionasteConPelota(this);
             }
-                
+
             sphere.updateValues();
         }
 
@@ -123,7 +123,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         /// <param name="direccion"></param>
         /// <param name="fuerza"></param>
-        public void patear(Vector3 direccion, float fuerza)
+        public void Patear(Vector3 direccion, float fuerza)
         {
             tiro = new TiroParabolicoSimple(direccion, fuerza);
             reproducirSonidoPatear();
@@ -184,8 +184,8 @@ namespace AlumnoEjemplos.Socketes.Model
                     if (hayTiro())
                     {
                         //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
-                        tiro = new TiroParabolicoSimple(objetoColisionado.getDireccionDeRebote(movimiento),
-                            objetoColisionado.getFuerzaRebote(movimiento) * tiro.getFuerza());
+                        tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
+                            objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
                     }
                 }
             }
@@ -205,7 +205,6 @@ namespace AlumnoEjemplos.Socketes.Model
                 GuiController.Instance.Logger.log("Movimiento: " + VectorUtils.printVectorSinSaltos(movimiento) + ", hay movimiento?: " + (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0));
             return movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0;
         }
-
 
         private bool hayTiro()
         {
@@ -288,17 +287,17 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         /// <param name="posicionJugador"></param>
         /// <param name="fuerza"></param>
-        public void pasar(Vector3 posicionJugador, float fuerza)
+        public void Pasar(Vector3 posicionJugador, float fuerza)
         {
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
 
-        public void estasEnElPiso()
+        public void EstasEnElPiso()
         {
             piso = true;
         }
 
-        public void mover(Vector3 movement)
+        public void Mover(Vector3 movement)
         {
             this.movimiento = movement;
         }

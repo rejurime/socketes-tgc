@@ -8,7 +8,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
     /// 
     /// </summary>
 
-    public interface Tiro
+    public interface ITiro
     {
         /// <summary>
         /// Retoran el siguiente movimiento del tiro

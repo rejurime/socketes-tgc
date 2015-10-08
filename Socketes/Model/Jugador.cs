@@ -17,7 +17,6 @@ namespace AlumnoEjemplos.Socketes.Model
         private float velocidadCorrer = 500f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
-        private Jugador companero;
         private BoxCollisionManager collisionManager;
         private string animacionCorriendo = Settings.Default.animationRunPlayer;
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
@@ -60,12 +59,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             get { return this.skeletalMesh.Rotation; }
             set { this.skeletalMesh.Rotation = value; }
-        }
-
-        public Jugador Companero
-        {
-            get { return companero; }
-            set { companero = value; }
         }
 
         public float VelocidadCaminar
@@ -155,7 +148,15 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void animateAndRender(float elapsedTime)
         {
-            this.strategy.Move(this, elapsedTime);
+            if (this.pelotaDominada)
+            {
+                this.strategy.PelotaDominada(this, elapsedTime, pelota);
+            }
+            else
+            {
+                this.strategy.Move(this, elapsedTime);
+            }
+
             this.skeletalMesh.animateAndRender();
 
             if (this.mostrarBounding)
@@ -179,14 +180,12 @@ namespace AlumnoEjemplos.Socketes.Model
             this.skeletalMesh.dispose();
         }
 
-        public void colisionasteConPelota(Pelota pelota)
+        public void ColisionasteConPelota(Pelota pelota)
         {
-            this.pelotaDominada = true;
-            this.atacando = true;
-            this.companero.Atacando = true;
+            Partido.Instance.NotificarPelotaDominada(this);
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 movimiento)
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             //Ver esto, como pensamos las colisiones, los jugadores reciben la pelota y la pueden tener, si hacemos esto le rebotaria
             movimiento.Normalize();
@@ -205,12 +204,12 @@ namespace AlumnoEjemplos.Socketes.Model
             return movimiento;
         }
 
-        public float getFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento)
         {
             return 0.10f;
         }
 
-        public TgcBoundingBox getTgcBoundingBox()
+        public TgcBoundingBox GetTgcBoundingBox()
         {
             return this.BoundingBox;
         }

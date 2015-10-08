@@ -25,7 +25,7 @@ namespace AlumnoEjemplos.Socketes.Model
             set { mostrarBounding = value; }
         }
 
-        public void colisionasteConPelota(Pelota pelota)
+        public void ColisionasteConPelota(Pelota pelota)
         {
             //TODO Avisar al partido que se fue la pelota
         }
@@ -35,19 +35,19 @@ namespace AlumnoEjemplos.Socketes.Model
             this.box.dispose();
         }
 
-        public Vector3 getDireccionDeRebote(Vector3 movimiento)
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             //TODO Ver que hacer jeje
             movimiento.Y *= -1;
             return movimiento;
         }
 
-        public float getFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento)
         {
             return 0.1f;
         }
 
-        public TgcBoundingBox getTgcBoundingBox()
+        public TgcBoundingBox GetTgcBoundingBox()
         {
             return this.BoundingBox;
         }

@@ -1,5 +1,6 @@
 ﻿using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using System.Collections.Generic;
+using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -14,9 +15,18 @@ namespace AlumnoEjemplos.Socketes.Model
         private Pelota pelota;
         private Arco arcoLocal;
         private Arco arcoVisitante;
-        private Jugador jugadorHumano;
-        private Jugador jugadorIAAliado;
-        private List<Jugador> jugadoresIARivales = new List<Jugador>();
+        private Equipo equipoLocal;
+        private Equipo equipoVisitante;
+
+        //FIXME sacar esto en cuanto se pueda NO A LOS SINGLETONS
+        private static readonly Partido instance = new Partido();
+
+        #endregion
+
+        #region  Constructores
+
+        /// <summary> Constructor privado para poder hacer el singleton</summary>
+        private Partido() { }
 
         #endregion
 
@@ -46,22 +56,16 @@ namespace AlumnoEjemplos.Socketes.Model
             set { arcoVisitante = value; }
         }
 
-        public Jugador JugadorHumano
+        public Equipo EquipoLocal
         {
-            get { return jugadorHumano; }
-            set { jugadorHumano = value; }
+            get { return equipoLocal; }
+            set { equipoLocal = value; }
         }
 
-        public Jugador JugadorIAAliado
+        public Equipo EquipoVisitante
         {
-            get { return jugadorIAAliado; }
-            set { jugadorIAAliado = value; }
-        }
-
-        public List<Jugador> JugadoresIARivales
-        {
-            get { return jugadoresIARivales; }
-            set { jugadoresIARivales = value; }
+            get { return equipoVisitante; }
+            set { equipoVisitante = value; }
         }
 
         public Marcador Marcador
@@ -72,11 +76,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public bool MostrarBounding
         {
-            get
-            {
-                return mostrarBounding;
-            }
-
+            get { return mostrarBounding; }
             set
             {
                 mostrarBounding = value;
@@ -84,13 +84,8 @@ namespace AlumnoEjemplos.Socketes.Model
                 this.pelota.MostrarBounding = value;
                 this.arcoLocal.MostrarBounding = value;
                 this.arcoVisitante.MostrarBounding = value;
-                this.jugadorHumano.MostrarBounding = value;
-                this.jugadorIAAliado.MostrarBounding = value;
-
-                foreach (Jugador jugador in this.jugadoresIARivales)
-                {
-                    jugador.MostrarBounding = value;
-                }
+                this.equipoLocal.MostrarBounding = value;
+                this.equipoVisitante.MostrarBounding = value;
             }
         }
 
@@ -100,15 +95,15 @@ namespace AlumnoEjemplos.Socketes.Model
             set
             {
                 inteligenciaArtificial = value;
-                ((JugadorIAStrategy)this.jugadorIAAliado.Strategy).InteligenciaArtificial = value;
-
-                foreach (Jugador jugador in this.jugadoresIARivales)
-                {
-                    ((JugadorIAStrategy)jugador.Strategy).InteligenciaArtificial = value;
-                }
+                this.equipoLocal.InteligenciaArtificial = value;
+                this.equipoVisitante.InteligenciaArtificial = value;
             }
         }
 
+        public static Partido Instance
+        {
+            get { return instance; }
+        }
 
         #endregion
 
@@ -128,14 +123,8 @@ namespace AlumnoEjemplos.Socketes.Model
             this.pelota.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
-
-            this.jugadorHumano.animateAndRender(elapsedTime);
-            this.jugadorIAAliado.animateAndRender(elapsedTime);
-
-            foreach (Jugador jugador in this.jugadoresIARivales)
-            {
-                jugador.animateAndRender(elapsedTime);
-            }
+            this.equipoLocal.render(elapsedTime);
+            this.equipoVisitante.render(elapsedTime);
         }
 
         /// <summary>
@@ -149,13 +138,15 @@ namespace AlumnoEjemplos.Socketes.Model
             this.pelota.dispose();
             this.arcoLocal.dispose();
             this.arcoVisitante.dispose();
-            this.jugadorHumano.dispose();
-            this.jugadorIAAliado.dispose();
+            this.equipoLocal.dispose();
+            this.equipoVisitante.dispose();
+        }
 
-            foreach (Jugador jugador in this.jugadoresIARivales)
-            {
-                jugador.dispose();
-            }
+        //TODO hay que ver como llegar aca por ahora se llega con el singleton PUAJIS
+        public void NotificarPelotaDominada(Jugador jugador)
+        {
+            this.equipoLocal.NotificarPelotaDominada(jugador);
+            this.equipoVisitante.NotificarPelotaDominada(jugador);
         }
 
         #endregion

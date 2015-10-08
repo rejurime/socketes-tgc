@@ -93,7 +93,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// </summary>
         private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionable> obstaculos, ColisionInfo colisionInfo)
         {
-            
+
             /*
             // DEJO que al menos se haga una iteracion aunque la pelota no se mueva, fix bug de colision con pelota quieta.
             if (movementVector.LengthSq() < EPSILON)
@@ -113,7 +113,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             objetosCandidatos.Clear();
             foreach (IColisionable obstaculo in obstaculos)
             {
-                if (TgcCollisionUtils.testSphereAABB(testSphere, obstaculo.getTgcBoundingBox()))
+                if (TgcCollisionUtils.testSphereAABB(testSphere, obstaculo.GetTgcBoundingBox()))
                 {
                     colisionInfo.Add(obstaculo);
                     objetosCandidatos.Add(obstaculo);
@@ -126,7 +126,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             //Manejo de error. No deberiamos colisionar con nadie si todo salio bien
             foreach (IColisionable obstaculo in objetosCandidatos)
             {
-                if (TgcCollisionUtils.testSphereAABB(characterSphere, obstaculo.getTgcBoundingBox()))
+                if (TgcCollisionUtils.testSphereAABB(characterSphere, obstaculo.GetTgcBoundingBox()))
                 {
                     //Hubo un error, volver a la posición original
                     characterSphere.setCenter(lastCenterSafePosition);
@@ -167,7 +167,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             foreach (IColisionable obstaculoBB in obstaculos)
             {
                 //Obtener los polígonos que conforman las 6 caras del BoundingBox
-                TgcBoundingBox.Face[] bbFaces = obstaculoBB.getTgcBoundingBox().computeFaces();
+                TgcBoundingBox.Face[] bbFaces = obstaculoBB.GetTgcBoundingBox().computeFaces();
 
                 foreach (TgcBoundingBox.Face bbFace in bbFaces)
                 {

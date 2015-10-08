@@ -6,7 +6,12 @@ namespace AlumnoEjemplos.Socketes.Collision
 {
     public class BoxCollisionManager
     {
-        private List<IColisionable> obstaculos = new List<IColisionable>();
+        private List<IColisionable> obstaculos;
+
+        public BoxCollisionManager(List<IColisionable> colisionables)
+        {
+            this.obstaculos = colisionables;
+        }
 
         public List<IColisionable> Obstaculos
         {
@@ -22,7 +27,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         {
             foreach (IColisionable obstaculo in this.obstaculos)
             {
-                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(colisionable.getTgcBoundingBox(), obstaculo.getTgcBoundingBox());
+                TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(colisionable.GetTgcBoundingBox(), obstaculo.GetTgcBoundingBox());
 
                 if (result == TgcCollisionUtils.BoxBoxResult.Adentro || result == TgcCollisionUtils.BoxBoxResult.Atravesando)
                 {

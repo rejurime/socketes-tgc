@@ -1,5 +1,6 @@
 ﻿using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Model.Creacion;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System.Reflection;
@@ -82,15 +83,16 @@ namespace AlumnoEjemplos.Socketes
             //Si presiono D, comienzo a acumular cuanto patear
             if (input.keyDown(Key.Z))
             {
-                this.partido.Pelota.patear(movement, 10);
+                this.partido.Pelota.Patear(movement, 10);
             }
             else if (input.keyDown(Key.X))
             {
-                this.partido.Pelota.pasar(partido.JugadorIAAliado.Position, 2);
+                //TODO Rene claramente cuando tengamos mas esto va a romper jeje
+                this.partido.Pelota.Pasar(partido.EquipoLocal.Jugadores[1].Position, 2);
             }
             else if (movement.X != 0 || movement.Z != 0)
             {
-                this.partido.Pelota.mover(movement);
+                this.partido.Pelota.Mover(movement);
             }
 
             //Hacer que la camara siga al personaje en su nueva posicion

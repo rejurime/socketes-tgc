@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AlumnoEjemplos.Socketes.Fisica;
+﻿using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using TgcViewer;
-using AlumnoEjemplos.Socketes.Utils;
 
 namespace AlumnoEjemplos.Socketes.Fisica
 {
-    class TiroParabolicoSimple : Tiro
+    class TiroParabolicoSimple : ITiro
     {
         //direccion del movimiento q se origino
         private Vector3 direccion;
@@ -73,7 +68,6 @@ namespace AlumnoEjemplos.Socketes.Fisica
         {
             return fuerza;
         }
-
 
         private bool isLogEnable()
         {

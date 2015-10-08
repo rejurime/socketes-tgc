@@ -229,7 +229,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Arco\\Arco-TgcScene.xml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Arco\\Arco-Separado-TgcScene.xml")]
         public string meshFileGoal {
             get {
                 return ((string)(this["meshFileGoal"]));
