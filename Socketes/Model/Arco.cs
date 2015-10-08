@@ -8,58 +8,64 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Arco
     {
-        private List<TgcMesh> palos;
+        private List<Palo> palos;
+        private Red red;
         private bool mostrarBounding;
 
         public bool MostrarBounding
         {
             get { return mostrarBounding; }
-            set { mostrarBounding = value; }
+            set
+            {
+                mostrarBounding = value;
+
+                foreach (Palo palo in this.palos)
+                {
+                    palo.MostrarBounding = value;
+                }
+
+                this.red.MostrarBounding = value;
+            }
         }
 
-        public Arco(List<TgcMesh> palos)
+        public Arco(List<Palo> palos, Red red)
         {
             this.palos = palos;
+            this.red = red;
         }
 
         public void render()
         {
-            foreach (TgcMesh palo in this.palos)
+            foreach (Palo palo in this.palos)
             {
                 palo.render();
-
-                if (this.mostrarBounding)
-                {
-                    palo.BoundingBox.render();
-                }
             }
+
+            this.red.render();
         }
 
         public void dispose()
         {
-            foreach (TgcMesh palo in this.palos)
+            foreach (Palo palo in this.palos)
             {
                 palo.dispose();
             }
+
+            this.red.dispose();
         }
 
-        public void ColisionasteConPelota(Pelota pelota)
+        public List<IColisionable> GetColisionables()
         {
-            //por ahora nada, aca tendria que ir la logica de si la pelota hizo gol o no.
-        }
+            List<IColisionable> colisionables = new List<IColisionable>();
 
-        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
-        {
-            //los arcos son planos parados sobre el eje X, asi q solo cambio coordenada X de movimiento.
-            movimiento.Normalize();
-            movimiento.X *= -1;
-            return movimiento;
-        }
+            foreach (Palo palo in this.palos)
+            {
+                colisionables.Add(palo);
+            }
 
-        public float GetFuerzaRebote(Vector3 movimiento)
-        {
-            //factor de fuerza de rebote, hay q ver que onda estos valores.
-            return 0.9f;
+            colisionables.Add(this.red);
+
+            return colisionables;
         }
     }
 }

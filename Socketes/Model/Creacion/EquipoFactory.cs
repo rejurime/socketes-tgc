@@ -161,8 +161,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             colisionables.AddRange(partido.Cancha.LimitesCancha);
             //colisionables.Add(partido.Cancha.BoundingBoxCesped);
             colisionables.Add(partido.Cancha);
-            //colisionables.Add(partido.ArcoLocal);
-            //colisionables.Add(partido.ArcoVisitante);
+            colisionables.AddRange(partido.ArcoLocal.GetColisionables());
+            colisionables.AddRange(partido.ArcoVisitante.GetColisionables());
 
             foreach (Jugador jugadorColision in equipoPropio.Jugadores)
             {

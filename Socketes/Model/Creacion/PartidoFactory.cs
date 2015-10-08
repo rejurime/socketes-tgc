@@ -51,16 +51,16 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             partido.Marcador = this.CrearMarcador(nombreEquipoLocal, nombreEquipoVisitante);
             partido.Cancha = this.CrearCancha(pathRecursos);
-            partido.ArcoLocal = this.CrearArco(new Vector3(940, 0, 25), pathRecursos);
-            partido.ArcoVisitante = this.CrearArco(new Vector3(-780, 0, 25), pathRecursos);
+            partido.ArcoLocal = this.CrearArco(new Vector3(860, 0, -12), pathRecursos);
+            partido.ArcoVisitante = this.CrearArco(new Vector3(-860, 0, -12), pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
             partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota);
             partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota);
 
             //Creo la pelota con todos sus obstaculos
             List<IColisionable> obstaculosPelota = new List<IColisionable>();
-            //obstaculosPelota.Add(partido.ArcoLocal);
-            //obstaculosPelota.Add(partido.ArcoVisitante);
+            obstaculosPelota.AddRange(partido.ArcoLocal.GetColisionables());
+            obstaculosPelota.AddRange(partido.ArcoVisitante.GetColisionables());
             obstaculosPelota.Add(partido.Cancha);
             obstaculosPelota.AddRange(partido.Cancha.LimitesCancha);
             obstaculosPelota.AddRange(partido.EquipoLocal.JugadoresColisionables());
@@ -180,24 +180,24 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <returns> Un arco</returns>
         private Arco CrearArco(Vector3 posicion, string pathRecursos)
         {
-            List<TgcMesh> palos = new List<TgcMesh>();
+            List<Palo> palos = new List<Palo>();
             TgcMesh palo1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
             palo1.Position = posicion;
             palo1.Scale = new Vector3(1.25f, 1.25f, 1.25f);
 
-            TgcMesh palo2= new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[1];
-            palo1.Position = posicion;
-            palo1.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            TgcMesh palo2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[1];
+            palo2.Position = posicion;
+            palo2.Scale = new Vector3(1.25f, 1.25f, 1.25f);
 
             TgcMesh palo3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[2];
-            palo1.Position = posicion;
-            palo1.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            palo3.Position = posicion;
+            palo3.Scale = new Vector3(1.25f, 1.25f, 1.25f);
 
-            palos.Add(palo1);
-            palos.Add(palo2);
-            palos.Add(palo3);
+            palos.Add(new Palo(palo1));
+            palos.Add(new Palo(palo2));
+            palos.Add(new Palo(palo3));
 
-            return new Arco(palos);
+            return new Arco(palos, new Red(TgcBox.fromSize(posicion, new Vector3(0, 215, 210))));
         }
 
         #endregion

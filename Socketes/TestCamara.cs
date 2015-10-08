@@ -50,6 +50,12 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
 
+            //BoundingBox
+            GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
+
+            //para prender y apagar logs
+            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
+
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             //Camara en primera persona, tipo videojuego FPS
             //Solo puede haber una camara habilitada a la vez. Al habilitar la camara FPS se deshabilita la camara rotacional
@@ -67,6 +73,9 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="elapsedTime">Tiempo en segundos transcurridos desde el último frame</param>
         public override void render(float elapsedTime)
         {
+            //BoundingBox
+            this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
+
             this.partido.render(elapsedTime);
         }
 

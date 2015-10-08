@@ -1,9 +1,9 @@
 <tgcScene>
-  <name>arco2</name>
+  <name>4</name>
   <texturesExport enabled="True" dir="Textures" />
   <lightmapExport enabled="False" dir="LightMaps" />
-  <sceneBoundingBox min="[-96.1524,-0.8326,-5.2095]" max="[84.699,89.302,-4.6214]" />
-  <materials count="3">
+  <sceneBoundingBox min="[-5.1605,-0.7017,-94.7034]" max="[5.536,100.7017,94.9363]" />
+  <materials count="1">
     <m name="Standardmaterial" type="Standardmaterial">
       <ambient>[0,0,0,0]</ambient>
       <diffuse>[0,0,0,0]</diffuse>
@@ -14,45 +14,45 @@
     </m>
   </materials>
   <meshes count="3">
-    <mesh name="Box_1" layer="" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
-      <boundingBox min="[84.699,-0.7017,-4.7451]" max="[95.301,100.7017,4.7451]" />
+    <mesh name="PaloDerecho" layer="Default" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
+      <boundingBox min="[-5.066,-0.7017,-94.7034]" max="[5.536,100.7017,-85.2131]" />
       <coordinatesIdx count="36">0 1 2 1 3 2 4 5 6 6 5 7 0 5 4 0 2 5 1 6 7 1 7 3 0 6 1 4 6 0 2 3 7 5 2 7 </coordinatesIdx>
       <textCoordsIdx count="36">0 1 2 1 3 2 0 2 1 1 2 3 0 3 1 0 2 3 0 1 3 0 3 2 0 3 1 2 3 0 0 1 3 2 0 3 </textCoordsIdx>
       <colorsIdx count="36">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </colorsIdx>
       <matIds count="1">0 </matIds>
       <textCoordsLightMapIdx count="0">
       </textCoordsLightMapIdx>
-      <vertices count="24">84.699 100.7017 4.7451 84.699 -0.7017 4.7451 95.301 100.7017 4.7451 95.301 -0.7017 4.7451 84.699 100.7017 -4.7451 95.301 100.7017 -4.7451 84.699 -0.7017 -4.7451 95.301 -0.7017 -4.7451 </vertices>
+      <vertices count="24">-5.066 100.7017 -85.2131 -5.066 -0.7017 -85.2131 5.536 100.7017 -85.2131 5.536 -0.7017 -85.2131 -5.066 100.7017 -94.7034 5.536 100.7017 -94.7034 -5.066 -0.7017 -94.7034 5.536 -0.7017 -94.7034 </vertices>
       <normals count="24">0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 </normals>
       <texCoords count="8">0 0 0 1 1 0 1 1 </texCoords>
       <colors count="3">255 255 255 </colors>
       <texCoordsLightMap count="0">
       </texCoordsLightMap>
     </mesh>
-    <mesh name="Box_7" layer="" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
-      <boundingBox min="[-96.1524,-0.8326,-5.2095]" max="[-83.8476,100.8326,5.2095]" />
+    <mesh name="PaloIzquierdo" layer="Default" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
+      <boundingBox min="[-5.1605,-0.7017,85.4461]" max="[5.4415,100.7017,94.9363]" />
       <coordinatesIdx count="36">0 1 2 1 3 2 4 5 6 6 5 7 0 5 4 0 2 5 1 6 7 1 7 3 0 6 1 4 6 0 2 3 7 5 2 7 </coordinatesIdx>
       <textCoordsIdx count="36">0 1 2 1 3 2 0 2 1 1 2 3 0 3 1 0 2 3 0 1 3 0 3 2 0 3 1 2 3 0 0 1 3 2 0 3 </textCoordsIdx>
       <colorsIdx count="36">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </colorsIdx>
       <matIds count="1">0 </matIds>
       <textCoordsLightMapIdx count="0">
       </textCoordsLightMapIdx>
-      <vertices count="24">-96.1524 100.8325 5.2095 -96.1524 -0.8326 5.2095 -83.8476 100.8325 5.2095 -83.8476 -0.8326 5.2095 -96.1524 100.8325 -5.2095 -83.8476 100.8325 -5.2095 -96.1524 -0.8326 -5.2095 -83.8476 -0.8326 -5.2095 </vertices>
+      <vertices count="24">-5.1605 100.7017 94.9363 -5.1605 -0.7017 94.9363 5.4415 100.7017 94.9363 5.4415 -0.7017 94.9363 -5.1605 100.7017 85.4461 5.4415 100.7017 85.4461 -5.1605 -0.7017 85.4461 5.4415 -0.7017 85.4461 </vertices>
       <normals count="24">0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 </normals>
       <texCoords count="8">0 0 0 1 1 0 1 1 </texCoords>
       <colors count="3">255 255 255 </colors>
       <texCoordsLightMap count="0">
       </texCoordsLightMap>
     </mesh>
-    <mesh name="Box_11" layer="" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
-      <boundingBox min="[-85.4133,89.302,-4.6214]" max="[85.4133,100.698,4.6214]" />
+    <mesh name="PaloSuperior" layer="Default" type="Original" matId="0" color="[1,1,1]" visibility="1.0" lightmap="">
+      <boundingBox min="[-4.6214,89.302,-85.4133]" max="[4.6214,100.698,85.4133]" />
       <coordinatesIdx count="36">0 1 2 1 3 2 4 5 6 6 5 7 0 5 4 0 2 5 1 6 7 1 7 3 0 6 1 4 6 0 2 3 7 5 2 7 </coordinatesIdx>
       <textCoordsIdx count="36">0 1 2 1 3 2 0 2 1 1 2 3 0 3 1 0 2 3 0 1 3 0 3 2 0 3 1 2 3 0 0 1 3 2 0 3 </textCoordsIdx>
       <colorsIdx count="36">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </colorsIdx>
       <matIds count="1">0 </matIds>
       <textCoordsLightMapIdx count="0">
       </textCoordsLightMapIdx>
-      <vertices count="24">-85.4133 100.698 4.6214 -85.4133 89.302 4.6214 85.4133 100.698 4.6214 85.4133 89.302 4.6214 -85.4133 100.698 -4.6214 85.4133 100.698 -4.6214 -85.4133 89.302 -4.6214 85.4133 89.302 -4.6214 </vertices>
+      <vertices count="24">4.6214 100.698 85.4133 4.6214 89.302 85.4133 4.6214 100.698 -85.4133 4.6214 89.302 -85.4133 -4.6214 100.698 85.4133 -4.6214 100.698 -85.4133 -4.6214 89.302 85.4133 -4.6214 89.302 -85.4133 </vertices>
       <normals count="24">0 0 1 0 0 1 0 0 1 0 0 1 0 0 -1 0 0 -1 0 0 -1 0 0 -1 </normals>
       <texCoords count="8">0 0 0 1 1 0 1 1 </texCoords>
       <colors count="3">255 255 255 </colors>
