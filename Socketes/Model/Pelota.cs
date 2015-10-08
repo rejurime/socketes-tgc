@@ -19,7 +19,9 @@ namespace AlumnoEjemplos.Socketes.Model
         private float angulo = 0f;
         private bool mostrarBounding = true;
         private ITiro tiro;
-        private SphereCollisionManager collisionManager;
+        private PelotaCollisionManager collisionManager;
+
+        private TgcBox box;
 
         //para controlar que no se intente colisionar todo el tiempo con el piso.
         private bool piso = false;
@@ -46,7 +48,7 @@ namespace AlumnoEjemplos.Socketes.Model
             set { mostrarBounding = value; }
         }
 
-        public SphereCollisionManager CollisionManager
+        public PelotaCollisionManager CollisionManager
         {
             get { return collisionManager; }
             set { collisionManager = value; }
@@ -57,7 +59,7 @@ namespace AlumnoEjemplos.Socketes.Model
             //apago el auto transformado, ya que la pelota lo maneja solo
             sphere.AutoTransformEnable = false;
             sphere.updateValues();
-
+            this.box = TgcBox.fromSize(sphere.Position, new Vector3(sphere.Radius * 2, sphere.Radius * 2, sphere.Radius * 2));
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             this.sonidoPatear = new TgcMp3Player();
@@ -80,9 +82,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             Vector3 movimiento = Vector3.Empty;
             sphere.AutoTransformEnable = false;
-
-            //activo o no gravedad si esta en el piso
-            collisionManager.GravityEnabled = !piso;
 
             if (hayTiro())
             {
@@ -110,6 +109,9 @@ namespace AlumnoEjemplos.Socketes.Model
         public void Patear(Vector3 direccion, float fuerza)
         {
             tiro = new TiroParabolicoSimple(direccion, fuerza);
+
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Patear en direccion: " + VectorUtils.printVectorSinSaltos(direccion) + " con fuerza: " + fuerza);
             reproducirSonidoPatear();
         }
 
@@ -139,27 +141,35 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         private ColisionInfo mover(Vector3 movimiento, float elapsedTime)
         {
-            ColisionInfo colisionInfo = collisionManager.moveCharacter(sphere.BoundingSphere, movimiento);
-            Vector3 realMovement = colisionInfo.getRealMovement();
+            Vector3 lastposition = sphere.Position;
+
+            sphere.move(movimiento);
+            box.move(movimiento);
+
+            ColisionInfo colisionInfo = collisionManager.moveCharacter(box.BoundingBox);
+
+            if (colisionInfo.getColisiones().Count != 0) {
+                sphere.Position = lastposition;
+                box.Position = lastposition;
+
+                return colisionInfo;
+            }
 
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
 
-            if (hayMovimiento(realMovement))
-            {
+ 
                 //si hay que mover Y, entonces NO estoy en el piso
-                if (realMovement.Y != 0)
+                if (movimiento.Y != 0)
                 {
                     piso = false;
                 }
 
-                sphere.move(realMovement);
-
                 if (isLogEnable())
-                    GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(realMovement));
+                    GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(movimiento));
                 //arma la transformacion en base al escalado + rotacion + traslacion
                 sphere.Transform = getScalingMatrix() *
-                   getRotationMatrix(realMovement, elapsedTime) *
+                   getRotationMatrix(movimiento, elapsedTime) *
                    Matrix.Translation(sphere.Position);
 
                 foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
@@ -174,7 +184,7 @@ namespace AlumnoEjemplos.Socketes.Model
                             objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
                     }
                 }
-            }
+          
 
             return colisionInfo;
         }
@@ -291,6 +301,7 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             sphere.AutoTransformEnable = false;
             sphere.move(movement);
+            box.move(movement);
             sphere.Transform = getScalingMatrix() *
                 getRotationMatrix(movement, elapsedTime) *
                 Matrix.Translation(sphere.Position);
