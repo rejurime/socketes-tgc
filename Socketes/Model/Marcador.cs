@@ -32,6 +32,14 @@ namespace AlumnoEjemplos.Socketes.Model
             this.tiempo.render();
         }
 
+        public void render(int goles1, int goles2)
+        {
+            this.golesEquipo1 = goles1;
+            this.golesEquipo2 = goles2;
+
+            this.render();
+        }
+
         public void dispose()
         {
             this.marcador.dispose();

@@ -17,7 +17,7 @@ namespace AlumnoEjemplos.Socketes.Collision
     public class SphereCollisionManager
     {
         private const float EPSILON = 0.05f;
-        private List<IColisionable> obstaculos;
+        private List<IColisionablePelota> obstaculos;
         private Vector3 gravityForce;
         private bool gravityEnabled;
         private float slideFactor;
@@ -57,7 +57,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             slideFactor = 1.3f;
         }
 
-        public SphereCollisionManager(List<IColisionable> obstaculos)
+        public SphereCollisionManager(List<IColisionablePelota> obstaculos)
             : this()
         {
             this.obstaculos = obstaculos;
@@ -91,7 +91,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         /// <summary>
         /// Detección de colisiones, filtrando los obstaculos que se encuentran dentro del radio de movimiento
         /// </summary>
-        private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionable> obstaculos, ColisionInfo colisionInfo)
+        private void collideWithWorld(TgcBoundingSphere characterSphere, Vector3 movementVector, List<IColisionablePelota> obstaculos, ColisionInfo colisionInfo)
         {
 
             /*

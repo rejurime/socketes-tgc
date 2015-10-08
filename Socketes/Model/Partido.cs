@@ -115,7 +115,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         public void render(float elapsedTime)
         {
-            this.marcador.render();
+            this.marcador.render(this.equipoLocal.Goles, this.equipoVisitante.Goles);
             this.cancha.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
@@ -149,14 +149,23 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void NotificarGol(Red red)
         {
-            if(this.arcoLocal.Red.Equals(red))
+            if (this.equipoLocal.ArcoPropio.Red.Equals(red))
             {
-                //Local hizo gol
+                this.equipoLocal.Goles += 1;
             }
             else
             {
-                //Visitante hizo gol
+                this.equipoVisitante.Goles += 1;
             }
+
+            this.ReiniciarPosiciones();
+        }
+
+        private void ReiniciarPosiciones()
+        {
+            this.equipoLocal.ReiniciarPosiciones();
+            this.equipoVisitante.ReiniciarPosiciones();
+            this.pelota.ReiniciarPosicion();
         }
 
         #endregion

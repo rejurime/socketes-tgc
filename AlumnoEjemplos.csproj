@@ -99,8 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Socketes\Collision\BoxCollisionManager.cs" />
-    <Compile Include="Socketes\Collision\ColisionInfo.cs" />    <Compile Include="Socketes\Collision\IColisionablePelota.cs" />
-    <Compile Include="Socketes\Collision\PelotaCollisionManager.cs" />    <Compile Include="Socketes\Collision\SphereCollisionManager.cs" />
+    <Compile Include="Socketes\Collision\ColisionInfo.cs" />
+    <Compile Include="Socketes\Collision\IColisionablePelota.cs" />
+    <Compile Include="Socketes\Collision\PelotaCollisionManager.cs" />
+    <Compile Include="Socketes\Collision\SphereCollisionManager.cs" />
     <Compile Include="Socketes\Collision\IColisionable.cs" />
     <Compile Include="Socketes\Menu\MenuItem.cs" />
     <Compile Include="Socketes\Menu\MenuInicial.cs" />

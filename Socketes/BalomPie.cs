@@ -59,8 +59,8 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Musica
-            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
-            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
+            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);

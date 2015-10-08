@@ -14,6 +14,8 @@ namespace AlumnoEjemplos.Socketes.Model
 {
     public class Pelota
     {
+        private Vector3 posicionOriginalSphere;
+        private Vector3 posicionOriginalBox;
         private TgcSphere sphere;
         private float angulo = 0f;
         private bool mostrarBounding = true;
@@ -64,6 +66,9 @@ namespace AlumnoEjemplos.Socketes.Model
             this.sonidoPatear = new TgcMp3Player();
             this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
             this.sphere = sphere;
+
+            this.posicionOriginalSphere = sphere.Position;
+            this.posicionOriginalBox = box.Position;
         }
 
         public void render()
@@ -187,6 +192,12 @@ namespace AlumnoEjemplos.Socketes.Model
 
 
             return colisionInfo;
+        }
+
+        public void ReiniciarPosicion()
+        {
+            this.sphere.Position = this.posicionOriginalSphere;
+            this.box.Position = this.posicionOriginalBox;
         }
 
         private bool isLogEnable()

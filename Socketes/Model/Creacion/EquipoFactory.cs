@@ -50,7 +50,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
 
-            foreach(Jugador jugador in equipo.Jugadores)
+            foreach (Jugador jugador in equipo.Jugadores)
             {
                 jugador.EquipoPropio = equipo;
             }
@@ -71,6 +71,11 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, 0, -160), anguloEquipoCPU, pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
+
+            foreach (Jugador jugador in equipo.Jugadores)
+            {
+                jugador.EquipoPropio = equipo;
+            }
 
             return equipo;
         }

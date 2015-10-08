@@ -15,6 +15,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private Arco arcoRival;
         private bool mostrarBounding;
         private bool inteligenciaArtificial;
+        private int goles = 0;
 
         #endregion
 
@@ -76,6 +77,25 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
+        public object JugadorMasCercanoPelota()
+        {
+            Jugador jugadorMasCercano = null;
+
+            foreach (Jugador jugador in this.jugadores)
+            {
+                if (jugadorMasCercano == null)
+                {
+                    jugadorMasCercano = jugador;
+                }
+                else if (jugadorMasCercano.DistanciaPelota() > jugador.DistanciaPelota())
+                {
+                    jugadorMasCercano = jugador;
+                }
+            }
+
+            return jugadorMasCercano;
+        }
+
         public Arco ArcoPropio
         {
             get { return arcoPropio; }
@@ -88,13 +108,19 @@ namespace AlumnoEjemplos.Socketes.Model
             set { arcoRival = value; }
         }
 
+        public int Goles
+        {
+            get { return goles; }
+            set { goles = value; }
+        }
+
         #endregion
 
         #region Metodos
 
-        public List<IColisionable> JugadoresColisionables()
+        public List<IColisionablePelota> JugadoresColisionables()
         {
-            List<IColisionable> colisionables = new List<IColisionable>();
+            List<IColisionablePelota> colisionables = new List<IColisionablePelota>();
 
             foreach (Jugador jugador in this.jugadores)
             {
@@ -151,6 +177,14 @@ namespace AlumnoEjemplos.Socketes.Model
         public override string ToString()
         {
             return nombre;
+        }
+
+        public void ReiniciarPosiciones()
+        {
+            foreach (Jugador jugador in this.jugadores)
+            {
+                jugador.ReiniciarPosicion();
+            }
         }
 
         #endregion

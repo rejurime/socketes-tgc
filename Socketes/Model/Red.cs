@@ -58,5 +58,10 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             return this.box.BoundingBox;
         }
+
+        public Vector3 GetPosition()
+        {
+            return this.box.Position;
+        }
     }
 }

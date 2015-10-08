@@ -1,6 +1,7 @@
 ﻿using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
 using System;
+using TgcViewer;
 using TgcViewer.Utils.Input;
 
 namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
@@ -9,8 +10,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
     {
         private TgcD3dInput d3dInput;
         private float acumuladoPatear = 0;
-        private float maximoFuerzaPatear = 3;
-        private Vector3 utlimoMovimiento;
+        private float maximoFuerzaPatear = 10;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -27,10 +27,6 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
         {
             Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime);
 
-            if (movimiento != Vector3.Empty)
-            {
-                utlimoMovimiento = movimiento;
-            }
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyDown(Key.S))
             {
@@ -44,23 +40,30 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             {
                 if (this.acumuladoPatear < this.maximoFuerzaPatear)
                 {
-                    this.acumuladoPatear += elapsedTime;
+                    this.acumuladoPatear += elapsedTime + 0.2f;
                 }
                 else
                 {
-                    jugador.Pelota.Patear(utlimoMovimiento, this.maximoFuerzaPatear * 6);
+                    Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+                    direccion.Normalize();
+                    jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear);
                     jugador.PelotaDominada = false;
                     this.acumuladoPatear = 0;
+                    GuiController.Instance.Logger.log("Pateo por mantener " + this.acumuladoPatear.ToString() + " " + direccion.ToString());
                     return;
                 }
             }
 
             //Si suelto D pateo la pelota con la fuerza acumulada
-            if (this.d3dInput.keyUp(Key.D))
+            if (this.d3dInput.keyUp(Key.D) && this.acumuladoPatear != 0)
             {
-                jugador.Pelota.Patear(utlimoMovimiento, this.acumuladoPatear * 6);
+                Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+                direccion.Normalize();
+                jugador.Pelota.Patear(direccion, this.acumuladoPatear);
                 jugador.PelotaDominada = false;
                 this.acumuladoPatear = 0;
+                GuiController.Instance.Logger.log("Pateo por soltar " + this.acumuladoPatear.ToString() + " " + direccion.ToString());
+
                 return;
             }
 
@@ -184,6 +187,5 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 
             return movimiento;
         }
-
     }
 }

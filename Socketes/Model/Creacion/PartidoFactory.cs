@@ -58,7 +58,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota, partido.ArcoVisitante, partido.ArcoLocal);
 
             //Creo la pelota con todos sus obstaculos
-            List<IColisionable> obstaculosPelota = new List<IColisionable>();
+            List<IColisionablePelota> obstaculosPelota = new List<IColisionablePelota>();
             obstaculosPelota.AddRange(partido.ArcoLocal.GetColisionables());
             obstaculosPelota.AddRange(partido.ArcoVisitante.GetColisionables());
             obstaculosPelota.Add(partido.Cancha);
@@ -67,6 +67,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             obstaculosPelota.AddRange(partido.EquipoVisitante.JugadoresColisionables());
 
             partido.Pelota.CollisionManager = new PelotaCollisionManager(obstaculosPelota);
+            //partido.Pelota.CollisionManager = new SphereCollisionManager(obstaculosPelota);
+
             //Cargo las colisiones de los jugadores
             EquipoFactory.Instance.CargarColisionesEquipos(partido.EquipoLocal, partido.EquipoVisitante, partido);
 
@@ -84,7 +86,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             marcador.Color = Color.White;
             marcador.Align = TgcText2d.TextAlign.CENTER;
             marcador.Position = new Point(0, 20);
-            marcador.Size = new Size(150, 100);
+            marcador.Size = new Size(200, 100);
             marcador.changeFont(new System.Drawing.Font("Arial", 14, FontStyle.Bold));
 
             //Contador de Tiempo
@@ -92,7 +94,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             tiempo.Color = Color.White;
             tiempo.Align = TgcText2d.TextAlign.CENTER;
             tiempo.Position = new Point(0, 40);
-            tiempo.Size = new Size(150, 100);
+            tiempo.Size = new Size(200, 100);
             tiempo.changeFont(new System.Drawing.Font("Arial", 14));
 
             return new Marcador(marcador, tiempo, nombreEquipoLocal, nombreEquipoVisitante);
@@ -145,10 +147,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         private List<LimiteCancha> CrearLimitesCancha()
         {
             List<LimiteCancha> limites = new List<LimiteCancha>();
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 100, 0), new Vector3(0, 220, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 100, 0), new Vector3(0, 220, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 100, 580), new Vector3(1900, 220, 0))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 100, -580), new Vector3(1900, 220, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 150, 0), new Vector3(0, 220, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 150, 0), new Vector3(0, 220, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 150, 580), new Vector3(1900, 220, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 150, -580), new Vector3(1900, 220, 0))));
 
             return limites;
         }
@@ -168,6 +170,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             sphere.updateValues();
 
             return new Pelota(sphere);
+            //return new PelotaConSCM(sphere);
         }
 
         /// <summary>

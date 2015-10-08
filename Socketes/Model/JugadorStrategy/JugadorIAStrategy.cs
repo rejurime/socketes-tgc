@@ -15,6 +15,11 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 
         public void Move(Jugador jugador, float elapsedTime)
         {
+            if (!this.TengoQueMoverme(jugador))
+            {
+                return;
+            }
+
             if (!this.inteligenciaArtificial)
             {
                 return;
@@ -45,7 +50,31 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 
         public void PelotaDominada(Jugador jugador, float elapsedTimePelota, Pelota pelota)
         {
-            //pelota.Patear(new Vector3(1, 0, 1), 2);
+            if (!this.TengoQueMoverme(jugador))
+            {
+                return;
+            }
+
+            if (!this.inteligenciaArtificial)
+            {
+                return;
+            }
+
+            //TODO deberia hacer algo...
+            Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+            direccion.Normalize();
+            jugador.Pelota.Mover(direccion, elapsedTimePelota);
+            jugador.PelotaDominada = false;
+        }
+
+        private bool TengoQueMoverme(Jugador jugador)
+        {
+            if (jugador.Equals(jugador.EquipoPropio.JugadorMasCercanoPelota()))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void CalcularRotacion(Jugador jugador, Vector3 movimiento)

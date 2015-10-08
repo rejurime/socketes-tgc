@@ -1,4 +1,5 @@
-﻿using AlumnoEjemplos.Properties;
+﻿using System;
+using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using Microsoft.DirectX;
@@ -12,6 +13,7 @@ namespace AlumnoEjemplos.Socketes.Model
     {
         #region Miembros
 
+        private Vector3 posicionOriginal;
         private TgcSkeletalMesh skeletalMesh;
         private float velocidadCaminar = 100f;
         private float velocidadCorrer = 500f;
@@ -38,6 +40,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.skeletalMesh = skeletalMesh;
             this.strategy = strategy;
             this.pelota = pelota;
+            this.posicionOriginal = skeletalMesh.Position;
         }
 
         #endregion
@@ -172,6 +175,11 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
+        public void ReiniciarPosicion()
+        {
+            this.skeletalMesh.Position = this.posicionOriginal;
+        }
+
         public void render()
         {
             this.skeletalMesh.render();
@@ -219,6 +227,13 @@ namespace AlumnoEjemplos.Socketes.Model
         public TgcBoundingBox GetTgcBoundingBox()
         {
             return this.BoundingBox;
+        }
+
+        public double DistanciaPelota()
+        {
+            Vector3 vector = this.Position - this.pelota.Position;
+            //Math.Sqrt((vector.X * vector.X) + (vector.Y * vector.Y) + (vector.Z * vector.Z));
+            return vector.Length();
         }
 
         #endregion

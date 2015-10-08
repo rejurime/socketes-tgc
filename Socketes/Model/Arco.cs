@@ -57,9 +57,9 @@ namespace AlumnoEjemplos.Socketes.Model
             this.red.dispose();
         }
 
-        public List<IColisionable> GetColisionables()
+        public List<IColisionablePelota> GetColisionables()
         {
-            List<IColisionable> colisionables = new List<IColisionable>();
+            List<IColisionablePelota> colisionables = new List<IColisionablePelota>();
 
             foreach (Palo palo in this.palos)
             {

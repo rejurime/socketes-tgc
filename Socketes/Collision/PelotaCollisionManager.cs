@@ -1,3 +1,4 @@
+using Microsoft.DirectX;
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 
@@ -5,9 +6,20 @@ namespace AlumnoEjemplos.Socketes.Collision
 {
     public class PelotaCollisionManager
     {
-        private List<IColisionable> obstaculos;
+        /// <summary>
+        /// Vector que representa la fuerza de gravedad.
+        /// Debe tener un valor negativo en Y para que la fuerza atraiga hacia el suelo
+        /// </summary>
+        private Vector3 gravityForce = new Vector3(0, -1.5f, 0);
 
-        public PelotaCollisionManager(List<IColisionable> obstaculos)
+        /// <summary>
+        /// Habilita o deshabilita la aplicación de fuerza de gravedad
+        /// </summary>
+        private bool gravityEnabled = true;
+
+        private List<IColisionablePelota> obstaculos;
+
+        public PelotaCollisionManager(List<IColisionablePelota> obstaculos)
         {
             this.obstaculos = obstaculos;
         }
@@ -16,7 +28,7 @@ namespace AlumnoEjemplos.Socketes.Collision
         {
             ColisionInfo colisionInfo = new ColisionInfo();
 
-            foreach (IColisionable obstaculo in this.obstaculos)
+            foreach (IColisionablePelota obstaculo in this.obstaculos)
             {
                 TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(colisionable, obstaculo.GetTgcBoundingBox());
 
@@ -25,6 +37,12 @@ namespace AlumnoEjemplos.Socketes.Collision
                     colisionInfo.Add(obstaculo);
                 }
             }
+
+            if(this.gravityEnabled)
+            {
+                colisionInfo.addMovimientoRelativo(this.gravityForce);
+            }
+
             return colisionInfo;
         }
     }

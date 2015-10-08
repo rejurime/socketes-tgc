@@ -69,7 +69,9 @@ namespace AlumnoEjemplos.Socketes.Menu
             //Menu de configuracion
             //Crear Sprite
             this.panelConfiguracion = new TgcSprite();
-            this.panelConfiguracion.Texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "\\Texturas\\LogoTGC.png");
+            this.panelConfiguracion.Texture = TgcTexture.createTexture(pathRecursos + Settings.Default.panelcontroles);
+            this.panelConfiguracion.Scaling = new Vector2(0.75f, 0.75f);
+            //this.panelConfiguracion.Texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "\\Texturas\\LogoTGC.png");
             Size screenSize = GuiController.Instance.Panel3d.Size;
             Size textureSize = this.panelConfiguracion.Texture.Size;
             this.panelConfiguracion.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - textureSize.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - textureSize.Height / 2, 0));
@@ -170,7 +172,7 @@ namespace AlumnoEjemplos.Socketes.Menu
                 }
             }
 
-            if (d3dInput.keyDown(Key.Escape))
+            if (d3dInput.keyDown(Key.BackSpace))
             {
                 this.configuracion = false;
             }
