@@ -9,7 +9,8 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
     {
         private TgcD3dInput d3dInput;
         private float acumuladoPatear = 0;
-        private float maximoFuerzaPatear = 5;
+        private float maximoFuerzaPatear = 3;
+        private Vector3 utlimoMovimiento;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -26,10 +27,15 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
         {
             Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime);
 
+            if (movimiento != Vector3.Empty)
+            {
+                utlimoMovimiento = movimiento;
+            }
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyDown(Key.S))
             {
-                //jugador.Pelota.pasar(jugador.Companero.Position, 2);
+                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 8);
+                jugador.PelotaDominada = false;
                 return;
             }
 
@@ -42,17 +48,18 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 }
                 else
                 {
-                    jugador.Pelota.Patear(movimiento, this.maximoFuerzaPatear);
+                    jugador.Pelota.Patear(utlimoMovimiento, this.maximoFuerzaPatear * 6);
+                    jugador.PelotaDominada = false;
                     this.acumuladoPatear = 0;
+                    return;
                 }
-
-                return;
             }
 
             //Si suelto D pateo la pelota con la fuerza acumulada
             if (this.d3dInput.keyUp(Key.D))
             {
-                jugador.Pelota.Patear(movimiento, this.acumuladoPatear);
+                jugador.Pelota.Patear(utlimoMovimiento, this.acumuladoPatear * 6);
+                jugador.PelotaDominada = false;
                 this.acumuladoPatear = 0;
                 return;
             }

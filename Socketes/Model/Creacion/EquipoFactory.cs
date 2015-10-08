@@ -3,10 +3,7 @@ using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TgcViewer.Utils.Input;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
@@ -52,6 +49,11 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, 0, 100), 90f, pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
+
+            foreach(Jugador jugador in equipo.Jugadores)
+            {
+                jugador.EquipoPropio = equipo;
+            }
 
             return equipo;
         }

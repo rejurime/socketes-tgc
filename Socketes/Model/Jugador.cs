@@ -17,6 +17,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private float velocidadCorrer = 500f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
+        private Equipo equipoPropio;
         private BoxCollisionManager collisionManager;
         private string animacionCorriendo = Settings.Default.animationRunPlayer;
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
@@ -106,6 +107,12 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             get { return pelota; }
             set { pelota = value; }
+        }
+
+        public Equipo EquipoPropio
+        {
+            get { return equipoPropio; }
+            set { equipoPropio = value; }
         }
 
         public bool MostrarBounding

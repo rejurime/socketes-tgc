@@ -115,7 +115,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             {
                 if (TgcCollisionUtils.testSphereAABB(testSphere, obstaculo.GetTgcBoundingBox()))
                 {
-                    colisionInfo.Add(obstaculo);
+                    //colisionInfo.Add(obstaculo);
                     objetosCandidatos.Add(obstaculo);
                 }
             }
@@ -148,6 +148,7 @@ namespace AlumnoEjemplos.Socketes.Collision
 
             //Ver si la distancia a recorrer es para tener en cuenta
             float distanceToTravelSq = movementVector.LengthSq();
+
 
             if (distanceToTravelSq < EPSILON)
             {

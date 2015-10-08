@@ -24,6 +24,8 @@ namespace AlumnoEjemplos.Socketes.Menu
         private List<MenuItem> menus;
         private float tiempoDeAnimacion = 0.1f;
         private float tiempoTranscurridoDeAnimacion = 0;
+        private bool configuracion = false;
+        private TgcSprite panelConfiguracion;
 
         public bool Enable
         {
@@ -59,10 +61,18 @@ namespace AlumnoEjemplos.Socketes.Menu
             //Menu
             this.menus = new List<MenuItem>();
             this.menus.Add(new MenuItem("picadito", new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.picadito1, pathRecursos + Settings.Default.picadito2));
-            this.menus.Add(new MenuItem("configuracion", new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.opciones1, pathRecursos + Settings.Default.opciones2));
+            this.menus.Add(new MenuItem("configuracion", new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.controles1, pathRecursos + Settings.Default.controles2));
             this.menus.Add(new MenuItem("salir", new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.salir1, pathRecursos + Settings.Default.salir2));
 
             this.menus[0].Select();
+
+            //Menu de configuracion
+            //Crear Sprite
+            this.panelConfiguracion = new TgcSprite();
+            this.panelConfiguracion.Texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "\\Texturas\\LogoTGC.png");
+            Size screenSize = GuiController.Instance.Panel3d.Size;
+            Size textureSize = this.panelConfiguracion.Texture.Size;
+            this.panelConfiguracion.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - textureSize.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - textureSize.Height / 2, 0));
 
             //Pongo la camara en posicion
             camara.OffsetForward = -12;
@@ -147,30 +157,50 @@ namespace AlumnoEjemplos.Socketes.Menu
                             this.close();
                             return;
                         }
-                        if (item.Nombre.Equals("conifguracion"))
+                        if (item.Nombre.Equals("configuracion"))
                         {
-                            return;
+                            this.configuracion = true;
                         }
                         if (item.Nombre.Equals("salir"))
                         {
-                            return;
+                            this.exit();
+                            //return;
                         }
                     }
                 }
             }
 
-            this.pelota.rotateX(Geometry.DegreeToRadian(elapsedTime*20));
-            this.pelota.rotateY(Geometry.DegreeToRadian(elapsedTime*15));
-            this.pelota.rotateZ(Geometry.DegreeToRadian(elapsedTime*10));
-
-            this.pelota.updateValues();
-            this.titulo.render();
-            this.pelota.render();
-            this.cancha.render();
-
-            foreach (MenuItem item in this.menus)
+            if (d3dInput.keyDown(Key.Escape))
             {
-                item.render();
+                this.configuracion = false;
+            }
+
+            if (configuracion)
+            {
+                //Iniciar dibujado de todos los Sprites de la escena (en este caso es solo uno)
+                GuiController.Instance.Drawer2D.beginDrawSprite();
+
+                //Dibujar sprite (si hubiese mas, deberian ir todos aquí)
+                this.panelConfiguracion.render();
+
+                //Finalizar el dibujado de Sprites
+                GuiController.Instance.Drawer2D.endDrawSprite();
+            }
+            else
+            {
+                this.pelota.rotateX(Geometry.DegreeToRadian(elapsedTime * 20));
+                this.pelota.rotateY(Geometry.DegreeToRadian(elapsedTime * 15));
+                this.pelota.rotateZ(Geometry.DegreeToRadian(elapsedTime * 10));
+
+                this.pelota.updateValues();
+                this.titulo.render();
+                this.pelota.render();
+                this.cancha.render();
+
+                foreach (MenuItem item in this.menus)
+                {
+                    item.render();
+                }
             }
         }
 
@@ -189,7 +219,15 @@ namespace AlumnoEjemplos.Socketes.Menu
                 item.dispose();
             }
 
+            this.panelConfiguracion.dispose();
+
             this.enable = false;
+        }
+
+        public void exit()
+        {
+            //TODO FEO FEO FEO sacar dependencia
+            GuiController.Instance.MainForm.Close();
         }
     }
 }

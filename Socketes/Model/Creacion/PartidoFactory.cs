@@ -66,9 +66,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             obstaculosPelota.AddRange(partido.EquipoLocal.JugadoresColisionables());
             obstaculosPelota.AddRange(partido.EquipoVisitante.JugadoresColisionables());
 
-            partido.Pelota.CollisionManager = new SphereCollisionManager(obstaculosPelota);
-            partido.Pelota.CollisionManager.GravityEnabled = true;
-
+            partido.Pelota.CollisionManager = new PelotaCollisionManager(obstaculosPelota);
             //Cargo las colisiones de los jugadores
             EquipoFactory.Instance.CargarColisionesEquipos(partido.EquipoLocal, partido.EquipoVisitante, partido);
 
