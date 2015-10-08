@@ -1,5 +1,6 @@
 using AlumnoEjemplos.Properties;
 using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
 using System.Collections.Generic;
 using System.Drawing;
@@ -158,6 +159,11 @@ namespace AlumnoEjemplos.Socketes.Menu
                 }
             }
 
+            this.pelota.rotateX(Geometry.DegreeToRadian(elapsedTime*20));
+            this.pelota.rotateY(Geometry.DegreeToRadian(elapsedTime*15));
+            this.pelota.rotateZ(Geometry.DegreeToRadian(elapsedTime*10));
+
+            this.pelota.updateValues();
             this.titulo.render();
             this.pelota.render();
             this.cancha.render();
