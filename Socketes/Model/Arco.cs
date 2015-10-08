@@ -1,8 +1,5 @@
 ﻿using AlumnoEjemplos.Socketes.Collision;
-using Microsoft.DirectX;
 using System.Collections.Generic;
-using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -26,6 +23,12 @@ namespace AlumnoEjemplos.Socketes.Model
 
                 this.red.MostrarBounding = value;
             }
+        }
+
+        public Red Red
+        {
+            get { return red; }
+            set { red = value; }
         }
 
         public Arco(List<Palo> palos, Red red)

@@ -73,17 +73,20 @@
     <Setting Name="picadito2" Type="System.String" Scope="User">
       <Value Profile="(Default)">Menu\\picadito-seleccionado.png</Value>
     </Setting>
-    <Setting Name="opciones1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\opciones.png</Value>
+    <Setting Name="controles1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\\controles.png</Value>
     </Setting>
-    <Setting Name="opciones2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\opciones-seleccionado.png</Value>
+    <Setting Name="controles2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\\controles-seleccionado.png</Value>
     </Setting>
     <Setting Name="salir1" Type="System.String" Scope="User">
       <Value Profile="(Default)">Menu\\salir.png</Value>
     </Setting>
     <Setting Name="salir2" Type="System.String" Scope="User">
       <Value Profile="(Default)">Menu\\salir-seleccionado.png</Value>
+    </Setting>
+    <Setting Name="panelcontroles" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\\panel-controles.png</Value>
     </Setting>
   </Settings>
 </SettingsFile>

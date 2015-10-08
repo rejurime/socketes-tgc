@@ -1,12 +1,11 @@
-﻿using System;
-using AlumnoEjemplos.Socketes.Collision;
-using TgcViewer.Utils.TgcSceneLoader;
+﻿using AlumnoEjemplos.Socketes.Collision;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Palo : IColisionable
+    public class Palo : IColisionablePelota
     {
         private TgcMesh mesh;
         private bool mostrarBounding;
@@ -27,6 +26,21 @@ namespace AlumnoEjemplos.Socketes.Model
             set { mostrarBounding = value; }
         }
 
+        public void render()
+        {
+            this.mesh.render();
+
+            if (this.MostrarBounding)
+            {
+                this.mesh.BoundingBox.render();
+            }
+        }
+
+        public void dispose()
+        {
+            this.mesh.dispose();
+        }
+
         public void ColisionasteConPelota(Pelota pelota)
         {
             //por ahora nada, aca tendria que hacer ruido de palo.
@@ -44,21 +58,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             //factor de fuerza de rebote, hay q ver que onda estos valores.
             return 0.9f;
-        }
-
-        public void render()
-        {
-            this.mesh.render();
-
-            if (this.MostrarBounding)
-            {
-                this.mesh.BoundingBox.render();
-            }
-        }
-
-        public void dispose()
-        {
-            this.mesh.dispose();
         }
 
         public TgcBoundingBox GetTgcBoundingBox()

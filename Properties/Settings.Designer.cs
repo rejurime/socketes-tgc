@@ -294,25 +294,25 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\opciones.png")]
-        public string opciones1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\controles.png")]
+        public string controles1 {
             get {
-                return ((string)(this["opciones1"]));
+                return ((string)(this["controles1"]));
             }
             set {
-                this["opciones1"] = value;
+                this["controles1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\opciones-seleccionado.png")]
-        public string opciones2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\controles-seleccionado.png")]
+        public string controles2 {
             get {
-                return ((string)(this["opciones2"]));
+                return ((string)(this["controles2"]));
             }
             set {
-                this["opciones2"] = value;
+                this["controles2"] = value;
             }
         }
         
@@ -337,6 +337,18 @@ namespace AlumnoEjemplos.Properties {
             }
             set {
                 this["salir2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\panel-controles.png")]
+        public string panelcontroles {
+            get {
+                return ((string)(this["panelcontroles"]));
+            }
+            set {
+                this["panelcontroles"] = value;
             }
         }
     }

@@ -1,9 +1,8 @@
-﻿using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
-using System.Collections.Generic;
-using System;
+﻿using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
+    /// <summary> Clase que tiene todo lo que se esta haciendo render</summary>
     public class Partido
     {
         #region Miembros
@@ -141,11 +140,23 @@ namespace AlumnoEjemplos.Socketes.Model
             this.equipoVisitante.dispose();
         }
 
-        //TODO hay que ver como llegar aca por ahora se llega con el singleton PUAJIS
+        //TODO De aca para abajo hay que ver como llegar aca por ahora se llega con el singleton PUAJIS
         public void NotificarPelotaDominada(Jugador jugador)
         {
             this.equipoLocal.NotificarPelotaDominada(jugador);
             this.equipoVisitante.NotificarPelotaDominada(jugador);
+        }
+
+        public void NotificarGol(Red red)
+        {
+            if(this.arcoLocal.Red.Equals(red))
+            {
+                //Local hizo gol
+            }
+            else
+            {
+                //Visitante hizo gol
+            }
         }
 
         #endregion

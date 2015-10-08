@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="Menu1.svg">
+   sodipodi:docname="menu.svg">
   <defs
      id="defs4">
     <filter
@@ -768,18 +768,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1416561"
-     inkscape:cx="333.2459"
-     inkscape:cy="-4.274889"
+     inkscape:zoom="0.80727277"
+     inkscape:cx="324.17992"
+     inkscape:cy="428.8418"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-bbox="true"
      inkscape:snap-global="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1016"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-width="1366"
+     inkscape:window-height="715"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -789,7 +789,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -858,14 +858,14 @@
        transform="scale(0.91292627,1.0953787)"
        sodipodi:linespacing="421.99998%"
        id="text4412"
-       y="496.37579"
-       x="358.39792"
+       y="501.97336"
+       x="351.68167"
        style="font-style:normal;font-weight:normal;font-size:93.81212616px;line-height:421.99997902%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         y="496.37579"
-         x="358.39792"
+         y="501.97336"
+         x="351.68167"
          id="tspan4414"
-         sodipodi:role="line">Opciones</tspan></text>
+         sodipodi:role="line">Controles</tspan></text>
     <rect
        y="701.09131"
        x="4.2857141"
@@ -875,20 +875,6 @@
        style="fill:#729fcf;filter:url(#filter4359)"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:93.81212616px;line-height:421.99997902%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="360.31683"
-       y="721.0777"
-       id="text4424"
-       sodipodi:linespacing="421.99998%"
-       transform="scale(0.91292627,1.0953787)"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"><tspan
-         sodipodi:role="line"
-         id="tspan4426"
-         x="360.31683"
-         y="721.0777">Opciones</tspan></text>
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
@@ -935,5 +921,19 @@
          id="tspan4471"
          x="582.6778"
          y="1108.7395">Salir</tspan></text>
+    <text
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       transform="scale(0.91292627,1.0953787)"
+       sodipodi:linespacing="421.99998%"
+       id="text4412-3"
+       y="729.07214"
+       x="351.68219"
+       style="font-style:normal;font-weight:normal;font-size:93.81212616px;line-height:421.99997902%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         y="729.07214"
+         x="351.68219"
+         id="tspan4414-8"
+         sodipodi:role="line">Controles</tspan></text>
   </g>
 </svg>

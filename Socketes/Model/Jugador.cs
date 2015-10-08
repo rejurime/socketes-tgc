@@ -8,7 +8,7 @@ using TgcViewer.Utils.TgcSkeletalAnimation;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Jugador : IRenderObject, IColisionable
+    public class Jugador : IRenderObject, IColisionablePelota
     {
         #region Miembros
 

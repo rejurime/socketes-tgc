@@ -1,24 +1,14 @@
-﻿using AlumnoEjemplos.Socketes.Model;
-using Microsoft.DirectX;
+﻿using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Collision
 {
     /// <summary>
     /// Todo objeto que puede ser colisionable debe implementar esta interface.
-    /// 
     /// Esta interface se usa desde el CollisionManager para definir los objetos colisionables.
-    /// 
     /// </summary>
     public interface IColisionable
     {
-        /// <summary>
-        /// Le informa al objeto colisonable que colisiono con algo, 
-        /// se pasa ese objeto para que se puede hacer la logica necesaria.
-        /// </summary>
-        /// <param name="objetoColisionado"></param>
-        void ColisionasteConPelota(Pelota pelota);
-
         /// <summary>
         /// Todo objeto colisionable debe retornar el vector que indica el rebote.
         /// 

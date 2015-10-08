@@ -1,22 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using AlumnoEjemplos.Socketes.Collision;
+﻿using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+using System.Collections.Generic;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
+    /// <summary> Clase equipo</summary>
     public class Equipo
     {
-        private bool mostrarBounding;
+        #region Miembros
+
         private string nombre;
         private List<Jugador> jugadores;
+        private Arco arcoPropio;
+        private Arco arcoRival;
+        private bool mostrarBounding;
         private bool inteligenciaArtificial;
 
-        public Equipo(string nombre, List<Jugador> jugadores)
+        #endregion
+
+        #region  Constructores
+
+        public Equipo(string nombre, List<Jugador> jugadores, Arco arcoPropio, Arco arcoRival)
         {
             this.nombre = nombre;
             this.jugadores = jugadores;
+            this.ArcoPropio = arcoPropio;
+            this.ArcoRival = arcoRival;
         }
+
+        #endregion
+
+        #region Propiedades
 
         public string Nombre
         {
@@ -61,6 +75,22 @@ namespace AlumnoEjemplos.Socketes.Model
                 }
             }
         }
+
+        public Arco ArcoPropio
+        {
+            get { return arcoPropio; }
+            set { arcoPropio = value; }
+        }
+
+        public Arco ArcoRival
+        {
+            get { return arcoRival; }
+            set { arcoRival = value; }
+        }
+
+        #endregion
+
+        #region Metodos
 
         public List<IColisionable> JugadoresColisionables()
         {
@@ -117,5 +147,12 @@ namespace AlumnoEjemplos.Socketes.Model
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return nombre;
+        }
+
+        #endregion
     }
 }

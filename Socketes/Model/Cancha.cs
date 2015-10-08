@@ -6,7 +6,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Cancha : IRenderObject, IColisionable
+    public class Cancha : IColisionablePelota
     {
         private TgcBox box;
         private List<IRenderObject> tribunas;
@@ -43,25 +43,6 @@ namespace AlumnoEjemplos.Socketes.Model
         public TgcBoundingBox BoundingBoxCesped
         {
             get { return this.box.BoundingBox; }
-        }
-
-        public bool AlphaBlendEnable
-        {
-            get
-            {
-                //TODO estoy asumiendo que todos tienen el mismo alphablend :P
-                return this.box.AlphaBlendEnable;
-            }
-
-            set
-            {
-                this.box.AlphaBlendEnable = value;
-
-                foreach (IRenderObject componente in tribunas)
-                {
-                    componente.AlphaBlendEnable = value;
-                }
-            }
         }
 
         public List<TgcBoundingBox> BoundingBoxes

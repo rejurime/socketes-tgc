@@ -4,20 +4,20 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Red : IColisionable
+    public class Red : IColisionablePelota
     {
         private TgcBox box;
         private bool mostrarBounding;
+
+        public Red(TgcBox box)
+        {
+            this.box = box;
+        }
 
         public bool MostrarBounding
         {
             get { return mostrarBounding; }
             set { mostrarBounding = value; }
-        }
-
-        public Red(TgcBox box)
-        {
-            this.box = box;
         }
 
         public void render()
@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void ColisionasteConPelota(Pelota pelota)
         {
-            //por ahora nada, aca tendria que ir la logica de si la pelota hizo gol o no.
+            Partido.Instance.NotificarGol(this);
         }
 
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)

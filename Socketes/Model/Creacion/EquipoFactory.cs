@@ -45,13 +45,13 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="input"> Input por teclado</param>
         /// <param name="pelota"> La pelota del partido</param>
         /// <returns> Un equipo formado con un humano y el resto IA pero sin colisiones</returns>
-        public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Pelota pelota)
+        public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Pelota pelota, Arco arcoLocal, Arco arcoRival)
         {
             List<Jugador> jugadores = new List<Jugador>();
             jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, 0, 0), 125f, pelota, input));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, 0, 100), 90f, pelota));
 
-            Equipo equipo = new Equipo(nombre, jugadores);
+            Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
 
             return equipo;
         }
@@ -60,7 +60,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="pathRecursos"> De donde saco el mesh</param>
         /// <param name="pelota"> La pelota del partido</param>
         /// <returns> Un equipo con todos jugadores IA pero sin colisiones</returns>
-        public Equipo CrearEquipoIA(string nombre, string pathRecursos, Pelota pelota)
+        public Equipo CrearEquipoIA(string nombre, string pathRecursos, Pelota pelota, Arco arcoLocal, Arco arcoRival)
         {
             float anguloEquipoCPU = 270f;
 
@@ -68,7 +68,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, 0, 160), anguloEquipoCPU, pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, 0, -160), anguloEquipoCPU, pelota));
 
-            Equipo equipo = new Equipo(nombre, jugadores);
+            Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
 
             return equipo;
         }

@@ -4,6 +4,7 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Collision
 {
+    /// <summary> Encargado de manejar las colisiones entre cajas</summary>
     public class BoxCollisionManager
     {
         private List<IColisionable> obstaculos;

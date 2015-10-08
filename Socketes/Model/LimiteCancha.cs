@@ -4,7 +4,7 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class LimiteCancha : IColisionable
+    public class LimiteCancha : IColisionablePelota
     {
         private TgcBox box;
         private bool mostrarBounding;

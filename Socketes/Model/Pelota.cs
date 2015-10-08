@@ -94,7 +94,7 @@ namespace AlumnoEjemplos.Socketes.Model
             ColisionInfo colisionInfo = mover(movimiento, elapsedTime);
 
             //informo a todos los objetos que se colisiono
-            foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
+            foreach (IColisionablePelota objetoColisionado in colisionInfo.getColisiones())
             {
                 if (isLogEnable())
                     GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);

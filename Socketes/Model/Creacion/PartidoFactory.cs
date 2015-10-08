@@ -54,8 +54,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.ArcoLocal = this.CrearArco(new Vector3(860, 0, -12), pathRecursos);
             partido.ArcoVisitante = this.CrearArco(new Vector3(-860, 0, -12), pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
-            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota);
-            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota);
+            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota, partido.ArcoLocal, partido.ArcoVisitante);
+            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota, partido.ArcoVisitante, partido.ArcoLocal);
 
             //Creo la pelota con todos sus obstaculos
             List<IColisionable> obstaculosPelota = new List<IColisionable>();
