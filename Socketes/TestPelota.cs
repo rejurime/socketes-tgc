@@ -92,7 +92,7 @@ namespace AlumnoEjemplos.Socketes
             }
             else if (movement.X != 0 || movement.Z != 0)
             {
-                this.partido.Pelota.Mover(movement);
+                this.partido.Pelota.Mover(movement, elapsedTime);
             }
 
             //Hacer que la camara siga al personaje en su nueva posicion

@@ -116,15 +116,14 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         public void render(float elapsedTime)
         {
-            this.pelota.updateValues(elapsedTime);
-
             this.marcador.render();
             this.cancha.render();
-            this.pelota.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
             this.equipoLocal.render(elapsedTime);
             this.equipoVisitante.render(elapsedTime);
+            this.pelota.updateValues(elapsedTime);
+            this.pelota.render();
         }
 
         /// <summary>

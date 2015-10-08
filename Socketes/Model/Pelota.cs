@@ -67,6 +67,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void render()
         {
+            sphere.updateValues();
             sphere.render();
 
             if (this.mostrarBounding)
@@ -77,11 +78,17 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void updateValues(float elapsedTime)
         {
+            Vector3 movimiento = Vector3.Empty;
+            sphere.AutoTransformEnable = false;
+
             //activo o no gravedad si esta en el piso
             collisionManager.GravityEnabled = !piso;
 
-            //calulo el movimiento
-            Vector3 movimiento = calcularMovimiento(elapsedTime);
+            if (hayTiro())
+            {
+                //existe un tiro en proceso
+                movimiento = tiro.siguienteMovimiento(elapsedTime);
+            }
 
             //muevo la pelota, y el mismo metodo retornar las colisiones
             ColisionInfo colisionInfo = mover(movimiento, elapsedTime);
@@ -89,33 +96,10 @@ namespace AlumnoEjemplos.Socketes.Model
             //informo a todos los objetos que se colisiono
             foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
             {
+                if (isLogEnable())
+                    GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
                 objetoColisionado.ColisionasteConPelota(this);
             }
-
-            sphere.updateValues();
-        }
-
-        private Vector3 calcularMovimiento(float elapsedTime)
-        {
-            Vector3 movimiento = Vector3.Empty;
-
-            if (hayTiro())
-            {
-                //existe un tiro en proceso
-                movimiento = tiro.siguienteMovimiento(elapsedTime);
-            }
-            else if (hayMovimiento())
-            {
-                movimiento = this.movimiento;
-                this.movimiento = Vector3.Empty;
-            }
-
-            return movimiento;
-        }
-
-        private bool hayMovimiento()
-        {
-            return movimiento != Vector3.Empty;
         }
 
         /// <summary>
@@ -171,6 +155,8 @@ namespace AlumnoEjemplos.Socketes.Model
 
                 sphere.move(realMovement);
 
+                if (isLogEnable())
+                    GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(realMovement));
                 //arma la transformacion en base al escalado + rotacion + traslacion
                 sphere.Transform = getScalingMatrix() *
                    getRotationMatrix(realMovement, elapsedTime) *
@@ -238,6 +224,10 @@ namespace AlumnoEjemplos.Socketes.Model
             float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
             direccion.Normalize();
             angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
+
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.printVectorSinSaltos(direccion));
+            
             Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
             return matrixrotacion;
         }
@@ -297,9 +287,13 @@ namespace AlumnoEjemplos.Socketes.Model
             piso = true;
         }
 
-        public void Mover(Vector3 movement)
+        public void Mover(Vector3 movement, float elapsedTime)
         {
-            this.movimiento = movement;
+            sphere.AutoTransformEnable = false;
+            sphere.move(movement);
+            sphere.Transform = getScalingMatrix() *
+                getRotationMatrix(movement, elapsedTime) *
+                Matrix.Translation(sphere.Position);
         }
     }
 }

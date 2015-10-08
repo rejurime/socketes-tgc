@@ -56,7 +56,11 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 this.acumuladoPatear = 0;
                 return;
             }
-            pelota.Mover(movimiento);
+
+            if (movimiento != Vector3.Empty)
+            {
+                pelota.Mover(movimiento, elapsedTime);
+            }
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
         public Vector3 CalcularPosicionSegunInput(Jugador jugador, float elapsedTime)
         {
             //Calcular proxima posicion de personaje segun Input
-            Vector3 movimiento = new Vector3(0, 0, 0);
+            Vector3 movimiento = Vector3.Empty;
             Vector3 direccion = new Vector3(0, 0, 0);
             bool moving = false;
             bool correr = false;
