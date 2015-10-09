@@ -68,7 +68,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 return;
             }
 
-
+            //RENE: Revisar esto, si el jugador deja de coslionar con la pelota, entonces la suelta y no la tieen mas, esto arregla el tema de ir para atras, el codigo no es lindo, hace tu magia!
             if (SigoColisionadoConPelota(pelota, jugador))
             {
                 if (movimiento != Vector3.Empty)
