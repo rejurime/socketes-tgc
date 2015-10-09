@@ -7,12 +7,6 @@ namespace AlumnoEjemplos.Socketes.Collision
     public class PelotaCollisionManager
     {
         /// <summary>
-        /// Vector que representa la fuerza de gravedad.
-        /// Debe tener un valor negativo en Y para que la fuerza atraiga hacia el suelo
-        /// </summary>
-        private Vector3 gravityForce = new Vector3(0, -1.5f, 0);
-
-        /// <summary>
         /// Habilita o deshabilita la aplicación de fuerza de gravedad
         /// </summary>
         private bool gravityEnabled = true;
@@ -24,7 +18,7 @@ namespace AlumnoEjemplos.Socketes.Collision
             this.obstaculos = obstaculos;
         }
 
-        public ColisionInfo moveCharacter(TgcBoundingBox colisionable)
+        internal ColisionInfo GetColisiones(TgcBoundingBox colisionable)
         {
             ColisionInfo colisionInfo = new ColisionInfo();
 
@@ -36,11 +30,6 @@ namespace AlumnoEjemplos.Socketes.Collision
                 {
                     colisionInfo.Add(obstaculo);
                 }
-            }
-
-            if(this.gravityEnabled)
-            {
-                colisionInfo.addMovimientoRelativo(this.gravityForce);
             }
 
             return colisionInfo;

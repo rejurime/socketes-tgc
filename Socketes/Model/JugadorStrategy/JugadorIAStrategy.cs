@@ -63,7 +63,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             //TODO deberia hacer algo...
             Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
             direccion.Normalize();
-            jugador.Pelota.Mover(direccion, elapsedTimePelota);
+            jugador.Pelota.Mover(direccion);
             jugador.PelotaDominada = false;
         }
 

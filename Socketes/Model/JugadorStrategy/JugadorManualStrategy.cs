@@ -69,7 +69,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 
             if (movimiento != Vector3.Empty)
             {
-                pelota.Mover(movimiento, elapsedTime);
+                pelota.Mover(movimiento);
             }
         }
 

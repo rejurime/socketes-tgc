@@ -166,7 +166,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
             sphere.Radius = 10;
-            sphere.Position = new Vector3(0, 10, 0);
+            sphere.Position = new Vector3(0, 0, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);

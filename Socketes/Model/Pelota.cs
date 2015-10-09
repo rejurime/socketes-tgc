@@ -12,7 +12,7 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Pelota
+    public class Pelota : IColisionable
     {
         private Vector3 posicionOriginalSphere;
         private Vector3 posicionOriginalBox;
@@ -21,6 +21,8 @@ namespace AlumnoEjemplos.Socketes.Model
         private bool mostrarBounding = true;
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
+
+        private float gravityForce = 1.5f;
 
         private TgcBox box;
 
@@ -59,7 +61,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             //apago el auto transformado, ya que la pelota lo maneja solo
             sphere.AutoTransformEnable = false;
-            sphere.updateValues();
             this.box = TgcBox.fromSize(sphere.Position, new Vector3(sphere.Radius * 2, sphere.Radius * 2, sphere.Radius * 2));
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
@@ -67,8 +68,13 @@ namespace AlumnoEjemplos.Socketes.Model
             this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
             this.sphere = sphere;
 
-            this.posicionOriginalSphere = sphere.Position;
-            this.posicionOriginalBox = box.Position;
+            this.posicionOriginalSphere = new Vector3 (sphere.Position.X, sphere.Position.Y, sphere.Position.Z) ;
+            this.posicionOriginalBox = new Vector3(box.Position.X, box.Position.Y, box.Position.Z);
+
+            this.sphere.Transform = getScalingMatrix() *
+               Matrix.Translation(sphere.Position);
+
+            sphere.updateValues();
         }
 
         public void render()
@@ -79,30 +85,55 @@ namespace AlumnoEjemplos.Socketes.Model
             if (this.mostrarBounding)
             {
                 sphere.BoundingSphere.render();
+                box.BoundingBox.render();
             }
         }
 
         public void updateValues(float elapsedTime)
         {
-            Vector3 movimiento = Vector3.Empty;
-            sphere.AutoTransformEnable = false;
+            //movimiento que se guarda cuando se llama a mover directo
+            Vector3 movimiento = this.movimiento;
+
+            if (movimiento.Y != 0)
+            {
+                piso = false;
+            }
+
+            if (hayMovimiento(movimiento))
+            {
+                mover(movimiento, elapsedTime);
+                resetTiro();
+                resetMovimiento();
+                return;
+            }
 
             if (hayTiro())
             {
                 //existe un tiro en proceso
-                movimiento = tiro.siguienteMovimiento(elapsedTime);
+                mover(tiro.siguienteMovimiento(elapsedTime), elapsedTime);
+                return;
             }
 
-            //muevo la pelota, y el mismo metodo retornar las colisiones
-            ColisionInfo colisionInfo = mover(movimiento, elapsedTime);
+            //si llego hasta aca no habia movimiento y no habia tiro activo, me fijo si la pelota colisiono con algo
+            ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
 
-            //informo a todos los objetos que se colisiono
             foreach (IColisionablePelota objetoColisionado in colisionInfo.getColisiones())
             {
+                objetoColisionado.ColisionasteConPelota(this);
                 if (isLogEnable())
                     GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
-                objetoColisionado.ColisionasteConPelota(this);
             }
+
+        }
+
+        private void resetMovimiento()
+        {
+            this.movimiento = Vector3.Empty;
+        }
+
+        private void resetTiro()
+        {
+            this.tiro = null;
         }
 
         /// <summary>
@@ -116,10 +147,10 @@ namespace AlumnoEjemplos.Socketes.Model
 
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Patear en direccion: " + VectorUtils.printVectorSinSaltos(direccion) + " con fuerza: " + fuerza);
-            reproducirSonidoPatear();
+            ReproducirSonidoPatear();
         }
 
-        private void reproducirSonidoPatear()
+        private void ReproducirSonidoPatear()
         {
             if (sonidoPatear.getStatus() == TgcMp3Player.States.Open)
             {
@@ -143,61 +174,50 @@ namespace AlumnoEjemplos.Socketes.Model
         /// el movimiento hacia ese punto es lineal, 
         /// en base a ese movimiento tambien hace la rotacion de la pelota
         /// </summary>
-        private ColisionInfo mover(Vector3 movimiento, float elapsedTime)
+        private void mover(Vector3 movimiento, float elapsedTime)
         {
             Vector3 lastposition = sphere.Position;
 
-            sphere.move(movimiento);
-            box.move(movimiento);
-
-            ColisionInfo colisionInfo = collisionManager.moveCharacter(box.BoundingBox);
-
-            if (colisionInfo.getColisiones().Count != 0)
+            if (!piso)
             {
-                sphere.Position = lastposition;
-                box.Position = lastposition;
-
-                return colisionInfo;
-            }
-
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
-
-
-            //si hay que mover Y, entonces NO estoy en el piso
-            if (movimiento.Y != 0)
-            {
-                piso = false;
+                movimiento.Y -= gravityForce;
             }
 
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(movimiento));
-            //arma la transformacion en base al escalado + rotacion + traslacion
-            sphere.Transform = getScalingMatrix() *
-               getRotationMatrix(movimiento, elapsedTime) *
-               Matrix.Translation(sphere.Position);
 
-            foreach (IColisionable objetoColisionado in colisionInfo.getColisiones())
+            sphere.move(movimiento);
+            box.move(movimiento);
+
+            ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
+            
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
+
+            foreach (IColisionablePelota objetoColisionado in colisionInfo.getColisiones())
             {
+                objetoColisionado.ColisionasteConPelota(this);
                 if (isLogEnable())
                     GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
 
-                if (hayTiro())
-                {
+                if (hayTiro()) {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
                         objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
                 }
             }
-
-
-            return colisionInfo;
+          
+            //arma la transformacion en base al escalado + rotacion + traslacion
+            sphere.Transform = getScalingMatrix() *  getRotationMatrix(movimiento, elapsedTime) *
+               Matrix.Translation(sphere.Position);
         }
 
         public void ReiniciarPosicion()
         {
             this.sphere.Position = this.posicionOriginalSphere;
             this.box.Position = this.posicionOriginalBox;
+            resetMovimiento();
+            resetTiro();
         }
 
         private bool isLogEnable()
@@ -308,14 +328,24 @@ namespace AlumnoEjemplos.Socketes.Model
             piso = true;
         }
 
-        public void Mover(Vector3 movement, float elapsedTime)
+        public void Mover(Vector3 movement)
         {
-            sphere.AutoTransformEnable = false;
-            sphere.move(movement);
-            box.move(movement);
-            sphere.Transform = getScalingMatrix() *
-                getRotationMatrix(movement, elapsedTime) *
-                Matrix.Translation(sphere.Position);
+            this.movimiento = movement;
+        }
+
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetFuerzaRebote(Vector3 movimiento)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TgcBoundingBox GetTgcBoundingBox()
+        {
+            return box.BoundingBox;
         }
     }
 }
