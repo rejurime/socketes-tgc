@@ -6,11 +6,6 @@ namespace AlumnoEjemplos.Socketes.Collision
 {
     public class PelotaCollisionManager
     {
-        /// <summary>
-        /// Habilita o deshabilita la aplicación de fuerza de gravedad
-        /// </summary>
-        private bool gravityEnabled = true;
-
         private List<IColisionablePelota> obstaculos;
 
         public PelotaCollisionManager(List<IColisionablePelota> obstaculos)

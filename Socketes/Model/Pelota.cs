@@ -22,12 +22,9 @@ namespace AlumnoEjemplos.Socketes.Model
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
 
-        private float gravityForce = 1.5f;
+        private float gravityForce = 0.2f;
 
         private TgcBox box;
-
-        //para controlar que no se intente colisionar todo el tiempo con el piso.
-        private bool piso = false;
         private float VELOCIDAD_DE_ROTACION_DEFAULT = 100;
 
         //sonido para patear
@@ -94,18 +91,13 @@ namespace AlumnoEjemplos.Socketes.Model
             //movimiento que se guarda cuando se llama a mover directo
             Vector3 movimiento = this.movimiento;
 
-            if (sphere.Position.Y != 0)
-            {
-                piso = false;
-            }
-
-            if (!piso)
+            //manejo de gravedad
+            if (sphere.Position.Y > gravityForce && !hayTiro())
             {
                 movimiento.Y -= gravityForce;
-
-                if (movimiento.Y < 0)
-                    movimiento.Y = 0;
             }
+            //manejo de gravedad
+
 
             if (hayMovimiento(movimiento))
             {
@@ -329,11 +321,6 @@ namespace AlumnoEjemplos.Socketes.Model
         public void Pasar(Vector3 posicionJugador, float fuerza)
         {
             tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
-        }
-
-        public void EstasEnElPiso()
-        {
-            piso = true;
         }
 
         public void Mover(Vector3 movement)

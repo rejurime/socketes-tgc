@@ -96,8 +96,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void ColisionasteConPelota(Pelota pelota)
         {
-            //le avisa a la pelota que esta tocando el piso, asi no intenta colisionar mas
-            pelota.EstasEnElPiso();
+
         }
 
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
