@@ -38,13 +38,23 @@ namespace AlumnoEjemplos.Socketes.Model
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             //TODO Ver que hacer jeje
-            movimiento.Y *= -1;
+            if (box.Size.Z == 0)
+            {
+                movimiento.Z *= -1;
+            }
+
+            if (box.Size.X == 0)
+            {
+                movimiento.X *= -1;
+            }
+
+            movimiento.Normalize();
             return movimiento;
         }
 
         public float GetFuerzaRebote(Vector3 movimiento)
         {
-            return 0.1f;
+            return 0.98f;
         }
 
         public TgcBoundingBox GetTgcBoundingBox()

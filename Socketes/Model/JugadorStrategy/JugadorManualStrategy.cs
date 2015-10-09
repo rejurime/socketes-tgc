@@ -3,6 +3,7 @@ using Microsoft.DirectX.DirectInput;
 using System;
 using TgcViewer;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
 {
@@ -44,7 +45,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 }
                 else
                 {
-                    Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+                    Vector3 direccion = pelota.Position - jugador.Position;
                     direccion.Normalize();
                     jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear);
                     jugador.PelotaDominada = false;
@@ -57,7 +58,7 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
             //Si suelto D pateo la pelota con la fuerza acumulada
             if (this.d3dInput.keyUp(Key.D) && this.acumuladoPatear != 0)
             {
-                Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+                Vector3 direccion = pelota.Position - jugador.Position;
                 direccion.Normalize();
                 jugador.Pelota.Patear(direccion, this.acumuladoPatear);
                 jugador.PelotaDominada = false;
@@ -67,10 +68,32 @@ namespace AlumnoEjemplos.Socketes.Model.JugadorStrategy
                 return;
             }
 
-            if (movimiento != Vector3.Empty)
+
+            if (SigoColisionadoConPelota(pelota, jugador))
             {
-                pelota.Mover(movimiento);
+                if (movimiento != Vector3.Empty)
+                {
+                    pelota.Mover(movimiento);
+                }
             }
+            else
+            {
+                jugador.PelotaDominada = false;
+            }
+
+
+        }
+
+        private bool SigoColisionadoConPelota(Pelota pelota, Jugador jugador)
+        {
+            TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(pelota.GetTgcBoundingBox(), jugador.GetTgcBoundingBox());
+
+            if (result == TgcCollisionUtils.BoxBoxResult.Adentro || result == TgcCollisionUtils.BoxBoxResult.Atravesando)
+            {
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
