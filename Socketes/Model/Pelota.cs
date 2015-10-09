@@ -94,9 +94,17 @@ namespace AlumnoEjemplos.Socketes.Model
             //movimiento que se guarda cuando se llama a mover directo
             Vector3 movimiento = this.movimiento;
 
-            if (movimiento.Y != 0)
+            if (sphere.Position.Y != 0)
             {
                 piso = false;
+            }
+
+            if (!piso)
+            {
+                movimiento.Y -= gravityForce;
+
+                if (movimiento.Y < 0)
+                    movimiento.Y = 0;
             }
 
             if (hayMovimiento(movimiento))
@@ -178,12 +186,7 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             Vector3 lastposition = sphere.Position;
 
-            if (!piso)
-            {
-                movimiento.Y -= gravityForce;
-            }
-
-            if (isLogEnable())
+             if (isLogEnable())
                 GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(movimiento));
 
             sphere.move(movimiento);
@@ -204,6 +207,11 @@ namespace AlumnoEjemplos.Socketes.Model
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
                         objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
+                } else if (hayMovimiento(movimiento))
+                {
+                    //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
+                    tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
+                        objetoColisionado.GetFuerzaRebote(movimiento) * 5);
                 }
             }
           
