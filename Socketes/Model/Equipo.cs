@@ -1,5 +1,6 @@
-﻿using AlumnoEjemplos.Socketes.Collision;
-using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+﻿using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+using AlumnoEjemplos.Socketes.Model.Jugadores;
 using System.Collections.Generic;
 
 namespace AlumnoEjemplos.Socketes.Model
@@ -25,8 +26,8 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             this.nombre = nombre;
             this.jugadores = jugadores;
-            this.ArcoPropio = arcoPropio;
-            this.ArcoRival = arcoRival;
+            this.arcoPropio = arcoPropio;
+            this.arcoRival = arcoRival;
         }
 
         #endregion

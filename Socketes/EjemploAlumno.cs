@@ -51,7 +51,6 @@ namespace AlumnoEjemplos.Socketes
             //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
-
             ///////////////USER VARS//////////////////
 
             //Crear una UserVar
@@ -60,28 +59,23 @@ namespace AlumnoEjemplos.Socketes
             //Cargar valor en UserVar
             GuiController.Instance.UserVars.setValue("variablePrueba", 5451);
 
-
-
             ///////////////MODIFIERS//////////////////
 
             //Crear un modifier para un valor FLOAT
             GuiController.Instance.Modifiers.addFloat("valorFloat", -50f, 200f, 0f);
 
             //Crear un modifier para un ComboBox con opciones
-            string[] opciones = new string[]{"opcion1", "opcion2", "opcion3"};
+            string[] opciones = new string[] { "opcion1", "opcion2", "opcion3" };
             GuiController.Instance.Modifiers.addInterval("valorIntervalo", opciones, 0);
 
             //Crear un modifier para modificar un vértice
             GuiController.Instance.Modifiers.addVertex3f("valorVertice", new Vector3(-100, -100, -100), new Vector3(50, 50, 50), new Vector3(0, 0, 0));
-
-
 
             ///////////////CONFIGURAR CAMARA ROTACIONAL//////////////////
             //Es la camara que viene por default, asi que no hace falta hacerlo siempre
             GuiController.Instance.RotCamera.Enable = true;
             //Configurar centro al que se mira y distancia desde la que se mira
             GuiController.Instance.RotCamera.setCamera(new Vector3(0, 0, 0), 100);
-
 
             /*
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
@@ -92,8 +86,6 @@ namespace AlumnoEjemplos.Socketes
             //Configurar posicion y hacia donde se mira
             GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -20), new Vector3(0, 0, 0));
             */
-
-
 
             ///////////////LISTAS EN C#//////////////////
             //crear
@@ -118,8 +110,6 @@ namespace AlumnoEjemplos.Socketes
             {
                 string element = lista[i];
             }
-
-
         }
 
         /// <summary>
@@ -133,10 +123,8 @@ namespace AlumnoEjemplos.Socketes
             //Device de DirectX para renderizar
             Device d3dDevice = GuiController.Instance.D3dDevice;
 
-
             //Obtener valor de UserVar (hay que castear)
             int valor = (int)GuiController.Instance.UserVars.getValue("variablePrueba");
-
 
             //Obtener valores de Modifiers
             float valorFloat = (float)GuiController.Instance.Modifiers["valorFloat"];
@@ -158,7 +146,6 @@ namespace AlumnoEjemplos.Socketes
             {
                 //Boton izq apretado
             }
-
         }
 
         /// <summary>

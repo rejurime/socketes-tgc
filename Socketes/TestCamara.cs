@@ -2,9 +2,11 @@ using AlumnoEjemplos.Properties;
 using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
 using Microsoft.DirectX;
+using System.Collections.Generic;
 using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
+using TgcViewer.Utils.Sound;
 
 namespace AlumnoEjemplos.Socketes
 {
@@ -21,7 +23,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override string getCategory()
         {
-            return "AlumnoEjemplos";
+            return "Socketes";
         }
 
         /// <summary>
@@ -48,7 +50,14 @@ namespace AlumnoEjemplos.Socketes
         public override void init()
         {
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
+
+            //TODO Arreglar para despues :)
+            Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
+            TgcStaticSound sonido = new TgcStaticSound();
+            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav");
+            sonidos.Add("pelota-tiro", sonido);
+
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);

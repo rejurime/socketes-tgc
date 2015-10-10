@@ -88,5 +88,8 @@
     <Setting Name="panelcontroles" Type="System.String" Scope="User">
       <Value Profile="(Default)">Menu\\panel-controles.png</Value>
     </Setting>
+    <Setting Name="textureFloor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">piso1.jpg</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -351,5 +351,17 @@ namespace AlumnoEjemplos.Properties {
                 this["panelcontroles"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("piso1.jpg")]
+        public string textureFloor {
+            get {
+                return ((string)(this["textureFloor"]));
+            }
+            set {
+                this["textureFloor"] = value;
+            }
+        }
     }
 }

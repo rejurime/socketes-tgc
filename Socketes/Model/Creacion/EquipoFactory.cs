@@ -1,6 +1,7 @@
 ﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Collision;
-using AlumnoEjemplos.Socketes.Model.JugadorStrategy;
+using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+using AlumnoEjemplos.Socketes.Model.Jugadores;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System.Collections.Generic;
@@ -45,8 +46,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Pelota pelota, Arco arcoLocal, Arco arcoRival)
         {
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, 0, 0), 125f, pelota, input));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, 0, 100), 90f, pelota));
+            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, -8, 0), 125f, pelota, input));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, -8, 100), 90f, pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
 
@@ -67,8 +68,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             float anguloEquipoCPU = 270f;
 
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, 0, 160), anguloEquipoCPU, pelota));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, 0, -160), anguloEquipoCPU, pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, -8, 160), anguloEquipoCPU, pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, -8, -160), anguloEquipoCPU, pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
 

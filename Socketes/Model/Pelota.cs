@@ -1,6 +1,6 @@
 ﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Collision;
 using AlumnoEjemplos.Socketes.Fisica;
+using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
@@ -65,7 +65,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
             this.sphere = sphere;
 
-            this.posicionOriginalSphere = new Vector3 (sphere.Position.X, sphere.Position.Y, sphere.Position.Z) ;
+            this.posicionOriginalSphere = new Vector3(sphere.Position.X, sphere.Position.Y, sphere.Position.Z);
             this.posicionOriginalBox = new Vector3(box.Position.X, box.Position.Y, box.Position.Z);
 
             this.sphere.Transform = getScalingMatrix() *
@@ -101,7 +101,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
             if (hayMovimiento(movimiento))
             {
-                mover(movimiento, elapsedTime);
+                Mover(movimiento, elapsedTime);
                 resetTiro();
                 resetMovimiento();
                 return;
@@ -110,7 +110,7 @@ namespace AlumnoEjemplos.Socketes.Model
             if (hayTiro())
             {
                 //existe un tiro en proceso
-                mover(tiro.siguienteMovimiento(elapsedTime), elapsedTime);
+                Mover(tiro.siguienteMovimiento(elapsedTime), elapsedTime);
                 return;
             }
 
@@ -146,27 +146,13 @@ namespace AlumnoEjemplos.Socketes.Model
             tiro = new TiroParabolicoSimple(direccion, fuerza);
 
             if (isLogEnable())
-                GuiController.Instance.Logger.log("Patear en direccion: " + VectorUtils.printVectorSinSaltos(direccion) + " con fuerza: " + fuerza);
+                GuiController.Instance.Logger.log("Patear en direccion: " + VectorUtils.PrintVectorSinSaltos(direccion) + " con fuerza: " + fuerza);
             ReproducirSonidoPatear();
         }
 
         private void ReproducirSonidoPatear()
         {
-            if (sonidoPatear.getStatus() == TgcMp3Player.States.Open)
-            {
-                sonidoPatear.play(false);
-            }
-            if (sonidoPatear.getStatus() == TgcMp3Player.States.Stopped)
-            {
-                sonidoPatear.closeFile();
-                sonidoPatear.play(false);
-            }
-
-            if (sonidoPatear.getStatus() == TgcMp3Player.States.Playing)
-            {
-                sonidoPatear.closeFile();
-                sonidoPatear.play(false);
-            }
+            Partido.Instance.Sonidos["pelota-tiro"].play();
         }
 
         /// <summary>
@@ -174,18 +160,18 @@ namespace AlumnoEjemplos.Socketes.Model
         /// el movimiento hacia ese punto es lineal, 
         /// en base a ese movimiento tambien hace la rotacion de la pelota
         /// </summary>
-        private void mover(Vector3 movimiento, float elapsedTime)
+        private void Mover(Vector3 movimiento, float elapsedTime)
         {
             Vector3 lastposition = sphere.Position;
 
-             if (isLogEnable())
-                GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.printVectorSinSaltos(movimiento));
+            if (isLogEnable())
+                GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.PrintVectorSinSaltos(movimiento));
 
             sphere.move(movimiento);
             box.move(movimiento);
 
             ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
-            
+
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
 
@@ -195,20 +181,22 @@ namespace AlumnoEjemplos.Socketes.Model
                 if (isLogEnable())
                     GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
 
-                if (hayTiro()) {
+                if (hayTiro())
+                {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
                         objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
-                } else if (hayMovimiento(movimiento))
+                }
+                else if (hayMovimiento(movimiento))
                 {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
                         objetoColisionado.GetFuerzaRebote(movimiento) * 5);
                 }
             }
-          
+
             //arma la transformacion en base al escalado + rotacion + traslacion
-            sphere.Transform = getScalingMatrix() *  getRotationMatrix(movimiento, elapsedTime) *
+            sphere.Transform = getScalingMatrix() * getRotationMatrix(movimiento, elapsedTime) *
                Matrix.Translation(sphere.Position);
         }
 
@@ -229,7 +217,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private bool hayMovimiento(Vector3 movimiento)
         {
             if (isLogEnable())
-                GuiController.Instance.Logger.log("Movimiento: " + VectorUtils.printVectorSinSaltos(movimiento) + ", hay movimiento?: " + (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0));
+                GuiController.Instance.Logger.log("Movimiento: " + VectorUtils.PrintVectorSinSaltos(movimiento) + ", hay movimiento?: " + (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0));
             return movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0;
         }
 
@@ -267,7 +255,7 @@ namespace AlumnoEjemplos.Socketes.Model
             angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
 
             if (isLogEnable())
-                GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.printVectorSinSaltos(direccion));
+                GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.PrintVectorSinSaltos(direccion));
 
             Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
             return matrixrotacion;

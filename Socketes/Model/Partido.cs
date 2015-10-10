@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+using AlumnoEjemplos.Socketes.Model.Jugadores;
+using TgcViewer.Utils.Sound;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -16,6 +19,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private Arco arcoVisitante;
         private Equipo equipoLocal;
         private Equipo equipoVisitante;
+        private Dictionary<string, TgcStaticSound> sonidos;
 
         //FIXME sacar esto en cuanto se pueda NO A LOS SINGLETONS
         private static readonly Partido instance = new Partido();
@@ -104,6 +108,12 @@ namespace AlumnoEjemplos.Socketes.Model
             get { return instance; }
         }
 
+        public Dictionary<string, TgcStaticSound> Sonidos
+        {
+            get { return sonidos; }
+            set { sonidos = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -161,7 +171,7 @@ namespace AlumnoEjemplos.Socketes.Model
             this.ReiniciarPosiciones();
         }
 
-        private void ReiniciarPosiciones()
+        public void ReiniciarPosiciones()
         {
             this.equipoLocal.ReiniciarPosiciones();
             this.equipoVisitante.ReiniciarPosiciones();

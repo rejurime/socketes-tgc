@@ -4,7 +4,7 @@ namespace AlumnoEjemplos.Socketes.Utils
 {
     public class VectorUtils
     {
-        public static string printVectorSinSaltos(Vector3 vector)
+        public static string PrintVectorSinSaltos(Vector3 vector)
         {
             return "(" + vector.X + ", " + vector.Y + ", " + vector.Z + ")";
         }

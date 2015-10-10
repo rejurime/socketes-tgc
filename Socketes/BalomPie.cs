@@ -3,6 +3,7 @@ using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using TgcViewer;
@@ -72,9 +73,18 @@ namespace AlumnoEjemplos.Socketes
             //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
             GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
 
+            //Un boton para reiniciar las posiciones
+            GuiController.Instance.Modifiers.addButton("ReiniciarPosiciones", "Reiniciar Posiciones", new EventHandler(this.ReiniciarPosiciones_Click));
+
             //Empiezo con un tema Random :)
             int numbreTrack = new Random().Next(Settings.Default.music.Count);
             GuiController.Instance.Mp3Player.FileName = pathRecursos + Settings.Default.music[numbreTrack];
+
+            //TODO Arreglar para despues :)
+            Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
+            TgcStaticSound sonido = new TgcStaticSound();
+            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav");
+            sonidos.Add("pelota-tiro", sonido);
 
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
@@ -83,10 +93,15 @@ namespace AlumnoEjemplos.Socketes
             this.menu = new MenuInicial(pathRecursos, GuiController.Instance.ThirdPersonCamera);
 
             //Creo el partido            
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput);
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos);
 
             //Color de fondo
             GuiController.Instance.BackgroundColor = Color.Black;
+        }
+
+        private void ReiniciarPosiciones_Click(object sender, EventArgs e)
+        {
+            this.partido.ReiniciarPosiciones();
         }
 
         #endregion

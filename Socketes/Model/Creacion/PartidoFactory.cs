@@ -1,11 +1,13 @@
 ﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Collision;
+using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using Microsoft.DirectX;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
@@ -42,17 +44,18 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// </summary>
         /// <param name="alumnoEjemplosMediaDir"> Carpeta donde estan los recursos </param>
         /// <returns> Un partido listo para comenzar a jugar :)</returns>
-        public Partido CrearPartido(string pathRecursos, TgcD3dInput input)
+        public Partido CrearPartido(string pathRecursos, TgcD3dInput input, Dictionary<string, TgcStaticSound> sonidos)
         {
             string nombreEquipoLocal = "SKTS";
             string nombreEquipoVisitante = "TGCV";
 
             Partido partido = Partido.Instance;
 
+            partido.Sonidos = sonidos;
             partido.Marcador = this.CrearMarcador(nombreEquipoLocal, nombreEquipoVisitante);
             partido.Cancha = this.CrearCancha(pathRecursos);
-            partido.ArcoLocal = this.CrearArco(new Vector3(860, 0, -12), pathRecursos);
-            partido.ArcoVisitante = this.CrearArco(new Vector3(-860, 0, -12), pathRecursos);
+            partido.ArcoLocal = this.CrearArco(new Vector3(860, -8, -12), pathRecursos);
+            partido.ArcoVisitante = this.CrearArco(new Vector3(-860, -8, -12), pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
             partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota, partido.ArcoLocal, partido.ArcoVisitante);
             partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota, partido.ArcoVisitante, partido.ArcoLocal);
@@ -108,27 +111,27 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         private Cancha CrearCancha(string pathRecursos)
         {
             TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
-            tribuna1.move(new Vector3(0, 80, 800));
+            tribuna1.move(new Vector3(0, 70, 800));
             tribuna1.rotateY(-(float)Math.PI / 2);
             tribuna1.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
-            tribuna2.move(new Vector3(0, 80, -800));
+            tribuna2.move(new Vector3(0, 70, -800));
             tribuna2.rotateY((float)Math.PI / 2);
             tribuna2.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
-            tribuna3.move(new Vector3(1000, 60, 0));
+            tribuna3.move(new Vector3(1100, 55, 0));
             tribuna3.rotateY(-(float)Math.PI / 2);
             tribuna3.Scale = new Vector3(10, 10, 10);
 
             TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
-            tribuna4.move(new Vector3(-1000, 60, 0));
+            tribuna4.move(new Vector3(-1100, 55, 0));
             tribuna4.rotateY((float)Math.PI / 2);
             tribuna4.Scale = new Vector3(10, 10, 10);
 
             TgcBox box = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField));
-            TgcBox box2 = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2048, 0, 1600), Color.SlateGray);
+            TgcBox box2 = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2350, 0, 1750), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureFloor));
 
             List<IRenderObject> componentes = new List<IRenderObject>();
             componentes.Add(tribuna1);
@@ -147,10 +150,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         private List<LimiteCancha> CrearLimitesCancha()
         {
             List<LimiteCancha> limites = new List<LimiteCancha>();
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 150, 0), new Vector3(0, 220, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 150, 0), new Vector3(0, 220, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 150, 580), new Vector3(1900, 220, 0))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 150, -580), new Vector3(1900, 220, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 250, 0), new Vector3(0, 550, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 250, 0), new Vector3(0, 550, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 250, 580), new Vector3(1920, 550, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 250, -580), new Vector3(1920, 550, 0))));
 
             return limites;
         }
@@ -166,11 +169,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
             sphere.Radius = 10;
-            sphere.Position = new Vector3(0, 0, 0);
+            sphere.Position = new Vector3(0, 10, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);
-            //return new PelotaConSCM(sphere);
         }
 
         /// <summary>
@@ -198,7 +200,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             palos.Add(new Palo(palo2));
             palos.Add(new Palo(palo3));
 
-            return new Arco(palos, new Red(TgcBox.fromSize(posicion, new Vector3(0, 215, 210))));
+            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + 55, posicion.Z);
+            Vector3 tamanoRed = new Vector3(0, 110, 210);
+            return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed)));
         }
 
         #endregion
