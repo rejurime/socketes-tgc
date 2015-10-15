@@ -1,5 +1,4 @@
-﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Fisica;
+﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;

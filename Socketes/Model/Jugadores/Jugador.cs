@@ -1,5 +1,4 @@
-﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Model.Colision;
+﻿using AlumnoEjemplos.Socketes.Model.Colision;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;

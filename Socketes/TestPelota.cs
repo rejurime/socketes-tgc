@@ -1,5 +1,4 @@
-﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Model;
+﻿using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
 using Microsoft.DirectX;
 using Microsoft.DirectX.DirectInput;
@@ -25,7 +24,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override string getCategory()
         {
-            return "Socketes";
+            return "SocketesTest";
         }
 
         /// <summary>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AlumnoEjemplos.Properties {
+namespace AlumnoEjemplos.Socketes {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -49,7 +49,7 @@ namespace AlumnoEjemplos.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Media\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("AlumnoMedia\\Socketes\\")]
         public string mediaFolder {
             get {
                 return ((string)(this["mediaFolder"]));

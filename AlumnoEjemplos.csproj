@@ -115,9 +115,13 @@
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Palo.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Red.cs" />
+    <Compile Include="Socketes\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Socketes\TestCamara.cs" />
     <Compile Include="Socketes\EjemploAlumno.cs" />
-    <Compile Include="Socketes\BalomPie.cs" />
     <Compile Include="Socketes\Model\Fisica\ITiro.cs" />
     <Compile Include="Socketes\Model\Fisica\TiroParabolicoSimple.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Arco.cs" />
@@ -130,11 +134,6 @@
     <Compile Include="Socketes\Model\Fisica\TiroLinealAUnPunto.cs" />
     <Compile Include="Socketes\TestPelota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Socketes\Utils\VectorUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
+    <None Include="Socketes\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>

@@ -1,5 +1,4 @@
-﻿using AlumnoEjemplos.Properties;
-using AlumnoEjemplos.Socketes.Model.Colision;
+﻿using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using Microsoft.DirectX;

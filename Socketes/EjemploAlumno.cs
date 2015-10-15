@@ -1,16 +1,33 @@
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using AlumnoEjemplos.Socketes.Menu;
+using AlumnoEjemplos.Socketes.Model;
+using AlumnoEjemplos.Socketes.Model.Creacion;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
+using TgcViewer.Utils.Sound;
 
 namespace AlumnoEjemplos.Socketes
 {
     /// <summary>
-    /// Ejemplo del alumno
+    /// Intentando ver que podemos inventar :)
     /// </summary>
     public class EjemploAlumno : TgcExample
     {
+        #region Atributos
+
+        private MenuInicial menu;
+        private Partido partido;
+
+        //TODO Parche feo para el tiempo
+        private bool tiempo = false;
+
+        #endregion
+
+        #region Creacion
+
         /// <summary>
         /// Categoría a la que pertenece el ejemplo.
         /// Influye en donde se va a haber en el árbol de la derecha de la pantalla.
@@ -20,20 +37,16 @@ namespace AlumnoEjemplos.Socketes
             return "AlumnoEjemplos";
         }
 
-        /// <summary>
-        /// Completar nombre del grupo en formato Grupo NN
-        /// </summary>
+        /// <summary> Socketes </summary>
         public override string getName()
         {
-            return "Grupo 99";
+            return "Balompié";
         }
 
-        /// <summary>
-        /// Completar con la descripción del TP
-        /// </summary>
+        /// <summary> Completar con la descripción del TP </summary>
         public override string getDescription()
         {
-            return "MiIdea - Descripcion de la idea";
+            return "Juego de fútbol by Socketes";
         }
 
         /// <summary>
@@ -43,74 +56,56 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void init()
         {
-            //GuiController.Instance: acceso principal a todas las herramientas del Framework
+            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
-            //Device de DirectX para crear primitivas
-            Device d3dDevice = GuiController.Instance.D3dDevice;
+            //Musica
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
+            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
-            //Carpeta de archivos Media del alumno
-            string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
+            //BoundingBox
+            GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
-            ///////////////USER VARS//////////////////
+            //para prender y apagar logs
+            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
 
-            //Crear una UserVar
-            GuiController.Instance.UserVars.addVar("variablePrueba");
+            //Inteligencia Artificial
+            //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
+            GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
 
-            //Cargar valor en UserVar
-            GuiController.Instance.UserVars.setValue("variablePrueba", 5451);
+            //Un boton para reiniciar las posiciones
+            GuiController.Instance.Modifiers.addButton("ReiniciarPosiciones", "Reiniciar Posiciones", new EventHandler(this.ReiniciarPosiciones_Click));
 
-            ///////////////MODIFIERS//////////////////
+            //Empiezo con un tema Random :)
+            int numbreTrack = new Random().Next(Settings.Default.music.Count);
+            GuiController.Instance.Mp3Player.FileName = pathRecursos + Settings.Default.music[numbreTrack];
 
-            //Crear un modifier para un valor FLOAT
-            GuiController.Instance.Modifiers.addFloat("valorFloat", -50f, 200f, 0f);
+            //TODO Arreglar para despues :)
+            Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
+            TgcStaticSound sonido = new TgcStaticSound();
+            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav");
+            sonidos.Add("pelota-tiro", sonido);
 
-            //Crear un modifier para un ComboBox con opciones
-            string[] opciones = new string[] { "opcion1", "opcion2", "opcion3" };
-            GuiController.Instance.Modifiers.addInterval("valorIntervalo", opciones, 0);
+            //Configurar camara en Tercer Persona
+            GuiController.Instance.ThirdPersonCamera.Enable = true;
 
-            //Crear un modifier para modificar un vértice
-            GuiController.Instance.Modifiers.addVertex3f("valorVertice", new Vector3(-100, -100, -100), new Vector3(50, 50, 50), new Vector3(0, 0, 0));
+            //Creo el menu
+            this.menu = new MenuInicial(pathRecursos, GuiController.Instance.ThirdPersonCamera);
 
-            ///////////////CONFIGURAR CAMARA ROTACIONAL//////////////////
-            //Es la camara que viene por default, asi que no hace falta hacerlo siempre
-            GuiController.Instance.RotCamera.Enable = true;
-            //Configurar centro al que se mira y distancia desde la que se mira
-            GuiController.Instance.RotCamera.setCamera(new Vector3(0, 0, 0), 100);
+            //Creo el partido            
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos);
 
-            /*
-            ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            //Camara en primera persona, tipo videojuego FPS
-            //Solo puede haber una camara habilitada a la vez. Al habilitar la camara FPS se deshabilita la camara rotacional
-            //Por default la camara FPS viene desactivada
-            GuiController.Instance.FpsCamera.Enable = true;
-            //Configurar posicion y hacia donde se mira
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -20), new Vector3(0, 0, 0));
-            */
-
-            ///////////////LISTAS EN C#//////////////////
-            //crear
-            List<string> lista = new List<string>();
-
-            //agregar elementos
-            lista.Add("elemento1");
-            lista.Add("elemento2");
-
-            //obtener elementos
-            string elemento1 = lista[0];
-
-            //bucle foreach
-            foreach (string elemento in lista)
-            {
-                //Loggear por consola del Framework
-                GuiController.Instance.Logger.log(elemento);
-            }
-
-            //bucle for
-            for (int i = 0; i < lista.Count; i++)
-            {
-                string element = lista[i];
-            }
+            //Color de fondo
+            GuiController.Instance.BackgroundColor = Color.Black;
         }
+
+        private void ReiniciarPosiciones_Click(object sender, EventArgs e)
+        {
+            this.partido.ReiniciarPosiciones();
+        }
+
+        #endregion
+
+        #region Render
 
         /// <summary>
         /// Método que se llama cada vez que hay que refrescar la pantalla.
@@ -120,33 +115,67 @@ namespace AlumnoEjemplos.Socketes
         /// <param name="elapsedTime">Tiempo en segundos transcurridos desde el último frame</param>
         public override void render(float elapsedTime)
         {
-            //Device de DirectX para renderizar
-            Device d3dDevice = GuiController.Instance.D3dDevice;
+            //Contro del reproductor por Modifiers
+            this.Player();
 
-            //Obtener valor de UserVar (hay que castear)
-            int valor = (int)GuiController.Instance.UserVars.getValue("variablePrueba");
-
-            //Obtener valores de Modifiers
-            float valorFloat = (float)GuiController.Instance.Modifiers["valorFloat"];
-            string opcionElegida = (string)GuiController.Instance.Modifiers["valorIntervalo"];
-            Vector3 valorVertice = (Vector3)GuiController.Instance.Modifiers["valorVertice"];
-
-
-            ///////////////INPUT//////////////////
-            //conviene deshabilitar ambas camaras para que no haya interferencia
-
-            //Capturar Input teclado 
-            if (GuiController.Instance.D3dInput.keyPressed(Microsoft.DirectX.DirectInput.Key.F))
+            if (this.menu.Enable)
             {
-                //Tecla F apretada
+                this.menu.render(elapsedTime);
             }
-
-            //Capturar Input Mouse
-            if (GuiController.Instance.D3dInput.buttonPressed(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            else
             {
-                //Boton izq apretado
+                if (!this.tiempo)
+                {
+                    this.tiempo = true;
+                    this.partido.Marcador.IniciarTiempo();
+                }
+                //BoundingBox
+                this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
+
+                //Inteligencia Artificial
+                this.partido.InteligenciaArtificial = (bool)GuiController.Instance.Modifiers["IA"];
+
+                this.partido.render(elapsedTime);
+
+                //TODO que onda esto porque esta aca? revisar //TODO horrible pero ya el partido no tiene mas el jugador humano
+                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.EquipoLocal.Jugadores[0].Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+
+                //Hacer que la camara siga al personaje en su nueva posicion
+                GuiController.Instance.ThirdPersonCamera.Target = this.partido.EquipoLocal.Jugadores[0].Position;
             }
         }
+
+        private void Player()
+        {
+            TgcMp3Player player = GuiController.Instance.Mp3Player;
+
+            if ((bool)GuiController.Instance.Modifiers["Musica"])
+            {
+                if (player.getStatus() == TgcMp3Player.States.Open)
+                {
+                    //Reproducir MP3
+                    player.play(true);
+                }
+                if (player.getStatus() == TgcMp3Player.States.Stopped)
+                {
+                    //Parar y reproducir MP3
+                    player.closeFile();
+                    player.play(true);
+                }
+            }
+            else
+            {
+                if (player.getStatus() == TgcMp3Player.States.Playing)
+                {
+                    //Parar el MP3
+                    player.stop();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Cierre
 
         /// <summary>
         /// Método que se llama cuando termina la ejecución del ejemplo.
@@ -154,7 +183,10 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void close()
         {
-
+            //Del menu ya hice dispose antes de empezar con el partido ;)
+            this.partido.dispose();
         }
+
+        #endregion
     }
 }

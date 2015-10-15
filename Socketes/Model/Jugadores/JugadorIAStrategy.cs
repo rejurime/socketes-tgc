@@ -78,7 +78,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             {
                 if (distanciaArco < tamanoCanchaParcial)
                 {
-                    pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear));
+                    pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear / 2));
                 }
                 else
                 {
