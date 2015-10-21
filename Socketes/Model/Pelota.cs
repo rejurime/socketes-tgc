@@ -16,7 +16,6 @@ namespace AlumnoEjemplos.Socketes.Model
         private Vector3 posicionOriginalSphere;
         private Vector3 posicionOriginalBox;
         private TgcSphere sphere;
-        private float angulo = 0f;
         private bool mostrarBounding = true;
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
