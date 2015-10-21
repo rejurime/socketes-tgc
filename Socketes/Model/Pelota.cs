@@ -30,6 +30,9 @@ namespace AlumnoEjemplos.Socketes.Model
         private TgcMp3Player sonidoPatear;
         private Vector3 movimiento = Vector3.Empty;
 
+        //solo guardo la rotacion, el resto de las matrices se arman en el momento
+        private Matrix matrixrotacion = Matrix.Identity;
+
         public TgcBoundingSphere BoundingSphere
         {
             get { return sphere.BoundingSphere; }
@@ -161,13 +164,14 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         private void Mover(Vector3 movimiento, float elapsedTime)
         {
-            Vector3 lastposition = sphere.Position;
+            Vector3 lastsphereposition = sphere.Position;
+            Vector3 lastboxposition = box.Position;
+
 
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.PrintVectorSinSaltos(movimiento));
 
-            sphere.move(movimiento);
-            box.move(movimiento);
+           moveTo(movimiento);
 
             ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
 
@@ -197,6 +201,18 @@ namespace AlumnoEjemplos.Socketes.Model
             //arma la transformacion en base al escalado + rotacion + traslacion
             sphere.Transform = getScalingMatrix() * getRotationMatrix(movimiento, elapsedTime) *
                Matrix.Translation(sphere.Position);
+        }
+
+        private void rollbackPosition(Vector3 lastsphereposition, Vector3 lastboxposition)
+        {
+            sphere.Position = lastsphereposition;
+            box.Position = lastboxposition;
+        }
+
+        private void moveTo(Vector3 movimiento)
+        {
+            sphere.move(movimiento);
+            box.move(movimiento);
         }
 
         public void ReiniciarPosicion()
@@ -251,12 +267,11 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
             direccion.Normalize();
-            angulo += Geometry.DegreeToRadian(velocidadRotacion * elapsedTime);
-
+            
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.PrintVectorSinSaltos(direccion));
 
-            Matrix matrixrotacion = Matrix.RotationAxis(getVectorRotacion(direccion), angulo);
+            matrixrotacion *= Matrix.RotationAxis(getVectorRotacion(direccion), Geometry.DegreeToRadian(velocidadRotacion * elapsedTime));
             return matrixrotacion;
         }
 
