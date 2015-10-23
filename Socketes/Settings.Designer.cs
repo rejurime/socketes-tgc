@@ -25,7 +25,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public float camaraOffsetHeight {
             get {
                 return ((float)(this["camaraOffsetHeight"]));
@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-600")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-400")]
         public float camaraOffsetForward {
             get {
                 return ((float)(this["camaraOffsetForward"]));

@@ -178,7 +178,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
-            sphere.Radius = 10;
+            //sphere.Radius = 10; Original
+            sphere.Radius = 8;
             sphere.Position = new Vector3(0, 10, 0);
             sphere.updateValues();
 

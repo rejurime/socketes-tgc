@@ -12,6 +12,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         private Vector3 posicionOriginal;
         private TgcSkeletalMesh skeletalMesh;
+        private TgcBox box;
         private float velocidadCaminar = 100f;
         private float velocidadCorrer = 250f;
         private IJugadorMoveStrategy strategy;
@@ -35,6 +36,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota)
         {
             this.skeletalMesh = skeletalMesh;
+            this.box = TgcBox.fromExtremes(this.skeletalMesh.BoundingBox.PMin, this.skeletalMesh.BoundingBox.PMax);
             this.strategy = strategy;
             this.pelota = pelota;
             this.posicionOriginal = skeletalMesh.Position;
@@ -47,7 +49,11 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         public Vector3 Position
         {
             get { return this.skeletalMesh.Position; }
-            set { this.skeletalMesh.Position = value; }
+            set
+            {
+                this.skeletalMesh.Position = value;
+                this.box.Position = value + new Vector3(0, (this.box.BoundingBox.PMax.Y - this.box.BoundingBox.PMin.Y) / 2, 0);
+            }
         }
 
         public bool AlphaBlendEnable
@@ -94,7 +100,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public TgcBoundingBox BoundingBox
         {
-            get { return this.skeletalMesh.BoundingBox; }
+            //get { return this.skeletalMesh.BoundingBox; }
+            get { return this.box.BoundingBox; }
         }
 
         public BoxCollisionManager CollisionManager
@@ -151,6 +158,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         public void move(Vector3 movimiento)
         {
             this.skeletalMesh.move(movimiento);
+            this.box.move(movimiento);
         }
 
         public void animateAndRender(float elapsedTime)
@@ -168,13 +176,15 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
             if (this.mostrarBounding)
             {
-                this.skeletalMesh.BoundingBox.render();
+                //this.skeletalMesh.BoundingBox.render();
+                this.box.BoundingBox.render();
             }
         }
 
         public void ReiniciarPosicion()
         {
-            this.skeletalMesh.Position = this.posicionOriginal;
+            this.Position = this.posicionOriginal;
+            this.playAnimation(this.AnimacionParado, true);
         }
 
         public void render()

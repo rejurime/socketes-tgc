@@ -45,7 +45,7 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             this.box.dispose();
         }
 
-        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
+        public Vector3 GetDireccionDeRebote(Vector3 movimiento) 
         {
             //TODO Ver que hacer jeje
             if (box.Size.Z == 0)
