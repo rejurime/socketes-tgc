@@ -133,7 +133,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             personaje.Position = posicion;
 
             //Lo Escalo porque es muy grande
-            personaje.Scale = new Vector3(0.75f, 0.75f, 0.75f);
+            personaje.Scale = new Vector3(0.6f, 0.6f, 0.6f);
             personaje.rotateY(Geometry.DegreeToRadian(angulo));
 
             return new Jugador(personaje, strategy, pelota);
