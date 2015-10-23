@@ -24,7 +24,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private float gravityForce = 0.8f;
 
         private TgcBox box;
-        private float VELOCIDAD_DE_ROTACION_DEFAULT = 100;
+        private float VELOCIDAD_DE_ROTACION_DEFAULT = 150;
 
         //sonido para patear
         private TgcMp3Player sonidoPatear;
