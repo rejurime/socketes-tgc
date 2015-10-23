@@ -355,5 +355,10 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             return box.BoundingBox;
         }
+
+        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        {
+            //TODO implementar......
+        }
     }
 }

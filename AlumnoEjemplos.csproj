@@ -112,6 +112,7 @@
     <Compile Include="Socketes\Model\Jugadores\JugadorIAStrategy.cs" />
     <Compile Include="Socketes\Model\Jugadores\JugadorManualStrategy.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\LimiteCancha.cs" />
+    <Compile Include="Socketes\Model\Iluminacion\Luz.cs" />
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Palo.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Red.cs" />

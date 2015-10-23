@@ -256,5 +256,10 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         }
 
         #endregion
+
+        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        {
+            //TODO implementar....
+        }
     }
 }

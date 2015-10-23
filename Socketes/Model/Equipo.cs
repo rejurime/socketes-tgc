@@ -189,5 +189,13 @@ namespace AlumnoEjemplos.Socketes.Model
         }
 
         #endregion
+
+        public void renderShadow(float elapsedTime, List<Iluminacion.Luz> luces)
+        {
+            foreach (Jugador jugador in this.jugadores)
+            {
+                jugador.renderShadow(elapsedTime, luces);
+            }
+        }
     }
 }

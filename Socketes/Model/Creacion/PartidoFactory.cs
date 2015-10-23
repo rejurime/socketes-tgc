@@ -1,5 +1,6 @@
 ﻿using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
 using Microsoft.DirectX;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.Sonidos = sonidos;
             partido.Marcador = this.CrearMarcador(nombreEquipoLocal, nombreEquipoVisitante);
             partido.Cancha = this.CrearCancha(pathRecursos);
+            partido.Luces = this.CrearLuces(pathRecursos);
+
             partido.ArcoLocal = this.CrearArco(new Vector3(860, -8, -12), pathRecursos);
             partido.ArcoVisitante = this.CrearArco(new Vector3(-860, -8, -12), pathRecursos);
             partido.Pelota = this.CrearPelota(pathRecursos);
@@ -75,6 +78,14 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             EquipoFactory.Instance.CargarColisionesEquipos(partido.EquipoLocal, partido.EquipoVisitante, partido);
 
             return partido;
+        }
+
+        private List<Luz> CrearLuces(string pathRecursos)
+        {
+            //TODO impelmentar creacion de luces
+            List<Luz> luces = new List<Luz>();
+
+            return luces;
         }
 
         /// <summary>
