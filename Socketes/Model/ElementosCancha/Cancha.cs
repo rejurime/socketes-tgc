@@ -112,9 +112,9 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             return movimiento;
         }
 
-        public float GetFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante)
         {
-            return 0.9f;
+            return 0.9f * fuerzaRestante;
         }
 
         public TgcBoundingBox GetTgcBoundingBox()

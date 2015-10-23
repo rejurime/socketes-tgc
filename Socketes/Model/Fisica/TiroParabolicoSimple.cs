@@ -1,5 +1,6 @@
 ﻿using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
+using System;
 using TgcViewer;
 
 namespace AlumnoEjemplos.Socketes.Fisica
@@ -19,7 +20,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         private float factor = 0.98f;
 
         //un factor de graveddad para que vaya cayendo en Y.
-        private float gravedad = 0.15f;
+        private float gravedad = 0.2f;
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)
         {
@@ -30,7 +31,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
             this.direccion = direccion;
             this.fuerza = fuerza;
 
-            this.fuerzaPorEje = new Vector3(fuerza, fuerza * 0.8f, fuerza);
+            this.fuerzaPorEje = new Vector3(Math.Abs(direccion.X) * fuerza, Math.Max(Math.Abs(direccion.Y), 0.8f) * fuerza, Math.Abs(direccion.Z) * fuerza);
         }
 
         /// <summary>
