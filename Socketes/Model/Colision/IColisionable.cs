@@ -22,7 +22,7 @@ namespace AlumnoEjemplos.Socketes.Model.Colision
         /// Retorna el factor de rebote, para el pasto puede ser mas leve, para los postes puede ser mas fuerte.
         /// </summary>
         /// <returns></returns>
-        float GetFuerzaRebote(Vector3 movimiento);
+        float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante);
 
         /// <summary>
         /// Se debe retornar el boundingbox del objeto colisionable.

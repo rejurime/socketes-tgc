@@ -2,6 +2,7 @@
 using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using TgcViewer.Utils.Sound;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -19,6 +20,17 @@ namespace AlumnoEjemplos.Socketes.Model
         private Arco arcoVisitante;
         private Equipo equipoLocal;
         private Equipo equipoVisitante;
+
+        private List<Luz> luces;
+
+        internal List<Luz> Luces
+        {
+            get { return luces; }
+            set { luces = value; }
+        }
+
+
+
         private Dictionary<string, TgcStaticSound> sonidos;
 
         //FIXME sacar esto en cuanto se pueda NO A LOS SINGLETONS
@@ -34,6 +46,7 @@ namespace AlumnoEjemplos.Socketes.Model
         #endregion
 
         #region Propiedades
+
 
         public Cancha Cancha
         {
@@ -129,6 +142,13 @@ namespace AlumnoEjemplos.Socketes.Model
             this.cancha.render();
             this.arcoLocal.render();
             this.arcoVisitante.render();
+
+            //sombras
+            this.equipoLocal.renderShadow(elapsedTime, luces);
+            this.equipoVisitante.renderShadow(elapsedTime, luces);
+            this.pelota.renderShadow(elapsedTime, luces);
+
+            //objetos locos
             this.equipoLocal.render(elapsedTime);
             this.equipoVisitante.render(elapsedTime);
             this.pelota.updateValues(elapsedTime);

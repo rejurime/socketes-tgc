@@ -1,5 +1,6 @@
 ﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.Jugadores;
 using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
@@ -20,7 +21,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
 
-        private float gravityForce = 0.2f;
+        private float gravityForce = 0.8f;
 
         private TgcBox box;
         private float VELOCIDAD_DE_ROTACION_DEFAULT = 100;
@@ -31,6 +32,15 @@ namespace AlumnoEjemplos.Socketes.Model
 
         //solo guardo la rotacion, el resto de las matrices se arman en el momento
         private Matrix matrixrotacion = Matrix.Identity;
+        private float diametro;
+
+        public float Diametro
+        {
+            get { return diametro; }
+            set { diametro = value; }
+        }
+
+  
 
         public TgcBoundingSphere BoundingSphere
         {
@@ -59,6 +69,7 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             //apago el auto transformado, ya que la pelota lo maneja solo
             sphere.AutoTransformEnable = false;
+            diametro = sphere.Radius * 2;
             this.box = TgcBox.fromSize(sphere.Position, new Vector3(sphere.Radius * 2, sphere.Radius * 2, sphere.Radius * 2));
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
@@ -170,7 +181,7 @@ namespace AlumnoEjemplos.Socketes.Model
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.PrintVectorSinSaltos(movimiento));
 
-           moveTo(movimiento);
+            moveTo(movimiento);
 
             ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
 
@@ -187,13 +198,13 @@ namespace AlumnoEjemplos.Socketes.Model
                 {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
-                        objetoColisionado.GetFuerzaRebote(movimiento) * tiro.getFuerza());
+                        objetoColisionado.GetFuerzaRebote(movimiento, tiro.getFuerza()));
                 }
                 else if (hayMovimiento(movimiento))
                 {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
-                        objetoColisionado.GetFuerzaRebote(movimiento) * 5);
+                        objetoColisionado.GetFuerzaRebote(movimiento, 5));
                 }
             }
 
@@ -321,12 +332,13 @@ namespace AlumnoEjemplos.Socketes.Model
         /// <param name="fuerza"></param>
         public void Pasar(Vector3 posicionJugador, float fuerza)
         {
-            tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
+            this.tiro = new TiroLinealAUnPunto(sphere.Position, posicionJugador, fuerza);
         }
 
         public void Mover(Vector3 movement)
         {
-            this.movimiento = movement;
+            if (!hayTiro())
+                this.movimiento = movement;
         }
 
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
@@ -334,7 +346,7 @@ namespace AlumnoEjemplos.Socketes.Model
             throw new NotImplementedException();
         }
 
-        public float GetFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante)
         {
             throw new NotImplementedException();
         }
@@ -342,6 +354,11 @@ namespace AlumnoEjemplos.Socketes.Model
         public TgcBoundingBox GetTgcBoundingBox()
         {
             return box.BoundingBox;
+        }
+
+        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        {
+            //TODO implementar......
         }
     }
 }

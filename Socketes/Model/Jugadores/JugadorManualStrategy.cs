@@ -31,7 +31,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyDown(Key.S))
             {
-                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 8);
+                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 5);
                 jugador.PelotaDominada = false;
                 return;
             }
@@ -45,8 +45,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 }
                 else
                 {
-                    Vector3 direccion = pelota.Position - jugador.Position;
-                    direccion.Normalize();
+                    Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
                     jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear);
                     jugador.PelotaDominada = false;
                     this.acumuladoPatear = 0;
@@ -58,8 +57,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Si suelto D pateo la pelota con la fuerza acumulada
             if (this.d3dInput.keyUp(Key.D) && this.acumuladoPatear != 0)
             {
-                Vector3 direccion = pelota.Position - jugador.Position;
-                direccion.Normalize();
+                Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
                 jugador.Pelota.Patear(direccion, this.acumuladoPatear);
                 jugador.PelotaDominada = false;
                 this.acumuladoPatear = 0;
@@ -80,6 +78,28 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             {
                 jugador.PelotaDominada = false;
             }
+        }
+
+        private Vector3 CalcularDireccionDePateado(Jugador jugador, Pelota pelota, Vector3 movimiento)
+        {
+            Vector3 direccion = Vector3.Empty;
+            if (movimiento.Equals(Vector3.Empty))
+            {
+                direccion = pelota.Position - jugador.Position;
+            }
+            else
+            {
+                direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
+            }
+
+            direccion.Normalize();
+
+            return direccion;
+        }
+
+        private static Vector3 CalcularDireccionDePateado(Jugador jugador, Pelota pelota)
+        {
+            return pelota.Position - jugador.Position;
         }
 
         private bool SigoColisionadoConPelota(Pelota pelota, Jugador jugador)

@@ -48,10 +48,10 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             return movimiento;
         }
 
-        public float GetFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante)
         {
             //factor de fuerza de rebote, hay q ver que onda estos valores.
-            return 0.9f;
+            return 0.9f * fuerzaRestante;
         }
 
         public TgcBoundingBox GetTgcBoundingBox()

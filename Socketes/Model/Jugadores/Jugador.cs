@@ -14,7 +14,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private TgcSkeletalMesh skeletalMesh;
         private TgcBox box;
         private float velocidadCaminar = 100f;
-        private float velocidadCorrer = 500f;
+        private float velocidadCorrer = 250f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
         private Equipo equipoPropio;
@@ -209,26 +209,48 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
-            //Ver esto, como pensamos las colisiones, los jugadores reciben la pelota y la pueden tener, si hacemos esto le rebotaria
-            movimiento.Normalize();
-            //si la pelota se esta moviendo en X, entonces cambio esa direccion
-            if (movimiento.X != 0)
+          //por defecto la direccion de movimiento es la que tiene
+           Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
+           direccion.Normalize();
+           //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
+           if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
             {
-                movimiento.X *= -1;
+               direccion.Y = 1;
             }
 
-            //si la pelota se mueve en Z, cambio esa direccion
-            if (movimiento.Z != 0)
-            {
-                movimiento.Z *= -1;
-            }
+           if (movimiento.X != 0)
+           {
+               direccion.X *= -1;
+           }
 
-            return movimiento;
+           //si la pelota se mueve en Z, cambio esa direccion
+           if (movimiento.Z != 0)
+           {
+               direccion.Z *= -1;
+           }
+
+           if (movimiento.X == 0 && movimiento.Z == 0 && direccion.Y != 0)
+           {
+               //si no habia movimiento de la pelota, la cabece para algun lado
+               Vector3 distancia = BoundingBox.Position - pelota.Position;
+               distancia.Normalize();
+               direccion.X = distancia.X * -1;
+               direccion.Z = distancia.Z * -1;
+           }
+
+
+            return direccion;
         }
 
-        public float GetFuerzaRebote(Vector3 movimiento)
+        public float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante)
         {
-            return 0.10f;
+            //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
+            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
+            {
+                return 4;
+            }
+
+            return fuerzaRestante * 0.4f;
         }
 
         public TgcBoundingBox GetTgcBoundingBox()
@@ -244,5 +266,10 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         }
 
         #endregion
+
+        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        {
+            //TODO implementar....
+        }
     }
 }
