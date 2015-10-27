@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="camaraOffsetHeight" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">275</Value>
     </Setting>
     <Setting Name="camaraOffsetForward" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">-400</Value>
+      <Value Profile="(Default)">-500</Value>
     </Setting>
     <Setting Name="mediaFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">AlumnoMedia\Socketes\</Value>

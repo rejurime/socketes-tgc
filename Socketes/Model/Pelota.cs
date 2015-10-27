@@ -177,7 +177,6 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 lastsphereposition = sphere.Position;
             Vector3 lastboxposition = box.Position;
 
-
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.PrintVectorSinSaltos(movimiento));
 

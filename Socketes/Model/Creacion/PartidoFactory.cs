@@ -120,37 +120,39 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <returns>Una Cancha</returns>
         private Cancha CrearCancha(string pathRecursos)
         {
+            //Laterales
             TgcMesh tribuna1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
             tribuna1.move(new Vector3(0, 70, 800));
             tribuna1.rotateY(-(float)Math.PI / 2);
-            tribuna1.Scale = new Vector3(10, 10, 10);
+            tribuna1.Scale = new Vector3(10, 10, 14);
 
             TgcMesh tribuna2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePl).Meshes[0];
             tribuna2.move(new Vector3(0, 70, -800));
             tribuna2.rotateY((float)Math.PI / 2);
-            tribuna2.Scale = new Vector3(10, 10, 10);
+            tribuna2.Scale = new Vector3(10, 10, 14);
 
+            //Atras del arco
             TgcMesh tribuna3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
             tribuna3.move(new Vector3(1100, 55, 0));
             tribuna3.rotateY(-(float)Math.PI / 2);
-            tribuna3.Scale = new Vector3(10, 10, 10);
+            tribuna3.Scale = new Vector3(10, 10, 15);
 
             TgcMesh tribuna4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileTribunePo).Meshes[0];
             tribuna4.move(new Vector3(-1100, 55, 0));
             tribuna4.rotateY((float)Math.PI / 2);
-            tribuna4.Scale = new Vector3(10, 10, 10);
+            tribuna4.Scale = new Vector3(10, 10, 15);
 
-            TgcBox box = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField));
-            TgcBox box2 = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2350, 0, 1750), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureFloor));
+            TgcBox boxField = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureField));
+            TgcBox boxFloor = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2350, 0, 1750), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureFloor));
 
             List<IRenderObject> componentes = new List<IRenderObject>();
             componentes.Add(tribuna1);
             componentes.Add(tribuna2);
             componentes.Add(tribuna3);
             componentes.Add(tribuna4);
-            componentes.Add(box2);
+            componentes.Add(boxFloor);
 
-            return new Cancha(box, componentes, this.CrearLimitesCancha());
+            return new Cancha(boxField, componentes, this.CrearLimitesCancha());
         }
 
         /// <summary>
@@ -160,10 +162,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         private List<LimiteCancha> CrearLimitesCancha()
         {
             List<LimiteCancha> limites = new List<LimiteCancha>();
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(900, 250, 0), new Vector3(0, 550, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-900, 250, 0), new Vector3(0, 550, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 250, 580), new Vector3(1920, 550, 0))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 250, -580), new Vector3(1920, 550, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(860, 270, 0), new Vector3(0, 550, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-860, 270, 0), new Vector3(0, 550, 1200))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 270, 575), new Vector3(1920, 550, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 270, -575), new Vector3(1920, 550, 0))));
 
             return limites;
         }
@@ -197,22 +199,22 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             List<Palo> palos = new List<Palo>();
             TgcMesh palo1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
             palo1.Position = posicion;
-            palo1.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            palo1.Scale = new Vector3(1.1f, 1.1f, 1.1f);
 
             TgcMesh palo2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[1];
             palo2.Position = posicion;
-            palo2.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            palo2.Scale = new Vector3(1.1f, 1.1f, 1.1f);
 
             TgcMesh palo3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[2];
             palo3.Position = posicion;
-            palo3.Scale = new Vector3(1.25f, 1.25f, 1.25f);
+            palo3.Scale = new Vector3(1.1f, 1.1f, 1.1f);
 
             palos.Add(new Palo(palo1));
             palos.Add(new Palo(palo2));
             palos.Add(new Palo(palo3));
 
-            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + 55, posicion.Z);
-            Vector3 tamanoRed = new Vector3(0, 110, 210);
+            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + 58, posicion.Z);
+            Vector3 tamanoRed = new Vector3(0, 118, 266);
             return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed)));
         }
 
