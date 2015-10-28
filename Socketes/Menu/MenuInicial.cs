@@ -47,28 +47,28 @@ namespace AlumnoEjemplos.Socketes.Menu
 
             //Brazuca
             this.pelota = new TgcSphere();
-            this.pelota.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + Settings.Default.textureBall));
+            this.pelota.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             this.pelota.Radius = 2.5f;
             this.pelota.LevelOfDetail = 4;
             this.pelota.Position = new Vector3(3, 0, -4);
             this.pelota.updateValues();
 
             //Cancha donde esta la pelota
-            this.cancha = TgcBox.fromSize(new Vector3(20, 0, 20), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFolder + "canchaMenu.jpg"));
+            this.cancha = TgcBox.fromSize(new Vector3(20, 0, 20), TgcTexture.createTexture(pathRecursos + Settings.Default.textureMenuField));
             this.cancha.Position = new Vector3(0, -2.5f, 0);
 
             //Menu
             this.menus = new List<MenuItem>();
-            this.menus.Add(new MenuItem("picadito", new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.picadito1, pathRecursos + Settings.Default.picadito2));
-            this.menus.Add(new MenuItem("configuracion", new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.controles1, pathRecursos + Settings.Default.controles2));
-            this.menus.Add(new MenuItem("salir", new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.salir1, pathRecursos + Settings.Default.salir2));
+            this.menus.Add(new MenuItem("picadito", new Vector3(-5, 2, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.texturePicadito1, pathRecursos + Settings.Default.texturePicadito2));
+            this.menus.Add(new MenuItem("configuracion", new Vector3(-5, 0.8f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.textureControles1, pathRecursos + Settings.Default.textureControles2));
+            this.menus.Add(new MenuItem("salir", new Vector3(-5, -0.4f, 0), new Vector3(8, 1, 0), pathRecursos + Settings.Default.textureSalir1, pathRecursos + Settings.Default.textureSalir2));
 
             this.menus[0].Select();
 
             //Menu de configuracion
             //Crear Sprite
             this.panelConfiguracion = new TgcSprite();
-            this.panelConfiguracion.Texture = TgcTexture.createTexture(pathRecursos + Settings.Default.panelcontroles);
+            this.panelConfiguracion.Texture = TgcTexture.createTexture(pathRecursos + Settings.Default.texturePanelcontroles);
             this.panelConfiguracion.Scaling = new Vector2(0.75f, 0.75f);
             //this.panelConfiguracion.Texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "\\Texturas\\LogoTGC.png");
             Size screenSize = GuiController.Instance.Panel3d.Size;

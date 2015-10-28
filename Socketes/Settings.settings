@@ -3,28 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="camaraOffsetHeight" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">275</Value>
+      <Value Profile="(Default)">250</Value>
     </Setting>
     <Setting Name="camaraOffsetForward" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">-500</Value>
+      <Value Profile="(Default)">-400</Value>
     </Setting>
     <Setting Name="mediaFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">AlumnoMedia\Socketes\</Value>
     </Setting>
-    <Setting Name="textureFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Texturas\</Value>
-    </Setting>
     <Setting Name="textureBall" Type="System.String" Scope="User">
-      <Value Profile="(Default)">pelota1.jpg</Value>
+      <Value Profile="(Default)">Texturas\pelota1.jpg</Value>
     </Setting>
     <Setting Name="textureField" Type="System.String" Scope="User">
-      <Value Profile="(Default)">cancha1.jpg</Value>
+      <Value Profile="(Default)">Texturas\cancha1.jpg</Value>
     </Setting>
     <Setting Name="textureTeam1" Type="System.String" Scope="User">
       <Value Profile="(Default)">Textures\uvw.png</Value>
-    </Setting>
-    <Setting Name="textureTeam2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Textures\uvwGreen.png</Value>
     </Setting>
     <Setting Name="meshFolderPlayer" Type="System.String" Scope="User">
       <Value Profile="(Default)">SkeletalAnimations\Robot\</Value>
@@ -67,29 +61,56 @@
   &lt;string&gt;Audio\FIFA 1999 - Fatboy Slim - The Rockafeller Skank.mp3&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="picadito1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\picadito.png</Value>
+    <Setting Name="texturePicadito1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\picadito.png</Value>
     </Setting>
-    <Setting Name="picadito2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\picadito-seleccionado.png</Value>
+    <Setting Name="texturePicadito2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\picadito-seleccionado.png</Value>
     </Setting>
-    <Setting Name="controles1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\controles.png</Value>
+    <Setting Name="textureControles1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\controles.png</Value>
     </Setting>
-    <Setting Name="controles2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\controles-seleccionado.png</Value>
+    <Setting Name="textureControles2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\controles-seleccionado.png</Value>
     </Setting>
-    <Setting Name="salir1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\salir.png</Value>
+    <Setting Name="textureSalir1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\salir.png</Value>
     </Setting>
-    <Setting Name="salir2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\salir-seleccionado.png</Value>
+    <Setting Name="textureSalir2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\salir-seleccionado.png</Value>
     </Setting>
-    <Setting Name="panelcontroles" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Menu\\panel-controles.png</Value>
+    <Setting Name="texturePanelcontroles" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Menu\panel-controles.png</Value>
     </Setting>
     <Setting Name="textureFloor" Type="System.String" Scope="User">
-      <Value Profile="(Default)">piso1.jpg</Value>
+      <Value Profile="(Default)">Texturas\piso1.jpg</Value>
+    </Setting>
+    <Setting Name="textureTeam2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Textures\uvwGreen.png</Value>
+    </Setting>
+    <Setting Name="textureMenuField" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Texturas\canchaMenu.jpg</Value>
+    </Setting>
+    <Setting Name="textureWall" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Texturas\wall-texture.jpg</Value>
+    </Setting>
+    <Setting Name="textureSkyFacesUp" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\11.png</Value>
+    </Setting>
+    <Setting Name="textureSkyFaceDown" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\22.png</Value>
+    </Setting>
+    <Setting Name="textureSkyFaceLeft" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\33.png</Value>
+    </Setting>
+    <Setting Name="textureSkyFaceRight" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\55.png</Value>
+    </Setting>
+    <Setting Name="textureSkyFaceFront" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\44.png</Value>
+    </Setting>
+    <Setting Name="textureSkyFaceBack" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBox\66.png</Value>
     </Setting>
   </Settings>
 </SettingsFile>

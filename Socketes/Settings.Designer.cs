@@ -25,7 +25,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("275")]
+        [global::System.Configuration.DefaultSettingValueAttribute("250")]
         public float camaraOffsetHeight {
             get {
                 return ((float)(this["camaraOffsetHeight"]));
@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("-500")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-400")]
         public float camaraOffsetForward {
             get {
                 return ((float)(this["camaraOffsetForward"]));
@@ -61,19 +61,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\")]
-        public string textureFolder {
-            get {
-                return ((string)(this["textureFolder"]));
-            }
-            set {
-                this["textureFolder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("pelota1.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\pelota1.jpg")]
         public string textureBall {
             get {
                 return ((string)(this["textureBall"]));
@@ -85,7 +73,7 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("cancha1.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\cancha1.jpg")]
         public string textureField {
             get {
                 return ((string)(this["textureField"]));
@@ -104,18 +92,6 @@ namespace AlumnoEjemplos.Socketes {
             }
             set {
                 this["textureTeam1"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvwGreen.png")]
-        public string textureTeam2 {
-            get {
-                return ((string)(this["textureTeam2"]));
-            }
-            set {
-                this["textureTeam2"] = value;
             }
         }
         
@@ -270,97 +246,205 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\picadito.png")]
-        public string picadito1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\picadito.png")]
+        public string texturePicadito1 {
             get {
-                return ((string)(this["picadito1"]));
+                return ((string)(this["texturePicadito1"]));
             }
             set {
-                this["picadito1"] = value;
+                this["texturePicadito1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\picadito-seleccionado.png")]
-        public string picadito2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\picadito-seleccionado.png")]
+        public string texturePicadito2 {
             get {
-                return ((string)(this["picadito2"]));
+                return ((string)(this["texturePicadito2"]));
             }
             set {
-                this["picadito2"] = value;
+                this["texturePicadito2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\controles.png")]
-        public string controles1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\controles.png")]
+        public string textureControles1 {
             get {
-                return ((string)(this["controles1"]));
+                return ((string)(this["textureControles1"]));
             }
             set {
-                this["controles1"] = value;
+                this["textureControles1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\controles-seleccionado.png")]
-        public string controles2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\controles-seleccionado.png")]
+        public string textureControles2 {
             get {
-                return ((string)(this["controles2"]));
+                return ((string)(this["textureControles2"]));
             }
             set {
-                this["controles2"] = value;
+                this["textureControles2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\salir.png")]
-        public string salir1 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\salir.png")]
+        public string textureSalir1 {
             get {
-                return ((string)(this["salir1"]));
+                return ((string)(this["textureSalir1"]));
             }
             set {
-                this["salir1"] = value;
+                this["textureSalir1"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\salir-seleccionado.png")]
-        public string salir2 {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\salir-seleccionado.png")]
+        public string textureSalir2 {
             get {
-                return ((string)(this["salir2"]));
+                return ((string)(this["textureSalir2"]));
             }
             set {
-                this["salir2"] = value;
+                this["textureSalir2"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\\\panel-controles.png")]
-        public string panelcontroles {
+        [global::System.Configuration.DefaultSettingValueAttribute("Menu\\panel-controles.png")]
+        public string texturePanelcontroles {
             get {
-                return ((string)(this["panelcontroles"]));
+                return ((string)(this["texturePanelcontroles"]));
             }
             set {
-                this["panelcontroles"] = value;
+                this["texturePanelcontroles"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("piso1.jpg")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\piso1.jpg")]
         public string textureFloor {
             get {
                 return ((string)(this["textureFloor"]));
             }
             set {
                 this["textureFloor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Textures\\uvwGreen.png")]
+        public string textureTeam2 {
+            get {
+                return ((string)(this["textureTeam2"]));
+            }
+            set {
+                this["textureTeam2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\canchaMenu.jpg")]
+        public string textureMenuField {
+            get {
+                return ((string)(this["textureMenuField"]));
+            }
+            set {
+                this["textureMenuField"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\wall-texture.jpg")]
+        public string textureWall {
+            get {
+                return ((string)(this["textureWall"]));
+            }
+            set {
+                this["textureWall"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\11.png")]
+        public string textureSkyFacesUp {
+            get {
+                return ((string)(this["textureSkyFacesUp"]));
+            }
+            set {
+                this["textureSkyFacesUp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\22.png")]
+        public string textureSkyFaceDown {
+            get {
+                return ((string)(this["textureSkyFaceDown"]));
+            }
+            set {
+                this["textureSkyFaceDown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\33.png")]
+        public string textureSkyFaceLeft {
+            get {
+                return ((string)(this["textureSkyFaceLeft"]));
+            }
+            set {
+                this["textureSkyFaceLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\55.png")]
+        public string textureSkyFaceRight {
+            get {
+                return ((string)(this["textureSkyFaceRight"]));
+            }
+            set {
+                this["textureSkyFaceRight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\44.png")]
+        public string textureSkyFaceFront {
+            get {
+                return ((string)(this["textureSkyFaceFront"]));
+            }
+            set {
+                this["textureSkyFaceFront"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SkyBox\\66.png")]
+        public string textureSkyFaceBack {
+            get {
+                return ((string)(this["textureSkyFaceBack"]));
+            }
+            set {
+                this["textureSkyFaceBack"] = value;
             }
         }
     }
