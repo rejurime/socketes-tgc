@@ -13,8 +13,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private Vector3 posicionOriginal;
         private TgcSkeletalMesh skeletalMesh;
         private TgcBox box;
-        private float velocidadCaminar = 100f;
-        private float velocidadCorrer = 250f;
+        private float velocidadCaminar = 120f;
+        private float velocidadCorrer = 220f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
         private Equipo equipoPropio;

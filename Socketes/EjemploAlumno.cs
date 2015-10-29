@@ -58,9 +58,12 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
+            //Se ejecuta en FullScreen
+            GuiController.Instance.FullScreenEnable = true;
+
             //Musica
-            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
-            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
+            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
@@ -137,11 +140,11 @@ namespace AlumnoEjemplos.Socketes
 
                 this.partido.render(elapsedTime);
 
-                //TODO que onda esto porque esta aca? revisar //TODO horrible pero ya el partido no tiene mas el jugador humano
-                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.EquipoLocal.Jugadores[0].Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+                //TODO que onda esto porque esta aca? revisar
+                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.Pelota.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
 
                 //Hacer que la camara siga al personaje en su nueva posicion
-                GuiController.Instance.ThirdPersonCamera.Target = this.partido.EquipoLocal.Jugadores[0].Position;
+                GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
             }
         }
 

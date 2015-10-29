@@ -10,7 +10,7 @@ using TgcViewer.Utils.TgcSkeletalAnimation;
 
 namespace AlumnoEjemplos.Socketes.Model.Creacion
 {
-    /// <summary> Factory para los equipo</summary>
+    /// <summary> Factory para crear los equipo</summary>
     public class EquipoFactory
     {
         #region Miembros
@@ -133,7 +133,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             personaje.Position = posicion;
 
             //Lo Escalo porque es muy grande
-            personaje.Scale = new Vector3(0.6f, 0.6f, 0.6f);
+            personaje.Scale = new Vector3(0.4f, 0.4f, 0.4f);
             personaje.rotateY(Geometry.DegreeToRadian(angulo));
 
             return new Jugador(personaje, strategy, pelota);

@@ -1,45 +1,37 @@
 using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
 using Microsoft.DirectX;
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
-using System;
 
 namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
 {
     public class Cancha : IColisionablePelota
     {
+        #region Miembros
+
         private TgcBox box;
-        private List<IRenderObject> tribunas;
+        private List<IRenderObject> componentesEstaticos;
         private List<LimiteCancha> limitesCancha;
+        private List<Luz> luces;
         private bool mostrarBounding;
 
-        public Cancha(TgcBox box, List<IRenderObject> tribunas, List<LimiteCancha> limitesCancha)
+        #endregion
+
+        #region  Constructores
+
+        public Cancha(TgcBox box, List<IRenderObject> componentes, List<LimiteCancha> limitesCancha, List<Luz> luces)
         {
             this.box = box;
-            this.tribunas = tribunas;
+            this.componentesEstaticos = componentes;
             this.limitesCancha = limitesCancha;
+            this.Luces = luces;
         }
 
-        public void render()
-        {
-            box.render();
+        #endregion
 
-            if (this.mostrarBounding)
-            {
-                box.BoundingBox.render();
-            }
-
-            foreach (IRenderObject componente in this.tribunas)
-            {
-                componente.render();
-            }
-
-            foreach (LimiteCancha limite in this.limitesCancha)
-            {
-                limite.render();
-            }
-        }
+        #region Propiedades
 
         public TgcBoundingBox BoundingBoxCesped
         {
@@ -80,11 +72,41 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             set { limitesCancha = value; }
         }
 
+        public List<Luz> Luces
+        {
+            get { return luces; }
+            set { luces = value; }
+        }
+
+        #endregion
+
+        #region Metodos
+
+        public void render()
+        {
+            box.render();
+
+            if (this.mostrarBounding)
+            {
+                box.BoundingBox.render();
+            }
+
+            foreach (IRenderObject componente in this.componentesEstaticos)
+            {
+                componente.render();
+            }
+
+            foreach (LimiteCancha limite in this.limitesCancha)
+            {
+                limite.render();
+            }
+        }
+
         public void dispose()
         {
             box.dispose();
 
-            foreach (IRenderObject componente in tribunas)
+            foreach (IRenderObject componente in componentesEstaticos)
             {
                 componente.dispose();
             }
@@ -95,7 +117,7 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             }
         }
 
-        public Vector3 Tamano()
+        public Vector3 Size()
         {
             return this.box.Size;
         }
@@ -126,5 +148,7 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         {
             return "Cancha";
         }
+
+        #endregion
     }
 }

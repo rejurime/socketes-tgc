@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+﻿using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
+using System.Collections.Generic;
 using TgcViewer.Utils.Sound;
-using AlumnoEjemplos.Socketes.Model.Iluminacion;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -21,16 +20,6 @@ namespace AlumnoEjemplos.Socketes.Model
         private Equipo equipoLocal;
         private Equipo equipoVisitante;
 
-        private List<Luz> luces;
-
-        internal List<Luz> Luces
-        {
-            get { return luces; }
-            set { luces = value; }
-        }
-
-
-
         private Dictionary<string, TgcStaticSound> sonidos;
 
         //FIXME sacar esto en cuanto se pueda NO A LOS SINGLETONS
@@ -46,7 +35,6 @@ namespace AlumnoEjemplos.Socketes.Model
         #endregion
 
         #region Propiedades
-
 
         public Cancha Cancha
         {
@@ -144,9 +132,9 @@ namespace AlumnoEjemplos.Socketes.Model
             this.arcoVisitante.render();
 
             //sombras
-            this.equipoLocal.renderShadow(elapsedTime, luces);
-            this.equipoVisitante.renderShadow(elapsedTime, luces);
-            this.pelota.renderShadow(elapsedTime, luces);
+            this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
+            this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
+            this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
 
             //objetos locos
             this.equipoLocal.render(elapsedTime);
@@ -181,11 +169,11 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             if (this.equipoLocal.ArcoPropio.Red.Equals(red))
             {
-                this.equipoLocal.Goles += 1;
+                this.equipoVisitante.Goles += 1;
             }
             else
             {
-                this.equipoVisitante.Goles += 1;
+                this.equipoLocal.Goles += 1;
             }
 
             this.ReiniciarPosiciones();
