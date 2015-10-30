@@ -59,7 +59,7 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Se ejecuta en FullScreen
-            GuiController.Instance.FullScreenEnable = true;
+            //GuiController.Instance.FullScreenEnable = true;
 
             //Musica
             //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);

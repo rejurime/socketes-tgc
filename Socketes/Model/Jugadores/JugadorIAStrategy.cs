@@ -20,7 +20,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             this.semilla = new Random();
         }
 
-        public void Move(Jugador jugador, float elapsedTime)
+        public void AccionSinPelota(Jugador jugador, float elapsedTime)
         {
             if (!this.TengoQueMoverme(jugador))
             {
@@ -55,7 +55,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
         }
 
-        public void PelotaDominada(Jugador jugador, float elapsedTimePelota, Pelota pelota)
+        public void AccionConPelota(Jugador jugador, float elapsedTimePelota, Pelota pelota)
         {
             if (!this.TengoQueMoverme(jugador))
             {

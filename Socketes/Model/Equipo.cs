@@ -2,6 +2,7 @@
 using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using System.Collections.Generic;
+using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -76,25 +77,6 @@ namespace AlumnoEjemplos.Socketes.Model
                     }
                 }
             }
-        }
-
-        public object JugadorMasCercanoPelota()
-        {
-            Jugador jugadorMasCercano = null;
-
-            foreach (Jugador jugador in this.jugadores)
-            {
-                if (jugadorMasCercano == null)
-                {
-                    jugadorMasCercano = jugador;
-                }
-                else if (jugadorMasCercano.DistanciaPelota() > jugador.DistanciaPelota())
-                {
-                    jugadorMasCercano = jugador;
-                }
-            }
-
-            return jugadorMasCercano;
         }
 
         public Arco ArcoPropio
@@ -194,6 +176,47 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 jugador.ReiniciarPosicion();
             }
+        }
+
+        public Jugador JugadorMasCercanoPelota()
+        {
+            Jugador jugadorMasCercano = null;
+
+            foreach (Jugador jugador in this.jugadores)
+            {
+                if (jugadorMasCercano == null)
+                {
+                    jugadorMasCercano = jugador;
+                }
+                else if (jugadorMasCercano.DistanciaPelota() > jugador.DistanciaPelota())
+                {
+                    jugadorMasCercano = jugador;
+                }
+            }
+
+            return jugadorMasCercano;
+        }
+
+        public Jugador JugadorMasCercanoPelota(Jugador jugadorExcluido)
+        {
+            Jugador jugadorMasCercano = null;
+
+            foreach (Jugador jugador in this.jugadores)
+            {
+                if (!jugador.Equals(jugadorExcluido))
+                {
+                    if (jugadorMasCercano == null)
+                    {
+                        jugadorMasCercano = jugador;
+                    }
+                    else if (jugadorMasCercano.DistanciaPelota() > jugador.DistanciaPelota())
+                    {
+                        jugadorMasCercano = jugador;
+                    }
+                }
+            }
+
+            return jugadorMasCercano;
         }
 
         #endregion
