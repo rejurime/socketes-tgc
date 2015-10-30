@@ -26,9 +26,9 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private bool mostrarBounding;
 
         //TODO ver si esta se puede mejorar con un state :)
-        private bool pelotaDominada;
-        private bool atacando;
-        private bool cambiandoStrategy;
+        private bool pelotaDominada = false;
+        private bool atacando = false;
+        private bool cambiandoStrategy = false;
 
         #endregion
 
@@ -149,6 +149,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             set { atacando = value; }
         }
 
+        public bool CambiandoStrategy
+        {
+            get { return cambiandoStrategy; }
+            set { cambiandoStrategy = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -166,13 +172,20 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void animateAndRender(float elapsedTime)
         {
-            if (this.pelotaDominada)
+            if (this.cambiandoStrategy)
             {
-                this.strategy.AccionConPelota(this, elapsedTime, pelota);
+                this.cambiandoStrategy = false;
             }
             else
             {
-                this.strategy.AccionSinPelota(this, elapsedTime);
+                if (this.pelotaDominada)
+                {
+                    this.strategy.AccionConPelota(this, elapsedTime, pelota);
+                }
+                else
+                {
+                    this.strategy.AccionSinPelota(this, elapsedTime);
+                }
             }
 
             this.skeletalMesh.animateAndRender();
@@ -212,7 +225,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void CambiarStrategy(IJugadorMoveStrategy jugadorIAStrategy)
         {
-            
+            this.cambiandoStrategy = true;
+            this.strategy = jugadorIAStrategy;
         }
 
         public void ColisionasteConPelota(Pelota pelota)
@@ -275,6 +289,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         {
             Vector3 vector = this.Position - this.pelota.Position;
             //Math.Sqrt((vector.X * vector.X) + (vector.Y * vector.Y) + (vector.Z * vector.Z));
+            return vector.Length();
+        }
+
+        public double Distancia(Jugador jugadorReferencia)
+        {
+            Vector3 vector = this.Position - jugadorReferencia.Position;
             return vector.Length();
         }
 

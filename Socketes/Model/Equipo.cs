@@ -178,6 +178,7 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
+        //TODO hay que arreglar los buscar ya que todos hacen lo mismo :P
         public Jugador JugadorMasCercanoPelota()
         {
             Jugador jugadorMasCercano = null;
@@ -210,6 +211,28 @@ namespace AlumnoEjemplos.Socketes.Model
                         jugadorMasCercano = jugador;
                     }
                     else if (jugadorMasCercano.DistanciaPelota() > jugador.DistanciaPelota())
+                    {
+                        jugadorMasCercano = jugador;
+                    }
+                }
+            }
+
+            return jugadorMasCercano;
+        }
+
+        public Jugador JugadorMasCercano(Jugador jugadorReferencia)
+        {
+            Jugador jugadorMasCercano = null;
+
+            foreach (Jugador jugador in this.jugadores)
+            {
+                if (!jugador.Equals(jugadorReferencia))
+                {
+                    if (jugadorMasCercano == null)
+                    {
+                        jugadorMasCercano = jugador;
+                    }
+                    else if (jugadorMasCercano.Distancia(jugadorReferencia) > jugador.Distancia(jugadorReferencia))
                     {
                         jugadorMasCercano = jugador;
                     }
