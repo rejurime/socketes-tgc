@@ -14,6 +14,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         private Vector3 fuerzaPorEje;
         private float fuerza;
         private float factor = 0.98f;
+        private TiroLinealAUnPunto tiroLinealAUnPunto;
 
         public TiroLinealAUnPunto(Vector3 posicionActual, Vector3 posicionDestino, float fuerza)
         {
@@ -38,12 +39,12 @@ namespace AlumnoEjemplos.Socketes.Fisica
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
             //movimiento siguiente, no se mueve en eje Y ya que va por el piso
-            Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X, 0, direccion.Z * fuerzaPorEje.Z);
+            Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X * elapsedTime, 0, direccion.Z * fuerzaPorEje.Z * elapsedTime);
 
             //decremento segun el factor la fuerza de cada eje
-            fuerza *= factor;
-            fuerzaPorEje.X *= factor;
-            fuerzaPorEje.Z *= factor;
+            fuerza -= (1+elapsedTime);
+            fuerzaPorEje.X -= (1 + elapsedTime);
+            fuerzaPorEje.Z -= (1 + elapsedTime);
 
             return movimiento;
         }
@@ -56,7 +57,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         /// <returns></returns>
         public bool hayMovimiento()
         {
-            return !(fuerza < 0.02f && fuerza > -0.02f);
+            return fuerza > 0.02f;
         }
 
         public float getFuerza()

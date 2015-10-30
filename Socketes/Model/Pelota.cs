@@ -195,9 +195,12 @@ namespace AlumnoEjemplos.Socketes.Model
 
                 if (hayTiro())
                 {
-                    //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
-                    tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
-                        objetoColisionado.GetFuerzaRebote(movimiento, tiro.getFuerza()));
+                    if (tiro is TiroParabolicoSimple)
+                    {
+                        //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
+                        tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
+                            objetoColisionado.GetFuerzaRebote(movimiento, tiro.getFuerza()));
+                    }
                 }
                 else if (hayMovimiento(movimiento))
                 {
