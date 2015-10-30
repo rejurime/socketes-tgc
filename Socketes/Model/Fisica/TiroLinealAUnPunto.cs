@@ -15,13 +15,15 @@ namespace AlumnoEjemplos.Socketes.Fisica
         private float fuerza;
         private float factor = 0.98f;
         private TiroLinealAUnPunto tiroLinealAUnPunto;
+        private float fuerzaOriginal;
 
         public TiroLinealAUnPunto(Vector3 posicionActual, Vector3 posicionDestino, float fuerza)
         {
             this.posicionActual = posicionActual;
             this.posicionDestino = posicionDestino;
             this.fuerza = fuerza;
-            this.fuerzaPorEje = new Vector3(fuerza, fuerza, fuerza);
+            this.fuerzaOriginal = fuerza;
+
 
             //Vector resultante de los dos puntos
             direccion = posicionDestino - posicionActual;
@@ -39,12 +41,10 @@ namespace AlumnoEjemplos.Socketes.Fisica
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
             //movimiento siguiente, no se mueve en eje Y ya que va por el piso
-            Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X * elapsedTime, 0, direccion.Z * fuerzaPorEje.Z * elapsedTime);
+            Vector3 movimiento = new Vector3(direccion.X * fuerza * elapsedTime, 0, direccion.Z * fuerza * elapsedTime);
 
             //decremento segun el factor la fuerza de cada eje
-            fuerza -= (1+elapsedTime);
-            fuerzaPorEje.X -= (1 + elapsedTime);
-            fuerzaPorEje.Z -= (1 + elapsedTime);
+            fuerza -= (fuerzaOriginal * elapsedTime);
 
             return movimiento;
         }

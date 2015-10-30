@@ -195,6 +195,8 @@ namespace AlumnoEjemplos.Socketes.Model
 
                 if (hayTiro())
                 {
+
+                    //solo rebota con el tiro, con el pase no hace nada
                     if (tiro is TiroParabolicoSimple)
                     {
                         //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
