@@ -46,7 +46,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyPressed(Key.S))
             {
-                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 5);
+                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 250);
                 jugador.PelotaDominada = false;
                 return;
             }
