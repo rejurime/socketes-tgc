@@ -1,6 +1,8 @@
 using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -78,6 +80,9 @@ namespace AlumnoEjemplos.Socketes
             //Un boton para reiniciar las posiciones
             GuiController.Instance.Modifiers.addButton("ReiniciarPosiciones", "Reiniciar Posiciones", new EventHandler(this.ReiniciarPosiciones_Click));
 
+            //Luz
+            GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
+
             //Empiezo con un tema Random :)
             int numbreTrack = new Random().Next(Settings.Default.music.Count);
             GuiController.Instance.Mp3Player.FileName = pathRecursos + Settings.Default.music[numbreTrack];
@@ -131,6 +136,7 @@ namespace AlumnoEjemplos.Socketes
                 {
                     this.tiempo = true;
                     this.partido.Marcador.IniciarTiempo();
+                    GuiController.Instance.ThirdPersonCamera.setCamera(new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
                 }
                 //BoundingBox
                 this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
@@ -138,13 +144,13 @@ namespace AlumnoEjemplos.Socketes
                 //Inteligencia Artificial
                 this.partido.InteligenciaArtificial = (bool)GuiController.Instance.Modifiers["IA"];
 
-                this.partido.render(elapsedTime);
+                //Habilitar luz
+                this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
-                //TODO que onda esto porque esta aca? revisar
-                GuiController.Instance.ThirdPersonCamera.setCamera(this.partido.Pelota.Position, Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+                this.partido.render(elapsedTime);                
 
                 //Hacer que la camara siga al personaje en su nueva posicion
-                GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
+                GuiController.Instance.ThirdPersonCamera.Target = new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z);
             }
         }
 

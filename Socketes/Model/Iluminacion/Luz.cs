@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model.Iluminacion
 {
@@ -14,19 +15,22 @@ namespace AlumnoEjemplos.Socketes.Model.Iluminacion
     public class Luz
     {
         private Vector3 posicion;
-
-        public Vector3 Posicion
-        {
-            get { return posicion; }
-            set { posicion = value; }
-        }
         private Color color;
+        private TgcMesh luzMesh;
 
-        private TgcBox box;
+        public Luz(TgcMesh luzMesh)
+        {
+            this.luzMesh = luzMesh;
+        }
 
         public void render()
         {
-            //TODO implementar magia de luz
+            this.luzMesh.render();
+        }
+
+        public void close()
+        {
+            this.luzMesh.dispose();
         }
 
     }

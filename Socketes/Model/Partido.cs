@@ -1,7 +1,12 @@
 ﻿using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 using System.Collections.Generic;
+using System.Drawing;
+using TgcViewer;
 using TgcViewer.Utils.Sound;
+using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -12,6 +17,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private bool mostrarBounding;
         private bool inteligenciaArtificial;
+        private bool luz;
         private Marcador marcador;
         private Cancha cancha;
         private Pelota pelota;
@@ -115,6 +121,12 @@ namespace AlumnoEjemplos.Socketes.Model
             set { sonidos = value; }
         }
 
+        public bool Luz
+        {
+            get { return luz; }
+            set { luz = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -136,7 +148,50 @@ namespace AlumnoEjemplos.Socketes.Model
             this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
             this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
 
+            //Luces
+            Effect currentShader;
+            Pelota mesh = this.pelota;
+
+            /*
+            if (this.luz)
+            {
+                //Con luz: Cambiar el shader actual por el shader default que trae el framework para iluminacion dinamica con PointLight para Skeletal Mesh
+                currentShader = GuiController.Instance.Shaders.TgcSkeletalMeshPointLightShader;
+            }
+            else
+            {
+                //Sin luz: Restaurar shader default
+                currentShader = GuiController.Instance.Shaders.TgcSkeletalMeshShader;
+            }
+
+            //Aplicar al mesh el shader actual
+            mesh.Effect = currentShader;
+            //El Technique depende del tipo RenderType del mesh
+            //mesh.Technique = GuiController.Instance.Shaders.getTgcSkeletalMeshTechnique(mesh.RenderType);
+            mesh.Technique = GuiController.Instance.Shaders.getTgcSkeletalMeshTechnique(0);
+
+            //Renderizar mesh
+            if (this.luz)
+            {
+                //Cargar variables shader de la luz
+                mesh.Effect.SetValue("lightColor", ColorValue.FromColor(Color.White));
+                mesh.Effect.SetValue("lightPosition", TgcParserUtils.vector3ToFloat4Array(new Vector3(60, 35, 250)));
+                mesh.Effect.SetValue("eyePosition", TgcParserUtils.vector3ToFloat4Array(GuiController.Instance.FpsCamera.getPosition()));
+                mesh.Effect.SetValue("lightIntensity", 20);
+                mesh.Effect.SetValue("lightAttenuation", 0.3f);
+
+                //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
+                mesh.Effect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+                mesh.Effect.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
+                mesh.Effect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
+                mesh.Effect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
+                mesh.Effect.SetValue("materialSpecularExp", 9f);
+            }
+            */
+
+
             //objetos locos
+
             this.equipoLocal.render(elapsedTime);
             this.equipoVisitante.render(elapsedTime);
             this.pelota.updateValues(elapsedTime);

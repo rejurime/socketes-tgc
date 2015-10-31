@@ -100,6 +100,11 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             {
                 limite.render();
             }
+
+            foreach (Luz lux in this.luces)
+            {
+                lux.render();
+            }
         }
 
         public void dispose()
