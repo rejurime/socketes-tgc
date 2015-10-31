@@ -1,4 +1,5 @@
-﻿using AlumnoEjemplos.Socketes.Model.Colision;
+﻿using System;
+using AlumnoEjemplos.Socketes.Model.Colision;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
@@ -23,9 +24,11 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
         private string animacionParado = Settings.Default.animationStopPlayer;
         private bool mostrarBounding;
+
         //TODO ver si esta se puede mejorar con un state :)
-        private bool pelotaDominada;
-        private bool atacando;
+        private bool pelotaDominada = false;
+        private bool atacando = false;
+        private bool cambiandoStrategy = false;
 
         #endregion
 
@@ -146,6 +149,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             set { atacando = value; }
         }
 
+        public bool CambiandoStrategy
+        {
+            get { return cambiandoStrategy; }
+            set { cambiandoStrategy = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -163,13 +172,20 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void animateAndRender(float elapsedTime)
         {
-            if (this.pelotaDominada)
+            if (this.cambiandoStrategy)
             {
-                this.strategy.PelotaDominada(this, elapsedTime, pelota);
+                this.cambiandoStrategy = false;
             }
             else
             {
-                this.strategy.Move(this, elapsedTime);
+                if (this.pelotaDominada)
+                {
+                    this.strategy.AccionConPelota(this, elapsedTime, pelota);
+                }
+                else
+                {
+                    this.strategy.AccionSinPelota(this, elapsedTime);
+                }
             }
 
             this.skeletalMesh.animateAndRender();
@@ -197,9 +213,20 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
         }
 
+        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        {
+            //TODO implementar....
+        }
+
         public void dispose()
         {
             this.skeletalMesh.dispose();
+        }
+
+        public void CambiarStrategy(IJugadorMoveStrategy jugadorIAStrategy)
+        {
+            this.cambiandoStrategy = true;
+            this.strategy = jugadorIAStrategy;
         }
 
         public void ColisionasteConPelota(Pelota pelota)
@@ -209,34 +236,34 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
-          //por defecto la direccion de movimiento es la que tiene
-           Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
-           direccion.Normalize();
-           //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
-           if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
+            //por defecto la direccion de movimiento es la que tiene
+            Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
+            direccion.Normalize();
+            //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
+            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
             {
-               direccion.Y = 1;
+                direccion.Y = 1;
             }
 
-           if (movimiento.X != 0)
-           {
-               direccion.X *= -1;
-           }
+            if (movimiento.X != 0)
+            {
+                direccion.X *= -1;
+            }
 
-           //si la pelota se mueve en Z, cambio esa direccion
-           if (movimiento.Z != 0)
-           {
-               direccion.Z *= -1;
-           }
+            //si la pelota se mueve en Z, cambio esa direccion
+            if (movimiento.Z != 0)
+            {
+                direccion.Z *= -1;
+            }
 
-           if (movimiento.X == 0 && movimiento.Z == 0 && direccion.Y != 0)
-           {
-               //si no habia movimiento de la pelota, la cabece para algun lado
-               Vector3 distancia = BoundingBox.Position - pelota.Position;
-               distancia.Normalize();
-               direccion.X = distancia.X * -1;
-               direccion.Z = distancia.Z * -1;
-           }
+            if (movimiento.X == 0 && movimiento.Z == 0 && direccion.Y != 0)
+            {
+                //si no habia movimiento de la pelota, la cabece para algun lado
+                Vector3 distancia = BoundingBox.Position - pelota.Position;
+                distancia.Normalize();
+                direccion.X = distancia.X * -1;
+                direccion.Z = distancia.Z * -1;
+            }
 
 
             return direccion;
@@ -265,11 +292,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             return vector.Length();
         }
 
-        #endregion
-
-        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        public double Distancia(Jugador jugadorReferencia)
         {
-            //TODO implementar....
+            Vector3 vector = this.Position - jugadorReferencia.Position;
+            return vector.Length();
         }
+
+        #endregion
     }
 }

@@ -145,14 +145,14 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// Crea una tribuna desde un mesh, pero por como esta creada se necesita acomodarla en la cancha y escalarla 
         /// </summary>
         /// <param name="pathMesh"> ruta donde esta el mesh de la tribuna </param>
-        /// <param name="move"> donde la tengo que ubicar a la tribuna</param>
+        /// <param name="position"> donde la tengo que ubicar a la tribuna</param>
         /// <param name="rotateY"> como la tengo que rotar para que quede en la horientacion correcta </param>
         /// <param name="scale"> factor de escalado para que quede armonica a la cancha </param>
         /// <returns></returns>
-        private static TgcMesh CrearTribuna(string pathMesh, Vector3 move, float rotateY, Vector3 scale)
+        private static TgcMesh CrearTribuna(string pathMesh, Vector3 position, float rotateY, Vector3 scale)
         {
             TgcMesh tribuna = new TgcSceneLoader().loadSceneFromFile(pathMesh).Meshes[0];
-            tribuna.move(move);
+            tribuna.Position = position;
             tribuna.rotateY(rotateY);
             tribuna.Scale = scale;
             return tribuna;
@@ -210,10 +210,29 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             List<Luz> luces = new List<Luz>();
 
             //TODO cargar las luces correctamente
-            Luz luz1 = new Luz();
-            Luz luz2 = new Luz();
-            Luz luz3 = new Luz();
-            Luz luz4 = new Luz();
+            TgcMesh luzMesh1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
+            luzMesh1.Position = new Vector3(-1000, 98, 700);
+            luzMesh1.rotateY((float)Math.PI * 3 / 4);
+            luzMesh1.Scale = new Vector3(3, 3, 3);
+            Luz luz1 = new Luz(luzMesh1);
+
+            TgcMesh luzMesh2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
+            luzMesh2.Position = new Vector3(1000, 98, 700);
+            luzMesh2.rotateY(-(float)Math.PI * 3 / 4);
+            luzMesh2.Scale = new Vector3(3, 3, 3);
+            Luz luz2 = new Luz(luzMesh2);
+
+            TgcMesh luzMesh3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
+            luzMesh3.Position = new Vector3(-1000, 98, -700);
+            luzMesh3.rotateY((float)Math.PI / 4);
+            luzMesh3.Scale = new Vector3(3, 3, 3);
+            Luz luz3 = new Luz(luzMesh3);
+
+            TgcMesh luzMesh4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
+            luzMesh4.Position = new Vector3(1000, 98, -700);
+            luzMesh4.rotateY(-(float)Math.PI / 4);
+            luzMesh4.Scale = new Vector3(3, 3, 3);
+            Luz luz4 = new Luz(luzMesh4);
 
             luces.Add(luz1);
             luces.Add(luz2);
@@ -234,8 +253,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             //sphere.Radius = 10; Original
-            sphere.Radius = 5;
-            sphere.Position = new Vector3(0, 10, 0);
+            sphere.Radius = 6;
+            sphere.Position = new Vector3(0, 5, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);

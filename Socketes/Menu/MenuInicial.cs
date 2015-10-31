@@ -21,8 +21,8 @@ namespace AlumnoEjemplos.Socketes.Menu
         private TgcSphere pelota;
         private TgcBox cancha;
         private List<MenuItem> menus;
-        private float tiempoDeAnimacion = 0.1f;
-        private float tiempoTranscurridoDeAnimacion = 0;
+        //private float tiempoDeAnimacion = 0.1f;
+        //private float tiempoTranscurridoDeAnimacion = 0;
         private bool configuracion = false;
         private TgcSprite panelConfiguracion;
 
@@ -90,63 +90,52 @@ namespace AlumnoEjemplos.Socketes.Menu
         {
             TgcD3dInput d3dInput = GuiController.Instance.D3dInput;
 
-            //TODO hay que mejorar esto porque no anda bien pero por lo menos ahora es usable, el problema de la dependencia de frames.
-            //Tiene que haber alguna forma mejor y sino por lo menos hay que mejorarlo capturando el Keyup no solo press
-            if (this.tiempoTranscurridoDeAnimacion >= this.tiempoDeAnimacion)
+            //Adelante
+            if (d3dInput.keyPressed(Key.UpArrow))
             {
-                this.tiempoTranscurridoDeAnimacion = 0;
-
-                //Adelante
-                if (d3dInput.keyDown(Key.UpArrow))
+                for (int i = 0; i < this.menus.Count; i++)
                 {
-                    for (int i = 0; i < this.menus.Count; i++)
+                    if (this.menus[i].isSelect())
                     {
-                        if (this.menus[i].isSelect())
+                        this.menus[i].Unselect();
+
+                        if (i == 0)
                         {
-                            this.menus[i].Unselect();
-
-                            if (i == 0)
-                            {
-                                this.menus[this.menus.Count - 1].Select();
-                            }
-                            else
-                            {
-                                this.menus[i - 1].Select();
-                            }
-                            break;
+                            this.menus[this.menus.Count - 1].Select();
                         }
-                    }
-                }
-
-                //Atras
-                if (d3dInput.keyDown(Key.DownArrow))
-                {
-                    for (int i = 0; i < this.menus.Count; i++)
-                    {
-                        if (this.menus[i].isSelect())
+                        else
                         {
-                            this.menus[i].Unselect();
-
-                            if (i == this.menus.Count - 1)
-                            {
-                                this.menus[0].Select();
-                            }
-                            else
-                            {
-                                this.menus[i + 1].Select();
-                            }
-                            break;
+                            this.menus[i - 1].Select();
                         }
+                        break;
                     }
                 }
             }
-            else
+
+            //Atras
+            if (d3dInput.keyPressed(Key.DownArrow))
             {
-                this.tiempoTranscurridoDeAnimacion += elapsedTime;
+                for (int i = 0; i < this.menus.Count; i++)
+                {
+                    if (this.menus[i].isSelect())
+                    {
+                        this.menus[i].Unselect();
+
+                        if (i == this.menus.Count - 1)
+                        {
+                            this.menus[0].Select();
+                        }
+                        else
+                        {
+                            this.menus[i + 1].Select();
+                        }
+                        break;
+                    }
+                }
             }
 
             //Enter
-            if (d3dInput.keyDown(Key.Return))
+            if (d3dInput.keyPressed(Key.Return))
             {
                 //TODO esto es muy horrible
                 foreach (MenuItem item in this.menus)
@@ -171,7 +160,7 @@ namespace AlumnoEjemplos.Socketes.Menu
                 }
             }
 
-            if (d3dInput.keyDown(Key.BackSpace))
+            if (d3dInput.keyPressed(Key.BackSpace))
             {
                 this.configuracion = false;
             }

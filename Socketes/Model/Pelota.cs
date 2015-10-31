@@ -40,8 +40,6 @@ namespace AlumnoEjemplos.Socketes.Model
             set { diametro = value; }
         }
 
-  
-
         public TgcBoundingSphere BoundingSphere
         {
             get { return sphere.BoundingSphere; }
@@ -50,7 +48,19 @@ namespace AlumnoEjemplos.Socketes.Model
         public Vector3 Position
         {
             get { return sphere.Position; }
-            set { sphere.Position = Position; }
+            set { sphere.Position = value; }
+        }
+
+        public Effect Effect
+        {
+            get { return sphere.Effect; }
+            set { sphere.Effect = value; }
+        }
+
+        public string Technique
+        {
+            get { return sphere.Technique; }
+            set { sphere.Technique = value; }
         }
 
         public bool MostrarBounding
@@ -281,7 +291,7 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
             direccion.Normalize();
-            
+
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.PrintVectorSinSaltos(direccion));
 

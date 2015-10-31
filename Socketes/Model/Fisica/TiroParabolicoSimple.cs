@@ -17,7 +17,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         private float fuerza;
 
         //un factor de graveddad para que vaya cayendo en Y.
-        private float gravedad = 600f;
+        private float gravedad = 1000f;
         private float fuerzaOriginal;
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)

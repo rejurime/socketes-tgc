@@ -20,20 +20,44 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             this.d3dInput = d3dInput;
         }
 
-        public void Move(Jugador jugador, float elapsedTime)
+        public void AccionSinPelota(Jugador jugador, float elapsedTime)
         {
-            this.CalcularPosicionSegunInput(jugador, elapsedTime);
+            //Si presiono S cambio de jugador
+            if (this.d3dInput.keyPressed(Key.S))
+            {
+                this.CambiarJugador(jugador);
+            }
+            else
+            {
+                this.CalcularPosicionSegunInput(jugador, elapsedTime);
+            }
+        }
+
+        private void CambiarJugador(Jugador jugador)
+        {
+            jugador.CambiarStrategy(new JugadorIAStrategy());
+            Jugador jugadorCercano = jugador.EquipoPropio.JugadorMasCercanoPelota(jugador);
+            jugadorCercano.CambiarStrategy(new JugadorManualStrategy(d3dInput));
         }
 
         //TODO esto lo deberia ejecutar desde el animate and render o desde colisionastecon?
-        public void PelotaDominada(Jugador jugador, float elapsedTime, Pelota pelota)
+        public void AccionConPelota(Jugador jugador, float elapsedTime, Pelota pelota)
         {
             Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime);
 
             //Si presiono S, paso la pelota
-            if (this.d3dInput.keyDown(Key.S))
+            if (this.d3dInput.keyPressed(Key.S))
             {
-                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, MULTIPLICADOR_FUERZA_PASAR);
+                jugador.Pelota.Pasar(jugador.EquipoPropio.JugadorMasCercano(jugador).Position, MULTIPLICADOR_FUERZA_PASAR);
+                jugador.PelotaDominada = false;
+                return;
+            }
+
+            //Si presiono A, paso la pelota
+            if (this.d3dInput.keyPressed(Key.A))
+            {
+                //TODO MATI ACA VA EL CENTRO!!!!!!!!!!!!!!!!!!!!
+                GuiController.Instance.Logger.log("Altoooooooooooooo centro :)");
                 jugador.PelotaDominada = false;
                 return;
             }
@@ -51,7 +75,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                     jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR);
                     jugador.PelotaDominada = false;
                     this.acumuladoPatear = 0;
-                    GuiController.Instance.Logger.log("Pateo por mantener apretado" + this.acumuladoPatear.ToString() + " " + direccion.ToString());
+
                     return;
                 }
             }
@@ -63,13 +87,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 jugador.Pelota.Patear(direccion, this.acumuladoPatear * MULTIPLICADOR_FUERZA_PATEAR);
                 jugador.PelotaDominada = false;
                 this.acumuladoPatear = 0;
-                GuiController.Instance.Logger.log("Pateo por soltar la tecla" + this.acumuladoPatear.ToString() + " " + direccion.ToString());
 
                 return;
             }
 
             //RENE: Revisar esto, si el jugador deja de coslionar con la pelota, entonces la suelta y no la tieen mas, esto arregla el tema de ir para atras, el codigo no es lindo, hace tu magia!
-            if (SigoColisionadoConPelota(pelota, jugador))
+            if (this.SigoColisionadoConPelota(pelota, jugador))
             {
                 if (movimiento != Vector3.Empty)
                 {
