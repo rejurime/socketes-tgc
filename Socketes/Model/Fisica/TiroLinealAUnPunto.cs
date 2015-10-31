@@ -11,10 +11,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         private Vector3 posicionActual;
         private Vector3 posicionDestino;
         private Vector3 direccion;
-        private Vector3 fuerzaPorEje;
         private float fuerza;
-        private float factor = 0.98f;
-        private TiroLinealAUnPunto tiroLinealAUnPunto;
         private float fuerzaOriginal;
 
         public TiroLinealAUnPunto(Vector3 posicionActual, Vector3 posicionDestino, float fuerza)
