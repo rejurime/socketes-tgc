@@ -12,6 +12,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private TgcD3dInput d3dInput;
         private float acumuladoPatear = 0;
         private float maximoFuerzaPatear = 10;
+        private float MULTIPLICADOR_FUERZA_PATEAR = 50;
+        private float MULTIPLICADOR_FUERZA_PASAR = 300;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -31,7 +33,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyDown(Key.S))
             {
-                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, 300);
+                jugador.Pelota.Pasar(Partido.Instance.EquipoLocal.Jugadores[1].Position, MULTIPLICADOR_FUERZA_PASAR);
                 jugador.PelotaDominada = false;
                 return;
             }
@@ -46,7 +48,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 else
                 {
                     Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
-                    jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear);
+                    jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR);
                     jugador.PelotaDominada = false;
                     this.acumuladoPatear = 0;
                     GuiController.Instance.Logger.log("Pateo por mantener apretado" + this.acumuladoPatear.ToString() + " " + direccion.ToString());
@@ -58,7 +60,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             if (this.d3dInput.keyUp(Key.D) && this.acumuladoPatear != 0)
             {
                 Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
-                jugador.Pelota.Patear(direccion, this.acumuladoPatear);
+                jugador.Pelota.Patear(direccion, this.acumuladoPatear * MULTIPLICADOR_FUERZA_PATEAR);
                 jugador.PelotaDominada = false;
                 this.acumuladoPatear = 0;
                 GuiController.Instance.Logger.log("Pateo por soltar la tecla" + this.acumuladoPatear.ToString() + " " + direccion.ToString());

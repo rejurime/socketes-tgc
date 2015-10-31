@@ -16,11 +16,9 @@ namespace AlumnoEjemplos.Socketes.Fisica
         //fuerza total que queda, se va decrementando con cada movimiento
         private float fuerza;
 
-        //factor de cambio de movimiento, este factor se usa para ir decrementando X y Z en cada movimiento.
-        private float factor = 0.98f;
-
         //un factor de graveddad para que vaya cayendo en Y.
-        private float gravedad = 0.2f;
+        private float gravedad = 600f;
+        private float fuerzaOriginal;
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)
         {
@@ -29,9 +27,11 @@ namespace AlumnoEjemplos.Socketes.Fisica
                 GuiController.Instance.Logger.log("Direccion: " + VectorUtils.PrintVectorSinSaltos(direccion) + ", fuerza: " + fuerza);
 
             this.direccion = direccion;
+            this.direccion.Normalize();
             this.fuerza = fuerza;
+            this.fuerzaOriginal = fuerza;
 
-            this.fuerzaPorEje = new Vector3(Math.Abs(direccion.X) * fuerza, Math.Max(Math.Abs(direccion.Y), 0.8f) * fuerza, Math.Abs(direccion.Z) * fuerza);
+            this.fuerzaPorEje = new Vector3(fuerza, fuerza, fuerza);
         }
 
         /// <summary>
@@ -43,13 +43,14 @@ namespace AlumnoEjemplos.Socketes.Fisica
         public Vector3 siguienteMovimiento(float elapsedTime)
         {
 
-            Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X, fuerzaPorEje.Y, direccion.Z * fuerzaPorEje.Z);
+            Vector3 movimiento = new Vector3(direccion.X * fuerzaPorEje.X * elapsedTime, fuerzaPorEje.Y * elapsedTime, direccion.Z * fuerzaPorEje.Z * elapsedTime);
 
             //decremento segun el factor la fuerza de cada eje
-            fuerza *= factor;
-            fuerzaPorEje.X *= factor;
-            fuerzaPorEje.Z *= factor;
-            fuerzaPorEje.Y = fuerzaPorEje.Y * factor - gravedad;
+            fuerza -= (fuerzaOriginal * elapsedTime);
+            fuerzaPorEje.X -= (fuerzaOriginal * elapsedTime);
+            fuerzaPorEje.Z -= (fuerzaOriginal * elapsedTime);
+            fuerzaPorEje.Y -= (fuerzaOriginal * elapsedTime);
+            fuerzaPorEje.Y -= (gravedad * elapsedTime);
 
             return movimiento;
         }
@@ -62,7 +63,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
         /// <returns></returns>
         public bool hayMovimiento()
         {
-            return !(fuerza < 0.5f && fuerza > -0.02f);
+            return fuerza > 0.5f;
         }
 
         public float getFuerza()
