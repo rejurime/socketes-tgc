@@ -274,7 +274,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
             if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
             {
-                return 4;
+                return 300;
             }
 
             return fuerzaRestante * 0.4f;

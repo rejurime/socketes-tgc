@@ -8,6 +8,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private bool inteligenciaArtificial;
         private Random semilla;
         int maximoFuerzaPatear = 10;
+        private int MULTIPLICADOR_FUERZA_PATEAR = 50;
+
 
         public bool InteligenciaArtificial
         {
@@ -78,7 +80,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             {
                 if (distanciaArco < tamanoCanchaParcial)
                 {
-                    pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear / 2));
+                    pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR));
                 }
                 else
                 {
@@ -87,7 +89,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
             else
             {
-                pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear));
+                pelota.Patear(direccion, this.semilla.Next(this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR));
             }
 
             jugador.PelotaDominada = false;
