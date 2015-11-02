@@ -4,6 +4,7 @@ using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Interpolation;
@@ -38,7 +39,7 @@ namespace AlumnoEjemplos.Socketes
 
         public override void init()
         {
-            Device d3dDevice = GuiController.Instance.D3dDevice;
+            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Cargar escenario
             TgcSceneLoader loader = new TgcSceneLoader();
@@ -46,19 +47,13 @@ namespace AlumnoEjemplos.Socketes
 
             //Cargar personaje con animaciones
             TgcSkeletalLoader skeletalLoader = new TgcSkeletalLoader();
-            personaje = skeletalLoader.loadMeshAndAnimationsFromFile(
-                GuiController.Instance.ExamplesMediaDir + "SkeletalAnimations\\Robot\\" + "Robot-TgcSkeletalMesh.xml",
-                GuiController.Instance.ExamplesMediaDir + "SkeletalAnimations\\Robot\\",
-                new string[] {
-                    GuiController.Instance.ExamplesMediaDir + "SkeletalAnimations\\Robot\\" + "Caminando-TgcSkeletalAnim.xml",
-                    GuiController.Instance.ExamplesMediaDir + "SkeletalAnimations\\Robot\\" + "Parado-TgcSkeletalAnim.xml",
-                });
-
+            personaje = skeletalLoader.loadMeshAndAnimationsFromFile(pathRecursos + "SkeletalAnimations\\Robot\\Robot-TgcSkeletalMesh.xml", pathRecursos + "SkeletalAnimations\\Robot\\",
+                new string[] { pathRecursos + "SkeletalAnimations\\Robot\\Caminando-TgcSkeletalAnim.xml", pathRecursos + "SkeletalAnimations\\Robot\\Parado-TgcSkeletalAnim.xml" });
 
             //Configurar animacion inicial
             personaje.playAnimation("Parado", true);
             //Escalarlo porque es muy grande
-            personaje.Position = new Vector3(10, 0, 400);
+            personaje.Position = new Vector3(20, 0, 400);
             personaje.Scale = new Vector3(0.75f, 0.75f, 0.75f);
 
             //Camara en 1ra persona
@@ -76,10 +71,8 @@ namespace AlumnoEjemplos.Socketes
              */
             effect = TgcViewer.Utils.Shaders.TgcShaders.loadEffect(GuiController.Instance.ExamplesMediaDir + "Shaders\\MultiDiffuseLights.fx");
 
-
             //Crear 4 mesh para representar las 4 para la luces. Las ubicamos en distintas posiciones del escenario, cada una con un color distinto.
-
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 40, 400), new Vector3(10, 10, 10), Color.Red), Color.Red, new Vector3(-40, 40, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 40, 400), new Vector3(10, 10, 10), Color.HotPink), Color.HotPink, new Vector3(-40, 40, 400)));
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 60, 400), new Vector3(10, 10, 10), Color.Blue), Color.Blue, new Vector3(-40, 60, 400)));
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 80, 400), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 400), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
@@ -88,9 +81,6 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 38);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.15f);
-
-            GuiController.Instance.Modifiers.addColor("mEmissive", Color.Black);
-            GuiController.Instance.Modifiers.addColor("mDiffuse", Color.White);
         }
 
         public override void render(float elapsedTime)
@@ -100,18 +90,26 @@ namespace AlumnoEjemplos.Socketes
             //Habilitar luz
             bool lightEnable = (bool)GuiController.Instance.Modifiers["lightEnable"];
             Effect currentShader;
-            String currentTechnique;
+            Effect currentSkeletalShader;
+            string currentTechnique;
+
             if (lightEnable)
             {
                 //Shader personalizado de iluminacion
                 currentShader = this.effect;
                 currentTechnique = "MultiDiffuseLightsTechnique";
+
+                //Con luz: Cambiar el shader actual por el shader default que trae el framework para iluminacion dinamica con PointLight para Skeletal Mesh
+                currentSkeletalShader = GuiController.Instance.Shaders.TgcSkeletalMeshPointLightShader;
             }
             else
             {
                 //Sin luz: Restaurar shader default
                 currentShader = GuiController.Instance.Shaders.TgcMeshShader;
                 currentTechnique = GuiController.Instance.Shaders.getTgcMeshTechnique(TgcMesh.MeshRenderType.DIFFUSE_MAP);
+
+                //Sin luz: Restaurar shader default
+                currentSkeletalShader = GuiController.Instance.Shaders.TgcSkeletalMeshShader;
             }
 
             //Aplicar a cada mesh el shader actual
@@ -120,9 +118,6 @@ namespace AlumnoEjemplos.Socketes
                 mesh.Effect = currentShader;
                 mesh.Technique = currentTechnique;
             }
-
-            //this.personaje.Effect = currentShader;
-            //this.personaje.Technique = currentTechnique;
 
             //Configurar los valores de cada luz
             ColorValue[] lightColors = new ColorValue[this.luces.Count];
@@ -149,8 +144,8 @@ namespace AlumnoEjemplos.Socketes
                     mesh.Effect.SetValue("lightPosition", pointLightPositions);
                     mesh.Effect.SetValue("lightIntensity", pointLightIntensity);
                     mesh.Effect.SetValue("lightAttenuation", pointLightAttenuation);
-                    mesh.Effect.SetValue("materialEmissiveColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mEmissive"]));
-                    mesh.Effect.SetValue("materialDiffuseColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mDiffuse"]));
+                    mesh.Effect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+                    mesh.Effect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
                 }
 
                 //Renderizar modelo
@@ -161,6 +156,29 @@ namespace AlumnoEjemplos.Socketes
             foreach (Luz luz in this.luces)
             {
                 luz.render();
+            }
+
+            //Aplicar al mesh el shader actual
+            this.personaje.Effect = currentSkeletalShader;
+            //El Technique depende del tipo RenderType del mesh
+            this.personaje.Technique = GuiController.Instance.Shaders.getTgcSkeletalMeshTechnique(this.personaje.RenderType);
+
+            //Renderizar mesh
+            if (lightEnable)
+            {
+                //Cargar variables shader de la luz
+                this.personaje.Effect.SetValue("lightColor", ColorValue.FromColor(Color.White));
+                this.personaje.Effect.SetValue("lightPosition", pointLightPositions[0]);
+                this.personaje.Effect.SetValue("eyePosition", TgcParserUtils.vector3ToFloat4Array(GuiController.Instance.FpsCamera.getPosition()));
+                this.personaje.Effect.SetValue("lightIntensity", pointLightIntensity[0]);
+                this.personaje.Effect.SetValue("lightAttenuation", pointLightAttenuation[0]);
+
+                //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
+                this.personaje.Effect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+                this.personaje.Effect.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
+                this.personaje.Effect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
+                this.personaje.Effect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
+                this.personaje.Effect.SetValue("materialSpecularExp", 9f);
             }
 
             this.personaje.animateAndRender();
