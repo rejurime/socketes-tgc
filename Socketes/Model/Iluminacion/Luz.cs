@@ -1,10 +1,5 @@
 ﻿using Microsoft.DirectX;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model.Iluminacion
@@ -14,13 +9,27 @@ namespace AlumnoEjemplos.Socketes.Model.Iluminacion
     /// </summary>
     public class Luz
     {
-        private Vector3 posicion;
-        private Color color;
-        private TgcMesh luzMesh;
+        private Vector3 luzPosicion;
+        private Color luzColor;
+        private IRenderObject luzMesh;
 
-        public Luz(TgcMesh luzMesh)
+        public Vector3 Posicion
+        {
+            get { return luzPosicion; }
+            set { luzPosicion = value; }
+        }
+
+        public Color Color
+        {
+            get { return luzColor; }
+            set { luzColor = value; }
+        }
+
+        public Luz(IRenderObject luzMesh, Color color, Vector3 posicion)
         {
             this.luzMesh = luzMesh;
+            this.luzColor = color;
+            this.luzPosicion = posicion;
         }
 
         public void render()
@@ -28,10 +37,9 @@ namespace AlumnoEjemplos.Socketes.Model.Iluminacion
             this.luzMesh.render();
         }
 
-        public void close()
+        public void dispose()
         {
             this.luzMesh.dispose();
         }
-
     }
 }

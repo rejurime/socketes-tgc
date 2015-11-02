@@ -213,26 +213,27 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             TgcMesh luzMesh1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
             luzMesh1.Position = new Vector3(-1000, 98, 700);
             luzMesh1.rotateY((float)Math.PI * 3 / 4);
+            //personaje.rotateY(Geometry.DegreeToRadian(180f));
             luzMesh1.Scale = new Vector3(3, 3, 3);
-            Luz luz1 = new Luz(luzMesh1);
+            Luz luz1 = new Luz(luzMesh1, Color.White, luzMesh1.BoundingBox.PMax);
 
             TgcMesh luzMesh2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
             luzMesh2.Position = new Vector3(1000, 98, 700);
             luzMesh2.rotateY(-(float)Math.PI * 3 / 4);
             luzMesh2.Scale = new Vector3(3, 3, 3);
-            Luz luz2 = new Luz(luzMesh2);
+            Luz luz2 = new Luz(luzMesh2, Color.White, luzMesh2.BoundingBox.PMax);
 
             TgcMesh luzMesh3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
             luzMesh3.Position = new Vector3(-1000, 98, -700);
             luzMesh3.rotateY((float)Math.PI / 4);
             luzMesh3.Scale = new Vector3(3, 3, 3);
-            Luz luz3 = new Luz(luzMesh3);
+            Luz luz3 = new Luz(luzMesh3, Color.White, luzMesh3.BoundingBox.PMax);
 
             TgcMesh luzMesh4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
             luzMesh4.Position = new Vector3(1000, 98, -700);
             luzMesh4.rotateY(-(float)Math.PI / 4);
             luzMesh4.Scale = new Vector3(3, 3, 3);
-            Luz luz4 = new Luz(luzMesh4);
+            Luz luz4 = new Luz(luzMesh4, Color.White, luzMesh4.BoundingBox.PMax);
 
             luces.Add(luz1);
             luces.Add(luz2);

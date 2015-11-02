@@ -133,6 +133,7 @@
     <Compile Include="Socketes\Model\Pelota.cs" />
     <Compile Include="Socketes\Model\Fisica\TiroParabolicoConFormulas.cs" />
     <Compile Include="Socketes\Model\Fisica\TiroLinealAUnPunto.cs" />
+    <Compile Include="Socketes\TestIluminacion.cs" />
     <Compile Include="Socketes\TestPelota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Socketes\Utils\VectorUtils.cs" />

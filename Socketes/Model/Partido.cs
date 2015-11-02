@@ -152,7 +152,6 @@ namespace AlumnoEjemplos.Socketes.Model
             Effect currentShader;
             Pelota mesh = this.pelota;
 
-            /*
             if (this.luz)
             {
                 //Con luz: Cambiar el shader actual por el shader default que trae el framework para iluminacion dinamica con PointLight para Skeletal Mesh
@@ -187,7 +186,6 @@ namespace AlumnoEjemplos.Socketes.Model
                 mesh.Effect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
                 mesh.Effect.SetValue("materialSpecularExp", 9f);
             }
-            */
 
 
             //objetos locos
