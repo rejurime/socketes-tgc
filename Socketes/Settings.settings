@@ -112,5 +112,8 @@
     <Setting Name="textureSkyFaceBack" Type="System.String" Scope="User">
       <Value Profile="(Default)">SkyBox\66.png</Value>
     </Setting>
+    <Setting Name="meshFilePoste" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Poste\Poste-TgcScene.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

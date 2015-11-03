@@ -78,6 +78,16 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             set { luces = value; }
         }
 
+        public Vector3 Size
+        {
+            get { return this.box.Size; }
+        }
+
+        public Vector3 Position
+        {
+            get { return this.box.Position; }
+        }
+
         #endregion
 
         #region Metodos
@@ -120,11 +130,6 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             {
                 limite.dispose();
             }
-        }
-
-        public Vector3 Size()
-        {
-            return this.box.Size;
         }
 
         public void ColisionasteConPelota(Pelota pelota)

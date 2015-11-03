@@ -73,7 +73,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             direccion.Normalize();
 
             //Por ahora hago esto... :p, pero hay que pensar una IA real :)
-            double tamanoCanchaParcial = Partido.Instance.Cancha.Size().Length() / 3;
+            double tamanoCanchaParcial = Partido.Instance.Cancha.Size.Length() / 3;
             double distanciaArco = (jugador.EquipoPropio.ArcoRival.Red.GetPosition() - jugador.Position).Length();
 
             if (jugador.Atacando)
