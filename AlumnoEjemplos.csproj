@@ -116,6 +116,7 @@
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Palo.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Red.cs" />
+    <Compile Include="Socketes\TestPlanarShadows.cs" />
     <Compile Include="Socketes\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
