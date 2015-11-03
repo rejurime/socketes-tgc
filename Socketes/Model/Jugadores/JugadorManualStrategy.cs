@@ -29,7 +29,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
             else
             {
-                this.CalcularPosicionSegunInput(jugador, elapsedTime);
+                this.CalcularPosicionSegunInput(jugador, elapsedTime, d3dInput);
             }
         }
 
@@ -43,7 +43,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         //TODO esto lo deberia ejecutar desde el animate and render o desde colisionastecon?
         public void AccionConPelota(Jugador jugador, float elapsedTime, Pelota pelota)
         {
-            Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime);
+            Vector3 movimiento = this.CalcularPosicionSegunInput(jugador, elapsedTime, d3dInput);
 
             //Si presiono S, paso la pelota
             if (this.d3dInput.keyPressed(Key.S))
@@ -143,7 +143,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         /// Calculo cual es la proxima posicion en base a lo que tocan en el teclado
         /// </summary>
         /// <param name="elapsedTime"> Tiempo en segundos transcurridos desde el último frame</param>
-        public Vector3 CalcularPosicionSegunInput(Jugador jugador, float elapsedTime)
+        public Vector3 CalcularPosicionSegunInput(Jugador jugador, float elapsedTime, TgcD3dInput d3dInput)
         {
             //Calcular proxima posicion de personaje segun Input
             Vector3 movimiento = Vector3.Empty;
@@ -155,7 +155,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             float velocidad = jugador.VelocidadCaminar * elapsedTime;
 
             //Si presiono W corre
-            if (this.d3dInput.keyDown(Key.W))
+            if (d3dInput.keyDown(Key.W))
             {
                 //Multiplicar la velocidad por el tiempo transcurrido, para no acoplarse al CPU
                 velocidad = jugador.VelocidadCorrer * elapsedTime;
@@ -163,13 +163,13 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Si suelto, vuelve a caminar
-            if (this.d3dInput.keyUp(Key.W))
+            if (d3dInput.keyUp(Key.W))
             {
                 correr = false;
             }
 
             //Adelante
-            if (this.d3dInput.keyDown(Key.UpArrow))
+            if (d3dInput.keyDown(Key.UpArrow))
             {
                 movimiento.Z = velocidad;
                 direccion.Y = (float)Math.PI;
@@ -177,7 +177,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Atras
-            if (this.d3dInput.keyDown(Key.DownArrow))
+            if (d3dInput.keyDown(Key.DownArrow))
             {
                 movimiento.Z = -velocidad;
                 //No hago nada en este caso por la rotacion
@@ -185,7 +185,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Derecha
-            if (this.d3dInput.keyDown(Key.RightArrow))
+            if (d3dInput.keyDown(Key.RightArrow))
             {
                 movimiento.X = velocidad;
                 direccion.Y = -(float)Math.PI / 2;
@@ -193,7 +193,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Izquierda
-            if (this.d3dInput.keyDown(Key.LeftArrow))
+            if (d3dInput.keyDown(Key.LeftArrow))
             {
                 movimiento.X = -velocidad;
                 direccion.Y = (float)Math.PI / 2;
@@ -201,20 +201,20 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Diagonales, lo unico que hace es girar al jugador, el movimiento se calcula con el ingreso de cada tecla.
-            if (this.d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.Right))
+            if (d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.Right))
             {
                 direccion.Y = (float)Math.PI * 5 / 4;
             }
 
-            if (this.d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.LeftArrow))
+            if (d3dInput.keyDown(Key.UpArrow) && d3dInput.keyDown(Key.LeftArrow))
             {
                 direccion.Y = (float)Math.PI * 3 / 4;
             }
-            if (this.d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.LeftArrow))
+            if (d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.LeftArrow))
             {
                 direccion.Y = (float)Math.PI / 4;
             }
-            if (this.d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.RightArrow))
+            if (d3dInput.keyDown(Key.DownArrow) && d3dInput.keyDown(Key.RightArrow))
             {
                 direccion.Y = (float)Math.PI * 7 / 4;
             }

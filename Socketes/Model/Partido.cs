@@ -1,12 +1,7 @@
 ﻿using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 using System.Collections.Generic;
-using System.Drawing;
-using TgcViewer;
 using TgcViewer.Utils.Sound;
-using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -179,6 +174,8 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void NotificarGol(Red red)
         {
+            this.marcador.NotificarGol();
+
             if (this.equipoLocal.ArcoPropio.Red.Equals(red))
             {
                 this.equipoVisitante.Goles += 1;

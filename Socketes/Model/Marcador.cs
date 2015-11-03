@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Microsoft.DirectX;
+using System;
+using System.Diagnostics;
+using System.Drawing;
+using TgcViewer;
 using TgcViewer.Utils._2D;
+using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -12,6 +17,8 @@ namespace AlumnoEjemplos.Socketes.Model
         private int golesEquipo1;
         private int golesEquipo2;
         private TimeSpan tiempoInicial;
+        private Stopwatch tiempoMensajeGol;
+        private TgcText2d mensajeGol;
 
         public Marcador(TgcText2d marcador, TgcText2d tiempo, string nombreEquipo1, string nombreEquipo2)
         {
@@ -22,6 +29,20 @@ namespace AlumnoEjemplos.Socketes.Model
 
             this.marcador = marcador;
             this.tiempo = tiempo;
+
+            //TODO sacar GUIController lo uso para Ubicarlo centrado en la pantalla
+            Size screenSize = GuiController.Instance.Panel3d.Size;
+            Size textoSize = new Size(800, 100);
+
+            this.mensajeGol = new TgcText2d();
+            this.mensajeGol.Text = "";
+            this.mensajeGol.Color = Color.White;
+            this.mensajeGol.Align = TgcText2d.TextAlign.CENTER;
+            this.mensajeGol.Position = new Point(FastMath.Max(screenSize.Width / 2 - textoSize.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - textoSize.Height / 2, 0));
+            this.mensajeGol.Size = textoSize;
+            this.mensajeGol.changeFont(new System.Drawing.Font("Arial", 48, FontStyle.Bold));
+
+            this.tiempoMensajeGol = new Stopwatch();
         }
 
         public void render()
@@ -30,12 +51,19 @@ namespace AlumnoEjemplos.Socketes.Model
             this.marcador.render();
             this.ActualizarTiempo();
             this.tiempo.render();
+            this.mensajeGol.render();
         }
 
         public void render(int goles1, int goles2)
         {
             this.golesEquipo1 = goles1;
             this.golesEquipo2 = goles2;
+
+            if (this.tiempoMensajeGol.IsRunning && this.tiempoMensajeGol.Elapsed.Seconds >= 1)
+            {
+                this.tiempoMensajeGol.Stop();
+                this.mensajeGol.Text = "";
+            }
 
             this.render();
         }
@@ -61,14 +89,11 @@ namespace AlumnoEjemplos.Socketes.Model
             this.tiempo.Text = (DateTime.Now.TimeOfDay - this.tiempoInicial).ToString("mm':'ss");
         }
 
-        public void SumarGoleEquipo1()
+        public void NotificarGol()
         {
-            this.golesEquipo1++;
-        }
-
-        public void SumarGoleEquipo2()
-        {
-            this.golesEquipo2++;
+            //GOL
+            this.mensajeGol.Text = "GOOOLLL!!!";
+            this.tiempoMensajeGol = Stopwatch.StartNew();
         }
     }
 }

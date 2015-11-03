@@ -57,8 +57,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.Sonidos = sonidos;
             partido.Marcador = this.CrearMarcador(nombreEquipoLocal, nombreEquipoVisitante);
             partido.Cancha = this.CrearCancha(pathRecursos);
-            partido.ArcoLocal = this.CrearArco(pathRecursos, partido.Cancha, 1);
-            partido.ArcoVisitante = this.CrearArco(pathRecursos, partido.Cancha, -1);
+            partido.ArcoLocal = this.CrearArco(pathRecursos, partido.Cancha, -1);
+            partido.ArcoVisitante = this.CrearArco(pathRecursos, partido.Cancha, 1);
             partido.Pelota = this.CrearPelota(pathRecursos, partido.Cancha);
             partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido);
             partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido);

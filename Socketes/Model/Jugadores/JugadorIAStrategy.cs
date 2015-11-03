@@ -1,5 +1,6 @@
 ﻿using Microsoft.DirectX;
 using System;
+using TgcViewer;
 
 namespace AlumnoEjemplos.Socketes.Model.Jugadores
 {
@@ -9,7 +10,6 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private Random semilla;
         int maximoFuerzaPatear = 10;
         private int MULTIPLICADOR_FUERZA_PATEAR = 50;
-
 
         public bool InteligenciaArtificial
         {
@@ -24,12 +24,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void AccionSinPelota(Jugador jugador, float elapsedTime)
         {
-            if (!this.TengoQueMoverme(jugador))
+            if (!this.inteligenciaArtificial)
             {
                 return;
             }
 
-            if (!this.inteligenciaArtificial)
+            if (!this.TengoQueMoverme(jugador))
             {
                 return;
             }
@@ -38,15 +38,15 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             float velocidad = jugador.VelocidadCaminar * elapsedTime;
 
             //Obtengo el vector direccion donde esta la pelota
-            Vector3 movimiento = new Vector3(jugador.Pelota.Position.X - jugador.Position.X, 0, jugador.Pelota.Position.Z - jugador.Position.Z); ;
+            Vector3 movimiento = new Vector3(jugador.Pelota.Position.X - jugador.Position.X, 0, jugador.Pelota.Position.Z - jugador.Position.Z);
             movimiento.Normalize();
 
             jugador.playAnimation(jugador.AnimacionCaminando, true);
 
             Vector3 lastPos = jugador.Position;
-            jugador.move(movimiento);
+            jugador.move(movimiento * velocidad);
 
-            //Calculo para donde tengo que retar dependiendo de donde apunta la direccion
+            //Calculo para donde tengo que rotar dependiendo de donde apunta la direccion
             this.CalcularRotacion(jugador, movimiento);
 
             //Detecto las colisiones 
@@ -59,12 +59,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void AccionConPelota(Jugador jugador, float elapsedTimePelota, Pelota pelota)
         {
-            if (!this.TengoQueMoverme(jugador))
+            if (!this.inteligenciaArtificial)
             {
                 return;
             }
 
-            if (!this.inteligenciaArtificial)
+            if (!this.TengoQueMoverme(jugador))
             {
                 return;
             }

@@ -2,7 +2,6 @@ using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
 using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,7 +146,7 @@ namespace AlumnoEjemplos.Socketes
                 //Habilitar luz
                 this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
-                this.partido.render(elapsedTime);                
+                this.partido.render(elapsedTime);
 
                 //Hacer que la camara siga al personaje en su nueva posicion
                 GuiController.Instance.ThirdPersonCamera.Target = new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z);

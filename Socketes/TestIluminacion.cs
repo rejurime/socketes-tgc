@@ -55,6 +55,7 @@ namespace AlumnoEjemplos.Socketes
             //Escalarlo porque es muy grande
             personaje.Position = new Vector3(20, 0, 400);
             personaje.Scale = new Vector3(0.75f, 0.75f, 0.75f);
+            personaje.computeNormals();
 
             //Camara en 1ra persona
             GuiController.Instance.FpsCamera.Enable = true;
@@ -72,10 +73,10 @@ namespace AlumnoEjemplos.Socketes
             effect = TgcViewer.Utils.Shaders.TgcShaders.loadEffect(GuiController.Instance.ExamplesMediaDir + "Shaders\\MultiDiffuseLights.fx");
 
             //Crear 4 mesh para representar las 4 para la luces. Las ubicamos en distintas posiciones del escenario, cada una con un color distinto.
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 40, 400), new Vector3(10, 10, 10), Color.HotPink), Color.HotPink, new Vector3(-40, 40, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 60, 400), new Vector3(10, 10, 10), Color.Blue), Color.Blue, new Vector3(-40, 60, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 80, 400), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 400), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 100, 440), new Vector3(10, 10, 10), Color.HotPink), Color.HotPink, new Vector3(-40, 40, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 440), new Vector3(10, 10, 10), Color.Blue), Color.Blue, new Vector3(-40, 60, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 100, 340), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 340), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
 
             //Modifiers
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
