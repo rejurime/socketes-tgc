@@ -20,6 +20,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         #region Miembros
 
         private static readonly PartidoFactory instance = new PartidoFactory();
+        private object boxField;
 
         #endregion
 
@@ -56,11 +57,11 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.Sonidos = sonidos;
             partido.Marcador = this.CrearMarcador(nombreEquipoLocal, nombreEquipoVisitante);
             partido.Cancha = this.CrearCancha(pathRecursos);
-            partido.ArcoLocal = this.CrearArco(new Vector3(860, -10, -12), pathRecursos);
-            partido.ArcoVisitante = this.CrearArco(new Vector3(-860, -10, -12), pathRecursos);
-            partido.Pelota = this.CrearPelota(pathRecursos);
-            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota, partido.ArcoLocal, partido.ArcoVisitante);
-            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota, partido.ArcoVisitante, partido.ArcoLocal);
+            partido.ArcoLocal = this.CrearArco(pathRecursos, partido.Cancha, -1);
+            partido.ArcoVisitante = this.CrearArco(pathRecursos, partido.Cancha, 1);
+            partido.Pelota = this.CrearPelota(pathRecursos, partido.Cancha);
+            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido);
+            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido);
 
             //Creo la pelota con todos sus obstaculos
             List<IColisionablePelota> obstaculosPelota = new List<IColisionablePelota>();
@@ -112,19 +113,28 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <returns>Una Cancha</returns>
         private Cancha CrearCancha(string pathRecursos)
         {
-            //Laterales
-            TgcMesh tribuna1 = CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePl, new Vector3(0, 70, 800), -(float)Math.PI / 2, new Vector3(10, 12, 14));
-            TgcMesh tribuna2 = CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePl, new Vector3(0, 70, -800), (float)Math.PI / 2, new Vector3(10, 12, 14));
-
-            //Atras del arco
-            TgcMesh tribuna3 = CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePo, new Vector3(1100, 55, 0), -(float)Math.PI / 2, new Vector3(14, 12, 15));
-            TgcMesh tribuna4 = CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePo, new Vector3(-1100, 55, 0), (float)Math.PI / 2, new Vector3(14, 12, 15));
-
             //Cesped
-            TgcBox boxField = TgcBox.fromSize(new Vector3(0, -10, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureField));
+            TgcBox boxField = TgcBox.fromSize(new Vector3(0, 0, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureField));
 
             //Piso
-            TgcBox boxFloor = TgcBox.fromSize(new Vector3(0, -11, 0), new Vector3(2600, 0, 2000), TgcTexture.createTexture(pathRecursos + Settings.Default.textureFloor));
+            TgcBox boxFloor = TgcBox.fromSize(new Vector3(boxField.Position.X, boxField.Position.Y - 1, boxField.Position.Z), boxField.Size * 2, TgcTexture.createTexture(pathRecursos + Settings.Default.textureFloor));
+
+            //Laterales
+            TgcMesh tribuna1 = this.CrearTribunaPlatea(pathRecursos, boxField, 1);
+            TgcMesh tribuna2 = this.CrearTribunaPlatea(pathRecursos, boxField, -1);
+
+            //Atras del arco
+            TgcMesh tribuna3 = this.CrearTribunaPopular(pathRecursos, boxField, 1);
+            TgcMesh tribuna4 = this.CrearTribunaPopular(pathRecursos, boxField, -1);
+
+            //SkyBox
+            TgcSkyBox skyBox = this.CrearSkyBox(pathRecursos, boxFloor);
+
+            //Limites de la cancha
+            List<LimiteCancha> limites = this.CrearLimitesCancha(boxField);
+
+            //Luces
+            List<Luz> luces = this.CrearLuces(pathRecursos, boxField);
 
             List<IRenderObject> componentes = new List<IRenderObject>();
             componentes.Add(tribuna1);
@@ -132,13 +142,28 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             componentes.Add(tribuna3);
             componentes.Add(tribuna4);
             componentes.Add(boxFloor);
-            componentes.Add(CrearSkyBox(pathRecursos));
-            componentes.Add(TgcBox.fromSize(new Vector3(1275, 89, 0), new Vector3(0, 200, 1950), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
-            componentes.Add(TgcBox.fromSize(new Vector3(-1275, 89, 0), new Vector3(0, 200, 1950), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
-            componentes.Add(TgcBox.fromSize(new Vector3(0, 89, 970), new Vector3(2550, 200, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
-            componentes.Add(TgcBox.fromSize(new Vector3(0, 89, -970), new Vector3(2550, 200, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
+            componentes.Add(skyBox);
+            int altoMuralla = 200;
+            componentes.Add(TgcBox.fromSize(new Vector3(boxFloor.Position.X, boxFloor.Position.Y + altoMuralla / 2, boxFloor.Size.Z / 2), new Vector3(boxFloor.Size.X, altoMuralla, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
+            componentes.Add(TgcBox.fromSize(new Vector3(boxFloor.Position.X, boxFloor.Position.Y + altoMuralla / 2, -boxFloor.Size.Z / 2), new Vector3(boxFloor.Size.X, altoMuralla, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
+            componentes.Add(TgcBox.fromSize(new Vector3(boxFloor.Size.X / 2, boxFloor.Position.Y + altoMuralla / 2, boxFloor.Position.Z), new Vector3(0, altoMuralla, boxFloor.Size.Z), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
+            componentes.Add(TgcBox.fromSize(new Vector3(-boxFloor.Size.X / 2, boxFloor.Position.Y + altoMuralla / 2, boxFloor.Position.Z), new Vector3(0, altoMuralla, boxFloor.Size.Z), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
 
-            return new Cancha(boxField, componentes, this.CrearLimitesCancha(), this.CrearLuces(pathRecursos));
+            return new Cancha(boxField, componentes, limites, luces);
+        }
+
+        private TgcMesh CrearTribunaPlatea(string pathRecursos, TgcBox cancha, int sentido)
+        {
+            TgcMesh platea = this.CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePl, sentido * -(float)Math.PI / 2, new Vector3(10, 12, 14));
+            platea.Position = new Vector3(cancha.Position.X, cancha.Position.Y + platea.BoundingBox.PMax.Y, sentido * (cancha.Size.Z / 2 + platea.BoundingBox.PMax.X));
+            return platea;
+        }
+
+        private TgcMesh CrearTribunaPopular(string pathRecursos, TgcBox cancha, int sentido)
+        {
+            TgcMesh platea = this.CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePo, sentido * -(float)Math.PI / 2, new Vector3(14, 12, 15));
+            platea.Position = new Vector3(sentido * (cancha.Size.X / 2 + platea.BoundingBox.PMax.Z), cancha.Position.Y + platea.BoundingBox.PMax.Y, cancha.Position.Z);
+            return platea;
         }
 
         /// <summary> 
@@ -149,10 +174,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="rotateY"> como la tengo que rotar para que quede en la horientacion correcta </param>
         /// <param name="scale"> factor de escalado para que quede armonica a la cancha </param>
         /// <returns></returns>
-        private static TgcMesh CrearTribuna(string pathMesh, Vector3 position, float rotateY, Vector3 scale)
+        private TgcMesh CrearTribuna(string pathMesh, float rotateY, Vector3 scale)
         {
             TgcMesh tribuna = new TgcSceneLoader().loadSceneFromFile(pathMesh).Meshes[0];
-            tribuna.Position = position;
             tribuna.rotateY(rotateY);
             tribuna.Scale = scale;
             return tribuna;
@@ -162,13 +186,14 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// Creo los limites de la cancha
         /// </summary>
         /// <returns> Lista con los limites de la cancha</returns>
-        private List<LimiteCancha> CrearLimitesCancha()
+        private List<LimiteCancha> CrearLimitesCancha(TgcBox cancha)
         {
+            int altoLimite = 600;
             List<LimiteCancha> limites = new List<LimiteCancha>();
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(860, 265, 0), new Vector3(0, 550, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-860, 265, 0), new Vector3(0, 550, 1200))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 265, 575), new Vector3(1920, 550, 0))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(0, 265, -575), new Vector3(1920, 550, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Position.X, cancha.Position.Y + altoLimite / 2, cancha.Size.Z / 2 -22 ), new Vector3(cancha.Size.X, altoLimite, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Position.X, cancha.Position.Y + altoLimite / 2, -cancha.Size.Z / 2 + 22), new Vector3(cancha.Size.X, altoLimite, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Size.X / 2 -100, cancha.Position.Y + altoLimite / 2, cancha.Position.Z), new Vector3(0, altoLimite, cancha.Size.Z))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-cancha.Size.X / 2 + 100, cancha.Position.Y + altoLimite / 2, cancha.Position.Z), new Vector3(0, altoLimite, cancha.Size.Z))));
 
             return limites;
         }
@@ -178,12 +203,12 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// </summary>
         /// <param name="pathRecursos"> la ruta donde se encuentran los recursos </param>
         /// <returns></returns>
-        private static TgcSkyBox CrearSkyBox(string pathRecursos)
+        private TgcSkyBox CrearSkyBox(string pathRecursos, TgcBox pisoCancha)
         {
             //Crear SkyBox 
             TgcSkyBox skyBox = new TgcSkyBox();
-            skyBox.Center = new Vector3(0, 100, 0);
-            skyBox.Size = new Vector3(3000, 3000, 3000);
+            skyBox.Size = new Vector3(pisoCancha.Size.X + 100, 1000, pisoCancha.Size.Z + 100);
+            skyBox.Center = new Vector3(pisoCancha.Position.X, pisoCancha.Position.Y - 1 + skyBox.Size.Y / 2, pisoCancha.Position.Z);
 
             //Configurar las texturas para cada una de las 6 caras
             skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up, pathRecursos + Settings.Default.textureSkyFacesUp);
@@ -205,41 +230,29 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// </summary>
         /// <param name="pathRecursos"> ruta donde esta el mesh </param>
         /// <returns></returns>
-        private List<Luz> CrearLuces(string pathRecursos)
+        private List<Luz> CrearLuces(string pathRecursos, TgcBox cancha)
         {
             List<Luz> luces = new List<Luz>();
-
-            //TODO cargar las luces correctamente
-            TgcMesh luzMesh1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
-            luzMesh1.Position = new Vector3(-1000, 98, 700);
-            luzMesh1.rotateY((float)Math.PI * 3 / 4);
-            luzMesh1.Scale = new Vector3(3, 3, 3);
-            Luz luz1 = new Luz(luzMesh1);
-
-            TgcMesh luzMesh2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
-            luzMesh2.Position = new Vector3(1000, 98, 700);
-            luzMesh2.rotateY(-(float)Math.PI * 3 / 4);
-            luzMesh2.Scale = new Vector3(3, 3, 3);
-            Luz luz2 = new Luz(luzMesh2);
-
-            TgcMesh luzMesh3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
-            luzMesh3.Position = new Vector3(-1000, 98, -700);
-            luzMesh3.rotateY((float)Math.PI / 4);
-            luzMesh3.Scale = new Vector3(3, 3, 3);
-            Luz luz3 = new Luz(luzMesh3);
-
-            TgcMesh luzMesh4 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Poste\\Poste-TgcScene.xml").Meshes[0];
-            luzMesh4.Position = new Vector3(1000, 98, -700);
-            luzMesh4.rotateY(-(float)Math.PI / 4);
-            luzMesh4.Scale = new Vector3(3, 3, 3);
-            Luz luz4 = new Luz(luzMesh4);
+            Luz luz1 = this.CrearLuz(pathRecursos, cancha, -1, 1, (float)Math.PI * 3 / 4);
+            Luz luz2 = this.CrearLuz(pathRecursos, cancha, 1, 1, -(float)Math.PI * 3 / 4);
+            Luz luz3 = this.CrearLuz(pathRecursos, cancha, -1, -1, (float)Math.PI / 4);
+            Luz luz4 = this.CrearLuz(pathRecursos, cancha, 1, -1, -(float)Math.PI / 4);
 
             luces.Add(luz1);
             luces.Add(luz2);
             luces.Add(luz3);
             luces.Add(luz4);
-
             return luces;
+        }
+
+        private Luz CrearLuz(string pathRecursos, TgcBox cancha, int signoX, int signoZ, float rotateY)
+        {
+            TgcMesh luzMesh = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFilePoste).Meshes[0];
+            luzMesh.rotateY(rotateY);
+            luzMesh.Scale = new Vector3(3, 3, 3);
+            luzMesh.Position = new Vector3(signoX * (cancha.Size.X / 2 + 50), cancha.Position.Y + luzMesh.BoundingBox.PMax.Y, signoZ * (cancha.Size.Z / 2 + 100));
+            Luz luz1 = new Luz(luzMesh, Color.White, luzMesh.BoundingBox.PMax);
+            return luz1;
         }
 
         /// <summary>
@@ -247,14 +260,15 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// </summary>
         /// <param name="pathRecursos"> De donde saco la textura</param>
         /// <returns> Una pelota</returns>
-        private Pelota CrearPelota(string pathRecursos)
+        private Pelota CrearPelota(string pathRecursos, Cancha cancha)
         {
+            //int radio = 10; Original
+            int radio = 6;
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
-            //sphere.Radius = 10; Original
-            sphere.Radius = 6;
-            sphere.Position = new Vector3(0, 5, 0);
+            sphere.Radius = radio;
+            sphere.Position = new Vector3(cancha.Position.X, cancha.Position.Y + radio, cancha.Position.Z);
             sphere.updateValues();
 
             return new Pelota(sphere);
@@ -266,8 +280,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="posicion">Donde va a estar ubicado el Arco</param>
         /// <param name="pathRecursos">De donde sacar el mesh</param>
         /// <returns> Un arco</returns>
-        private Arco CrearArco(Vector3 posicion, string pathRecursos)
+        private Arco CrearArco(string pathRecursos, Cancha cancha, int direccion)
         {
+            Vector3 posicion = new Vector3(direccion * (cancha.Position.X + cancha.Size.X / 2 - 100), cancha.Position.Y, cancha.Position.Z);
+
             List<Palo> palos = new List<Palo>();
             TgcMesh palo1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
             palo1.Position = posicion;
@@ -285,8 +301,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             palos.Add(new Palo(palo2));
             palos.Add(new Palo(palo3));
 
-            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + 42, posicion.Z);
-            Vector3 tamanoRed = new Vector3(0, 80, 190);
+            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + palo3.BoundingBox.PMin.Y / 2, posicion.Z);
+            Vector3 tamanoRed = new Vector3(0, palo3.BoundingBox.PMin.Y, palo3.BoundingBox.PMax.Z * 2 - 14);
             return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed)));
         }
 

@@ -447,5 +447,17 @@ namespace AlumnoEjemplos.Socketes {
                 this["textureSkyFaceBack"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Poste\\Poste-TgcScene.xml")]
+        public string meshFilePoste {
+            get {
+                return ((string)(this["meshFilePoste"]));
+            }
+            set {
+                this["meshFilePoste"] = value;
+            }
+        }
     }
 }

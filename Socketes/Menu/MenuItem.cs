@@ -26,9 +26,6 @@ namespace AlumnoEjemplos.Socketes.Menu
             this.select = false;
             this.opcion.Enabled = true;
             this.opcionSelect.Enabled = false;
-
-            //this.opcion.Effect = TgcShaders.loadEffect(GuiController.Instance.ExamplesDir + "Shaders\\WorkshopShaders\\Shaders\\BasicShader.fx");
-            //this.opcion.Technique = "RenderScene";
         }
 
         public void render()

@@ -116,6 +116,7 @@
     <Compile Include="Socketes\Model\Marcador.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Palo.cs" />
     <Compile Include="Socketes\Model\ElementosCancha\Red.cs" />
+    <Compile Include="Socketes\TestPlanarShadows.cs" />
     <Compile Include="Socketes\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -133,6 +134,7 @@
     <Compile Include="Socketes\Model\Pelota.cs" />
     <Compile Include="Socketes\Model\Fisica\TiroParabolicoConFormulas.cs" />
     <Compile Include="Socketes\Model\Fisica\TiroLinealAUnPunto.cs" />
+    <Compile Include="Socketes\TestIluminacion.cs" />
     <Compile Include="Socketes\TestPelota.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Socketes\Utils\VectorUtils.cs" />

@@ -114,7 +114,8 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 movimiento = this.movimiento;
 
             //manejo de gravedad
-            if (sphere.Position.Y > gravityForce && !hayTiro())
+            //if (sphere.Position.Y > gravityForce && !hayTiro())
+            if (this.box.BoundingBox.PMin.Y > gravityForce && !hayTiro())
             {
                 movimiento.Y -= gravityForce;
             }
@@ -241,10 +242,10 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void ReiniciarPosicion()
         {
-            this.sphere.Position = this.posicionOriginalSphere;
-            this.box.Position = this.posicionOriginalBox;
             resetMovimiento();
             resetTiro();
+            this.sphere.Position = this.posicionOriginalSphere;
+            this.box.Position = this.posicionOriginalBox;
         }
 
         private bool isLogEnable()

@@ -42,13 +42,14 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="input"> Input por teclado</param>
         /// <param name="pelota"> La pelota del partido</param>
         /// <returns> Un equipo formado con un humano y el resto IA pero sin colisiones</returns>
-        public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Pelota pelota, Arco arcoLocal, Arco arcoRival)
+        public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Partido partido)
         {
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, -8, 0), 125f, pelota, input));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, -8, 100), 90f, pelota));
+            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(0, 1, 30), 45f, partido.Pelota, input));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, -150), 270f, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, 150), 270f, partido.Pelota));
 
-            Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
+            Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoLocal, partido.ArcoVisitante);
 
             foreach (Jugador jugador in equipo.Jugadores)
             {
@@ -62,15 +63,16 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// <param name="pathRecursos"> De donde saco el mesh</param>
         /// <param name="pelota"> La pelota del partido</param>
         /// <returns> Un equipo con todos jugadores IA pero sin colisiones</returns>
-        public Equipo CrearEquipoIA(string nombre, string pathRecursos, Pelota pelota, Arco arcoLocal, Arco arcoRival)
+        public Equipo CrearEquipoIA(string nombre, string pathRecursos, Partido partido)
         {
-            float anguloEquipoCPU = 270f;
+            float anguloEquipoCPU = 90f;
 
-            List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, -8, 160), anguloEquipoCPU, pelota));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, -8, -160), anguloEquipoCPU, pelota));
+            List<Jugador> jugadores = new List<Jugador>(); 
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(220, 1, 0), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, 150), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, -150), anguloEquipoCPU, partido.Pelota));
 
-            Equipo equipo = new Equipo(nombre, jugadores, arcoLocal, arcoRival);
+            Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoVisitante, partido.ArcoLocal);
 
             foreach (Jugador jugador in equipo.Jugadores)
             {
