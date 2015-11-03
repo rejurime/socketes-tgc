@@ -60,8 +60,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             partido.ArcoLocal = this.CrearArco(pathRecursos, partido.Cancha, 1);
             partido.ArcoVisitante = this.CrearArco(pathRecursos, partido.Cancha, -1);
             partido.Pelota = this.CrearPelota(pathRecursos, partido.Cancha);
-            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido.Pelota, partido.ArcoLocal, partido.ArcoVisitante);
-            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido.Pelota, partido.ArcoVisitante, partido.ArcoLocal);
+            partido.EquipoLocal = EquipoFactory.Instance.CrearEquipoHumanoIA(nombreEquipoLocal, pathRecursos, input, partido);
+            partido.EquipoVisitante = EquipoFactory.Instance.CrearEquipoIA(nombreEquipoVisitante, pathRecursos, partido);
 
             //Creo la pelota con todos sus obstaculos
             List<IColisionablePelota> obstaculosPelota = new List<IColisionablePelota>();
@@ -301,8 +301,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             palos.Add(new Palo(palo2));
             palos.Add(new Palo(palo3));
 
-            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + 42, posicion.Z);
-            Vector3 tamanoRed = new Vector3(0, 80, 190);
+            Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + palo3.BoundingBox.PMin.Y / 2, posicion.Z);
+            Vector3 tamanoRed = new Vector3(0, palo3.BoundingBox.PMin.Y, palo3.BoundingBox.PMax.Z * 2 - 14);
             return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed)));
         }
 
