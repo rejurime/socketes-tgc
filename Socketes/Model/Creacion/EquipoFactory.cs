@@ -45,8 +45,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Partido partido)
         {
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, 0, 0), 125f, partido.Pelota, input));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, 0, 100), 90f, partido.Pelota));
+            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(50, 1, 0), 125f, partido.Pelota, input));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(120, 1, 100), 90f, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoLocal, partido.ArcoVisitante);
 
@@ -67,8 +67,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             float anguloEquipoCPU = 270f;
 
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, 0, 160), anguloEquipoCPU, partido.Pelota));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, 0, -160), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-130, 1, 160), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(-155, 1, -160), anguloEquipoCPU, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoLocal, partido.ArcoVisitante);
 

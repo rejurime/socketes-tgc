@@ -227,6 +227,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         {
             this.cambiandoStrategy = true;
             this.strategy = jugadorIAStrategy;
+            this.playAnimation(this.AnimacionParado, true);
         }
 
         public void ColisionasteConPelota(Pelota pelota)
