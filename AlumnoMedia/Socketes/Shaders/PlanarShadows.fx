@@ -128,6 +128,7 @@ technique RenderShadows
 {
     pass p0
     {
+        AlphaBlendEnable=True;
         VertexShader = compile vs_3_0 VertShadows();
         PixelShader = compile ps_3_0 PixShadows();
     }

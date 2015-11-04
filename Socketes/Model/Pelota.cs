@@ -388,9 +388,7 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             
             Device device = GuiController.Instance.D3dDevice;
-            device.RenderState.ZBufferEnable = false;
             Effect originalEffect = sphere.Effect;
-            this.sphere.AlphaBlendEnable = true;
             string originalTechnique = this.sphere.Technique;
 
             this.sphere.Effect = effect;
@@ -398,6 +396,8 @@ namespace AlumnoEjemplos.Socketes.Model
 
             foreach (Luz luz in luces)
             {
+                device.RenderState.ZBufferEnable = false;
+                this.sphere.AlphaBlendEnable = true;
                 this.effect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
                 this.effect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.sphere.render();

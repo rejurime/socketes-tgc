@@ -223,9 +223,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         public void renderShadow(float elapsedTime, List<Luz> luces)
         {
             Microsoft.DirectX.Direct3D.Device device = GuiController.Instance.D3dDevice;
-            device.RenderState.ZBufferEnable = false;
             Effect originalEffect = skeletalMesh.Effect;
-            this.skeletalMesh.AlphaBlendEnable = true;
             string originalTechnique = this.skeletalMesh.Technique;
 
             this.skeletalMesh.Effect = shadowEffect;
@@ -233,6 +231,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
             foreach (Luz luz in luces)
             {
+                this.skeletalMesh.AlphaBlendEnable = true;
+                device.RenderState.ZBufferEnable = false;
                 this.shadowEffect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
                 this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.skeletalMesh.render();
