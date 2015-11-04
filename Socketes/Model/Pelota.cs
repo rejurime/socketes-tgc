@@ -1,12 +1,15 @@
 ﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using TgcViewer;
+using TgcViewer.Utils.Shaders;
 using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
 
@@ -20,6 +23,9 @@ namespace AlumnoEjemplos.Socketes.Model
         private bool mostrarBounding = true;
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
+
+        Effect effect;
+
 
         private float gravityForce = 0.8f;
 
@@ -82,6 +88,8 @@ namespace AlumnoEjemplos.Socketes.Model
             diametro = sphere.Radius * 2;
             this.box = TgcBox.fromSize(sphere.Position, new Vector3(sphere.Radius * 2, sphere.Radius * 2, sphere.Radius * 2));
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
+            effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\PlanarShadows.fx");
+ 
 
             this.sonidoPatear = new TgcMp3Player();
             this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
@@ -224,7 +232,7 @@ namespace AlumnoEjemplos.Socketes.Model
                 {
                     //aca uso el movimiento real, sin tener en cuenta la colision, para saber la direccion que toma el tiro en el rebote
                     tiro = new TiroParabolicoSimple(objetoColisionado.GetDireccionDeRebote(movimiento),
-                        objetoColisionado.GetFuerzaRebote(movimiento, 5));
+                        objetoColisionado.GetFuerzaRebote(movimiento, 50));
                 }
             }
 
@@ -376,9 +384,30 @@ namespace AlumnoEjemplos.Socketes.Model
             return box.BoundingBox;
         }
 
-        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        public void renderShadow(float elapsedTime, List<Luz> luces)
         {
-            //TODO implementar......
+            
+            Device device = GuiController.Instance.D3dDevice;
+            device.RenderState.ZBufferEnable = false;
+            Effect originalEffect = sphere.Effect;
+            this.sphere.AlphaBlendEnable = true;
+            string originalTechnique = this.sphere.Technique;
+
+            this.sphere.Effect = effect;
+            this.sphere.Technique = "RenderShadows";
+
+            foreach (Luz luz in luces)
+            {
+                this.effect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
+                this.effect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
+                this.sphere.render();
+            }
+            device.RenderState.ZBufferEnable = true;
+            this.sphere.AlphaBlendEnable = false;
+            this.sphere.Effect = originalEffect;
+            this.sphere.Technique = originalTechnique;
+            
+
         }
     }
 }

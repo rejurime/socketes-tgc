@@ -5,6 +5,7 @@ using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System.Collections.Generic;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.Shaders;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
 
@@ -141,7 +142,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             //Recalculo las normales para evitar problemas con la luz
             personaje.computeNormals();
 
-            return new Jugador(personaje, strategy, pelota);
+            return new Jugador(personaje, strategy, pelota, TgcShaders.loadEffect(pathRecursos + "Shaders\\PlanarShadows.fx"));
         }
 
         /// <summary> Le carga los colisionables a cada jugador</summary>

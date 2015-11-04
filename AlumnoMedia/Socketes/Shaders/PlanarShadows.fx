@@ -13,6 +13,10 @@ float4x4 matWorldViewProj; //Matriz World * View * Projection
 float4x4 matInverseTransposeWorld; //Matriz Transpose(Invert(World))
 float4x4 matViewProj; //View * Projection
 
+//Matrix Pallette para skinning
+static const int MAX_MATRICES = 26;
+float4x3 bonesMatWorldArray[MAX_MATRICES];
+
 //Textura para DiffuseMap
 texture texDiffuseMap;
 sampler2D diffuseMap = sampler_state

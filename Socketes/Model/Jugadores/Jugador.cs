@@ -1,9 +1,13 @@
 ﻿using System;
 using AlumnoEjemplos.Socketes.Model.Colision;
-using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
+using System.Collections.Generic;
+using TgcViewer;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 
 namespace AlumnoEjemplos.Socketes.Model.Jugadores
 {
@@ -25,6 +29,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private string animacionParado = Settings.Default.animationStopPlayer;
         private bool mostrarBounding;
 
+        private Effect shadowEffect;
+
         //TODO ver si esta se puede mejorar con un state :)
         private bool pelotaDominada = false;
         private bool atacando = false;
@@ -36,13 +42,14 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         private Jugador() { }
 
-        public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota)
+        public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota, Effect shadowEffect)
         {
             this.skeletalMesh = skeletalMesh;
             this.box = TgcBox.fromExtremes(this.skeletalMesh.BoundingBox.PMin, this.skeletalMesh.BoundingBox.PMax);
             this.strategy = strategy;
             this.pelota = pelota;
             this.posicionOriginal = skeletalMesh.Position;
+            this.shadowEffect = shadowEffect;
         }
 
         #endregion
@@ -213,9 +220,28 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
         }
 
-        public void renderShadow(float elapsedTime, System.Collections.Generic.List<Iluminacion.Luz> luces)
+        public void renderShadow(float elapsedTime, List<Luz> luces)
         {
-            //TODO implementar....
+            Microsoft.DirectX.Direct3D.Device device = GuiController.Instance.D3dDevice;
+            device.RenderState.ZBufferEnable = false;
+            Effect originalEffect = skeletalMesh.Effect;
+            this.skeletalMesh.AlphaBlendEnable = true;
+            string originalTechnique = this.skeletalMesh.Technique;
+
+            this.skeletalMesh.Effect = shadowEffect;
+            this.skeletalMesh.Technique = "RenderShadows";
+
+            foreach (Luz luz in luces)
+            {
+                this.shadowEffect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
+                this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
+                this.skeletalMesh.render();
+            }
+            device.RenderState.ZBufferEnable = true;
+            this.skeletalMesh.AlphaBlendEnable = false;
+            this.skeletalMesh.Effect = originalEffect;
+            this.skeletalMesh.Technique = originalTechnique;
+
         }
 
         public void dispose()
