@@ -119,6 +119,12 @@ namespace AlumnoEjemplos.Socketes.Model
             {
                 movimiento.Y -= gravityForce;
             }
+
+            if (this.box.BoundingBox.PMin.Y < 0)
+            {
+                //si el boundingbox se va para abajo, entonces lo arreglo.
+                movimiento.Y = -this.box.BoundingBox.PMin.Y + 0.01f;
+            }
             //manejo de gravedad
 
 
@@ -206,7 +212,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
                 if (hayTiro())
                 {
-
                     //solo rebota con el tiro, con el pase no hace nada
                     if (tiro is TiroParabolicoSimple)
                     {

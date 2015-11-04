@@ -246,17 +246,6 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 direccion.Y = 1;
             }
 
-            if (movimiento.X != 0)
-            {
-                direccion.X *= -1;
-            }
-
-            //si la pelota se mueve en Z, cambio esa direccion
-            if (movimiento.Z != 0)
-            {
-                direccion.Z *= -1;
-            }
-
             if (movimiento.X == 0 && movimiento.Z == 0 && direccion.Y != 0)
             {
                 //si no habia movimiento de la pelota, la cabece para algun lado
