@@ -267,7 +267,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 return 300;
             }
 
-            return fuerzaRestante * 0.4f;
+            return fuerzaRestante * 0.9f;
         }
 
         public TgcBoundingBox GetTgcBoundingBox()
