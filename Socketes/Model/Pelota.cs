@@ -412,5 +412,13 @@ namespace AlumnoEjemplos.Socketes.Model
             get { return lightEffect; }
             set { lightEffect = value; }
         }
+
+        internal void Centro(Vector3 posicionJugador, float fuerza)
+        {
+            Vector3 direccion = posicionJugador - sphere.Position;
+            direccion.Normalize();
+            tiro = new TiroParabolicoSimple(direccion, fuerza);
+            ReproducirSonidoPatear();
+        }
     }
 }

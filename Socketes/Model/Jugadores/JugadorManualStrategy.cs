@@ -15,6 +15,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private float minimoFuerzaPatear = 2;
         private float MULTIPLICADOR_FUERZA_PATEAR = 80;
         private float MULTIPLICADOR_FUERZA_PASAR = 300;
+        private float MULTIPLICADOR_FUERZA_CENTRO = 700;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
         {
@@ -57,8 +58,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Si presiono A, paso la pelota
             if (this.d3dInput.keyPressed(Key.A))
             {
-                //TODO MATI ACA VA EL CENTRO!!!!!!!!!!!!!!!!!!!!
-                GuiController.Instance.Logger.log("Altoooooooooooooo centro :)");
+                jugador.Pelota.Centro(jugador.EquipoPropio.JugadorMasCercano(jugador).Position, MULTIPLICADOR_FUERZA_CENTRO);
                 jugador.PelotaDominada = false;
                 return;
             }
