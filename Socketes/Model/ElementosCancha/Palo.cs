@@ -50,6 +50,11 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         {
             //los arcos son planos parados sobre el eje X, asi q solo cambio coordenada X de movimiento.
             movimiento.Normalize();
+            if (Partido.Instance.Pelota.Position.Y > BoundingBox.PMax.Y - Partido.Instance.Pelota.Diametro / 2)
+            {
+                movimiento.Y = 1;
+            }
+
             movimiento.X *= -1;
             return movimiento;
         }
