@@ -140,7 +140,7 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         public Vector3 GetDireccionDeRebote(Vector3 movimiento)
         {
             movimiento.Normalize();
-            movimiento.Y = 1;
+            movimiento.Y *= -1;
             return movimiento;
         }
 
