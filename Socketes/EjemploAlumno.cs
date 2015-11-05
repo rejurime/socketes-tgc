@@ -84,8 +84,8 @@ namespace AlumnoEjemplos.Socketes
 
             //Luz
             GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 38);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.15f);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 40);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
             //Empiezo con un tema Random :)
             int numbreTrack = new Random().Next(Settings.Default.music.Count);

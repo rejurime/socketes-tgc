@@ -249,6 +249,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.skeletalMesh.render();
             }
+
             device.RenderState.ZBufferEnable = true;
             this.skeletalMesh.AlphaBlendEnable = false;
             this.skeletalMesh.Effect = originalEffect;
@@ -272,7 +273,6 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 pointLightAttenuation[i] = (float)GuiController.Instance.Modifiers["lightAttenuation"];
             }
 
-
             //Cargar variables shader de la luz
             this.lightEffect.SetValue("lightColor", ColorValue.FromColor(Color.White));
             this.lightEffect.SetValue("lightPosition", pointLightPositions[0]);
@@ -287,11 +287,17 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             this.lightEffect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
             this.lightEffect.SetValue("materialSpecularExp", 9f);
 
+            Effect originalEffect = this.skeletalMesh.Effect;
+            string originalTechnique = this.skeletalMesh.Technique;
+
             this.skeletalMesh.Effect = this.lightEffect;
             //El Technique depende del tipo RenderType del mesh "VERTEX_COLOR"; "DIFFUSE_MAP";
             this.skeletalMesh.Technique = "DIFFUSE_MAP";
 
             this.animateAndRender(elapsedTime);
+
+            this.skeletalMesh.Effect = originalEffect;
+            this.skeletalMesh.Technique = originalTechnique;
         }
 
         public void dispose()
