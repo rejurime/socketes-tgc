@@ -101,14 +101,12 @@ namespace AlumnoEjemplos.Socketes.Model
                 movimiento.Y -= gravityForce;
             }
 
-            if (this.box.BoundingBox.PMin.Y < 0)
+            if (this.box.BoundingBox.PMin.Y < 0 && !hayTiro())
             {
                 //si el boundingbox se va para abajo, entonces lo arreglo.
                 movimiento.Y = -this.box.BoundingBox.PMin.Y + 0.01f;
             }
             //manejo de gravedad
-
-
             if (hayMovimiento(movimiento))
             {
                 Mover(movimiento, elapsedTime);
@@ -274,8 +272,8 @@ namespace AlumnoEjemplos.Socketes.Model
         private Matrix getRotationMatrix(Vector3 movimiento, float elapsedTime)
         {
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
-            float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
             direccion.Normalize();
+            float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
 
             if (isLogEnable())
                 GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.PrintVectorSinSaltos(direccion));
@@ -337,7 +335,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void Mover(Vector3 movement)
         {
-            if (!hayTiro())
                 this.movimiento = movement;
         }
 
