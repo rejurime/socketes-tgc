@@ -60,14 +60,14 @@ namespace AlumnoEjemplos.Socketes
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
             //Se ejecuta en FullScreen
-            //GuiController.Instance.FullScreenEnable = true;
+            GuiController.Instance.FullScreenEnable = true;
 
             //Musica
-            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
-            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
+            GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
+            //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
             //indica si se usa la cmara dinamica o no
-            GuiController.Instance.Modifiers.addBoolean("CamaraDinamica", "CamaraDinamica", false);
+            //GuiController.Instance.Modifiers.addBoolean("CamaraDinamica", "CamaraDinamica", false);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
@@ -76,15 +76,15 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
 
             //Inteligencia Artificial
-            //GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
-            GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
+            GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
+            //GuiController.Instance.Modifiers.addBoolean("IA", "IA", false);
 
             //Un boton para reiniciar las posiciones
             GuiController.Instance.Modifiers.addButton("ReiniciarPosiciones", "Reiniciar Posiciones", new EventHandler(this.ReiniciarPosiciones_Click));
 
             //Luz
             GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 40);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 100, 50);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
             //Empiezo con un tema Random :)
@@ -142,7 +142,7 @@ namespace AlumnoEjemplos.Socketes
                 if (!this.tiempo)
                 {
                     this.tiempo = true;
-                    this.partido.Marcador.IniciarTiempo();                    
+                    this.partido.Marcador.IniciarTiempo();
                     GuiController.Instance.ThirdPersonCamera.setCamera(posicionCamara, camaraOffsetHeight, camaraOffsetForward);
                 }
                 //BoundingBox
@@ -156,10 +156,11 @@ namespace AlumnoEjemplos.Socketes
 
                 this.partido.render(elapsedTime);
 
+                /*
                 //la camara se puede cambiar dinamicamente, sino sigue a la pelota y esta siempre en la misma posicion
                 if ((bool)GuiController.Instance.Modifiers["CamaraDinamica"])
                 {
-                    //CODIGO muy feo, para vos reneeee! chupalaaaa
+                    //CODIGO muy feo, para vos reneeee!
                     Vector3 distanciaJugadorPelota = this.partido.Pelota.Position - this.partido.EquipoLocal.JugadorManual().Position;
                     float distancia = distanciaJugadorPelota.Length();
                     if (distancia > Settings.Default.camaraOffsetForward)
@@ -173,7 +174,7 @@ namespace AlumnoEjemplos.Socketes
                     }
                     GuiController.Instance.ThirdPersonCamera.setCamera(posicionCamara, camaraOffsetHeight, camaraOffsetForward);
 
-                }
+                }*/
                 GuiController.Instance.ThirdPersonCamera.Target = posicionCamara;
             }
         }

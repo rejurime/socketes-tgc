@@ -191,9 +191,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         {
             int altoLimite = 600;
             List<LimiteCancha> limites = new List<LimiteCancha>();
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Position.X, cancha.Position.Y + altoLimite / 2, cancha.Size.Z / 2 -22 ), new Vector3(cancha.Size.X, altoLimite, 0))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Position.X, cancha.Position.Y + altoLimite / 2, cancha.Size.Z / 2 - 22), new Vector3(cancha.Size.X, altoLimite, 0))));
             limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Position.X, cancha.Position.Y + altoLimite / 2, -cancha.Size.Z / 2 + 22), new Vector3(cancha.Size.X, altoLimite, 0))));
-            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Size.X / 2 -100, cancha.Position.Y + altoLimite / 2, cancha.Position.Z), new Vector3(0, altoLimite, cancha.Size.Z))));
+            limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(cancha.Size.X / 2 - 100, cancha.Position.Y + altoLimite / 2, cancha.Position.Z), new Vector3(0, altoLimite, cancha.Size.Z))));
             limites.Add(new LimiteCancha(TgcBox.fromSize(new Vector3(-cancha.Size.X / 2 + 100, cancha.Position.Y + altoLimite / 2, cancha.Position.Z), new Vector3(0, altoLimite, cancha.Size.Z))));
 
             return limites;
@@ -250,7 +250,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         {
             TgcMesh luzMesh = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFilePoste).Meshes[0];
             luzMesh.rotateY(rotateY);
-            luzMesh.Scale = new Vector3(3, 3, 3);
+            luzMesh.Scale = new Vector3(3, 4, 3);
             luzMesh.Position = new Vector3(signoX * (cancha.Size.X / 2 + 50), cancha.Position.Y + luzMesh.BoundingBox.PMax.Y, signoZ * (cancha.Size.Z / 2 + 100));
             Luz luz1 = new Luz(luzMesh, Color.White, luzMesh.BoundingBox.PMax);
             return luz1;

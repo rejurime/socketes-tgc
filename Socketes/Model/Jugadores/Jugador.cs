@@ -1,14 +1,13 @@
-﻿using System;
-using AlumnoEjemplos.Socketes.Model.Colision;
+﻿using AlumnoEjemplos.Socketes.Model.Colision;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
+using System.Collections.Generic;
+using System.Drawing;
+using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
-using AlumnoEjemplos.Socketes.Model.Iluminacion;
-using System.Collections.Generic;
-using TgcViewer;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
-using System.Drawing;
 
 namespace AlumnoEjemplos.Socketes.Model.Jugadores
 {
@@ -274,18 +273,18 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             }
 
             //Cargar variables shader de la luz
-            this.lightEffect.SetValue("lightColor", ColorValue.FromColor(Color.White));
-            this.lightEffect.SetValue("lightPosition", pointLightPositions[0]);
+            this.lightEffect.SetValue("lightColor", lightColors);
+            this.lightEffect.SetValue("lightPosition", pointLightPositions);
+            this.lightEffect.SetValue("lightIntensity", pointLightIntensity);
+            this.lightEffect.SetValue("lightAttenuation", pointLightAttenuation);
             this.lightEffect.SetValue("eyePosition", TgcParserUtils.vector3ToFloat4Array(GuiController.Instance.FpsCamera.getPosition()));
-            this.lightEffect.SetValue("lightIntensity", pointLightIntensity[0]);
-            this.lightEffect.SetValue("lightAttenuation", pointLightAttenuation[0]);
 
             //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
             this.lightEffect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
             this.lightEffect.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
             this.lightEffect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
             this.lightEffect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
-            this.lightEffect.SetValue("materialSpecularExp", 9f);
+            this.lightEffect.SetValue("materialSpecularExp", 20f);
 
             Effect originalEffect = this.skeletalMesh.Effect;
             string originalTechnique = this.skeletalMesh.Technique;
@@ -323,7 +322,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             direccion.Normalize();
             //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
-            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro/2)
+            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro / 2)
             {
                 direccion.Y = 1;
             }

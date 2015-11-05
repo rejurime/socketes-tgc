@@ -31,9 +31,10 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
             if (!this.TengoQueMoverme(jugador))
             {
+                jugador.playAnimation(jugador.AnimacionParado, true);
                 return;
             }
-
+            
             //Multiplicar la velocidad por el tiempo transcurrido, para no acoplarse al CPU
             float velocidad = jugador.VelocidadCaminar * elapsedTime;
 
@@ -41,7 +42,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             Vector3 movimiento = new Vector3(jugador.Pelota.Position.X - jugador.Position.X, 0, jugador.Pelota.Position.Z - jugador.Position.Z);
             movimiento.Normalize();
 
-            jugador.playAnimation(jugador.AnimacionCaminando, true);
+            jugador.playAnimation(jugador.AnimacionCorriendo, true);
+
 
             Vector3 lastPos = jugador.Position;
             jugador.move(movimiento * velocidad);
@@ -64,8 +66,10 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 return;
             }
 
+            //TODO revisar ¿Porque con pelot no se mveria??
             if (!this.TengoQueMoverme(jugador))
             {
+                jugador.playAnimation(jugador.AnimacionParado, true);
                 return;
             }
 
@@ -75,6 +79,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             //Por ahora hago esto... :p, pero hay que pensar una IA real :)
             double tamanoCanchaParcial = Partido.Instance.Cancha.Size.Length() / 3;
             double distanciaArco = (jugador.EquipoPropio.ArcoRival.Red.GetPosition() - jugador.Position).Length();
+            double distanciaArcoPropio = (jugador.EquipoPropio.ArcoPropio.Red.GetPosition() - jugador.Position).Length();
 
             if (jugador.Atacando)
             {
@@ -84,7 +89,14 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 }
                 else
                 {
-                    pelota.Mover(direccion);
+                    if (distanciaArcoPropio < tamanoCanchaParcial / 3)
+                    {
+                        pelota.Patear(direccion, this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR);
+                    }
+                    else
+                    {
+                        pelota.Mover(direccion);
+                    }
                 }
             }
             else

@@ -1,5 +1,4 @@
 ﻿using AlumnoEjemplos.Socketes.Model.Colision;
-using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
@@ -46,9 +45,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         public Equipo CrearEquipoHumanoIA(string nombre, string pathRecursos, TgcD3dInput input, Partido partido)
         {
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(0, 1, 30), 45f, partido.Pelota, input));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, -150), 270f, partido.Pelota));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, 150), 270f, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(0, 1, 30), 45f, partido.Pelota));
+            jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, -150), 270, partido.Pelota, input));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-400, 1, -150), 270f, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-400, 1, 150), 270f, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoLocal, partido.ArcoVisitante);
 
@@ -69,9 +69,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             float anguloEquipoCPU = 90f;
 
             List<Jugador> jugadores = new List<Jugador>();
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(220, 1, 0), anguloEquipoCPU, partido.Pelota));
-            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, 150), anguloEquipoCPU, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, -150), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, 150), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(400, 1, -150), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(400, 1, 150), anguloEquipoCPU, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoVisitante, partido.ArcoLocal);
 
@@ -144,7 +145,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             Jugador jugador = new Jugador(personaje, strategy, pelota);
             jugador.ShadowEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshPlanarShadows.fx");
-            jugador.LightEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshPointLight.fx");
+            jugador.LightEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshMultiplePointLight.fx");
             return jugador;
         }
 
@@ -179,6 +180,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             colisionables.AddRange(partido.ArcoLocal.GetColisionables());
             colisionables.AddRange(partido.ArcoVisitante.GetColisionables());
 
+            /* TODO quito las colosiones hasta tenerlas mejor lo pidio el profe
             foreach (Jugador jugadorColision in equipoPropio.Jugadores)
             {
                 if (!jugador.Equals(jugadorColision))
@@ -190,7 +192,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             foreach (Jugador jugadorColision in equiporival.Jugadores)
             {
                 colisionables.Add(jugadorColision);
-            }
+            }*/
 
             jugador.CollisionManager = new BoxCollisionManager(colisionables);
         }

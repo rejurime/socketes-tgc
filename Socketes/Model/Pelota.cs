@@ -335,7 +335,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void Mover(Vector3 movement)
         {
-                this.movimiento = movement;
+            this.movimiento = movement;
         }
 
         public void renderShadow(float elapsedTime, List<Luz> luces)
@@ -364,9 +364,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void renderLight(float elapsedTime, List<Luz> luces)
         {
-            Effect originalEffect = this.sphere.Effect;
-            string originalTechnique = this.sphere.Technique;
-
             //Configurar los valores de cada luz
             ColorValue[] lightColors = new ColorValue[luces.Count];
             Vector4[] pointLightPositions = new Vector4[luces.Count];
@@ -387,11 +384,19 @@ namespace AlumnoEjemplos.Socketes.Model
             this.lightEffect.SetValue("lightPosition", pointLightPositions);
             this.lightEffect.SetValue("lightIntensity", pointLightIntensity);
             this.lightEffect.SetValue("lightAttenuation", pointLightAttenuation);
+            this.lightEffect.SetValue("eyePosition", TgcParserUtils.vector3ToFloat4Array(GuiController.Instance.FpsCamera.getPosition()));
+
+            //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
             this.lightEffect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+            this.lightEffect.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
             this.lightEffect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("materialSpecularExp", 20f);
+
+            Effect originalEffect = this.sphere.Effect;
+            string originalTechnique = this.sphere.Technique;
 
             this.sphere.Effect = this.lightEffect;
-
             //El Technique depende del tipo RenderType del mesh "VERTEX_COLOR"; "DIFFUSE_MAP";
             this.sphere.Technique = "DIFFUSE_MAP";
 

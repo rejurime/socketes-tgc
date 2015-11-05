@@ -23,7 +23,7 @@ namespace AlumnoEjemplos.Socketes
         Effect meshMultiDiffuseLights;
         Effect skeletalMeshPointLight;
 
-        List<Luz> luces = new List<Luz>();
+        List<Luz> luces;
 
         public override string getCategory()
         {
@@ -61,10 +61,10 @@ namespace AlumnoEjemplos.Socketes
              * El shader toma 4 luces a la vez para iluminar un mesh.
              * Pero como hacer 4 veces los calculos en el shader es costoso, de cada luz solo calcula el componente Diffuse.
              */
-            this.meshMultiDiffuseLights = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshMultiDiffuseLights.fx");
-            this.skeletalMeshPointLight = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshPointLight.fx");
+            this.meshMultiDiffuseLights = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshMultiplePointLight.fx");
+            this.skeletalMeshPointLight = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshMultiplePointLight.fx");
 
-
+            this.luces = new List<Luz>();
             //Crear 4 mesh para representar las 4 para la luces. Las ubicamos en distintas posiciones del escenario, cada una con un color distinto.
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 100, 440), new Vector3(10, 10, 10), Color.HotPink), Color.HotPink, new Vector3(-40, 40, 400)));
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 440), new Vector3(10, 10, 10), Color.Blue), Color.Blue, new Vector3(-40, 60, 400)));
