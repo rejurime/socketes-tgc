@@ -28,7 +28,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private float gravityForce = 0.8f;
 
         private TgcBox box;
-        private float VELOCIDAD_DE_ROTACION_DEFAULT = 150;
+        private float VELOCIDAD_DE_ROTACION_DEFAULT = 100;
 
         private Vector3 movimiento = Vector3.Empty;
 
