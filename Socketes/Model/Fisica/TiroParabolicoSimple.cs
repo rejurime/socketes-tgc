@@ -31,7 +31,7 @@ namespace AlumnoEjemplos.Socketes.Fisica
             this.fuerza = fuerza;
             this.fuerzaOriginal = fuerza;
 
-            this.fuerzaPorEje = new Vector3(fuerza, fuerza, fuerza);
+            this.fuerzaPorEje = new Vector3(fuerza, fuerza/1.5f, fuerza);
         }
 
         /// <summary>
