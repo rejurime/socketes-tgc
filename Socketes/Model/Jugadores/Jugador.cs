@@ -323,9 +323,13 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             direccion.Normalize();
             //indica si la pelota esta arriba del jugador, osea que colisiono con la cabeza
-            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro)
+            if (pelota.Position.Y > BoundingBox.PMax.Y - pelota.Diametro/2)
             {
                 direccion.Y = 1;
+            }
+            else
+            {
+                direccion.Y = 0;
             }
 
             if (movimiento.X == 0 && movimiento.Z == 0 && direccion.Y != 0)
