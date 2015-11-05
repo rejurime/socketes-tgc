@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using TgcViewer;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using System.Drawing;
 
 namespace AlumnoEjemplos.Socketes.Model.Jugadores
 {
@@ -28,8 +29,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private string animacionCaminando = Settings.Default.animationWalkPlayer;
         private string animacionParado = Settings.Default.animationStopPlayer;
         private bool mostrarBounding;
-
         private Effect shadowEffect;
+        private Effect lightEffect;
 
         //TODO ver si esta se puede mejorar con un state :)
         private bool pelotaDominada = false;
@@ -42,14 +43,13 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         private Jugador() { }
 
-        public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota, Effect shadowEffect)
+        public Jugador(TgcSkeletalMesh skeletalMesh, IJugadorMoveStrategy strategy, Pelota pelota)
         {
             this.skeletalMesh = skeletalMesh;
             this.box = TgcBox.fromExtremes(this.skeletalMesh.BoundingBox.PMin, this.skeletalMesh.BoundingBox.PMax);
             this.strategy = strategy;
             this.pelota = pelota;
             this.posicionOriginal = skeletalMesh.Position;
-            this.shadowEffect = shadowEffect;
         }
 
         #endregion
@@ -162,6 +162,18 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             set { cambiandoStrategy = value; }
         }
 
+        public Effect ShadowEffect
+        {
+            get { return shadowEffect; }
+            set { shadowEffect = value; }
+        }
+
+        public Effect LightEffect
+        {
+            get { return lightEffect; }
+            set { lightEffect = value; }
+        }
+
         #endregion
 
         #region Metodos
@@ -222,7 +234,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         public void renderShadow(float elapsedTime, List<Luz> luces)
         {
-            Microsoft.DirectX.Direct3D.Device device = GuiController.Instance.D3dDevice;
+            Device device = GuiController.Instance.D3dDevice;
             Effect originalEffect = skeletalMesh.Effect;
             string originalTechnique = this.skeletalMesh.Technique;
 
@@ -241,7 +253,45 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             this.skeletalMesh.AlphaBlendEnable = false;
             this.skeletalMesh.Effect = originalEffect;
             this.skeletalMesh.Technique = originalTechnique;
+        }
 
+        public void renderLight(float elapsedTime, List<Luz> luces)
+        {
+            //Configurar los valores de cada luz
+            ColorValue[] lightColors = new ColorValue[luces.Count];
+            Vector4[] pointLightPositions = new Vector4[luces.Count];
+            float[] pointLightIntensity = new float[luces.Count];
+            float[] pointLightAttenuation = new float[luces.Count];
+
+            for (int i = 0; i < luces.Count; i++)
+            {
+                Luz lightMesh = luces[i];
+                lightColors[i] = ColorValue.FromColor(lightMesh.Color);
+                pointLightPositions[i] = TgcParserUtils.vector3ToVector4(lightMesh.Posicion);
+                pointLightIntensity[i] = (float)GuiController.Instance.Modifiers["lightIntensity"];
+                pointLightAttenuation[i] = (float)GuiController.Instance.Modifiers["lightAttenuation"];
+            }
+
+
+            //Cargar variables shader de la luz
+            this.lightEffect.SetValue("lightColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("lightPosition", pointLightPositions[0]);
+            this.lightEffect.SetValue("eyePosition", TgcParserUtils.vector3ToFloat4Array(GuiController.Instance.FpsCamera.getPosition()));
+            this.lightEffect.SetValue("lightIntensity", pointLightIntensity[0]);
+            this.lightEffect.SetValue("lightAttenuation", pointLightAttenuation[0]);
+
+            //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
+            this.lightEffect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+            this.lightEffect.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
+            this.lightEffect.SetValue("materialSpecularExp", 9f);
+
+            this.skeletalMesh.Effect = this.lightEffect;
+            //El Technique depende del tipo RenderType del mesh "VERTEX_COLOR"; "DIFFUSE_MAP";
+            this.skeletalMesh.Technique = "DIFFUSE_MAP";
+
+            this.animateAndRender(elapsedTime);
         }
 
         public void dispose()

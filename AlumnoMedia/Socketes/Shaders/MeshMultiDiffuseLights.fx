@@ -33,7 +33,7 @@ sampler2D diffuseMap = sampler_state
 texture texLightMap;
 sampler2D lightMap = sampler_state
 {
-   Texture = (texLightMap);
+	Texture = (texLightMap);
 };
 
 //Material del mesh
@@ -53,10 +53,10 @@ float lightAttenuation[4]; //Factor de atenuacion de las 4 luces
 //Input del Vertex Shader
 struct VS_INPUT
 {
-   float4 Position : POSITION0;
-   float3 Normal : NORMAL0;
-   float4 Color : COLOR;
-   float2 Texcoord : TEXCOORD0;
+	float4 Position : POSITION0;
+	float3 Normal : NORMAL0;
+	float4 Color : COLOR;
+	float2 Texcoord : TEXCOORD0;
 };
 
 //Output del Vertex Shader
@@ -143,9 +143,9 @@ float4 point_light_ps(PS_INPUT input) : COLOR0
 */
 technique MultiDiffuseLightsTechnique
 {
-   pass Pass_0
-   {
-	  VertexShader = compile vs_2_0 vs_general();
-	  PixelShader = compile ps_2_0 point_light_ps();
-   }
+	pass Pass_0
+	{
+		VertexShader = compile vs_2_0 vs_general();
+		PixelShader = compile ps_2_0 point_light_ps();
+	}
 }

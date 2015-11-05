@@ -1,8 +1,8 @@
 ﻿using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Model.ElementosCancha;
+using AlumnoEjemplos.Socketes.Model.Iluminacion;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using System.Collections.Generic;
-using System;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
@@ -121,11 +121,19 @@ namespace AlumnoEjemplos.Socketes.Model
             }
         }
 
-        public void renderShadow(float elapsedTime, List<Iluminacion.Luz> luces)
+        public void renderShadow(float elapsedTime, List<Luz> luces)
         {
             foreach (Jugador jugador in this.jugadores)
             {
                 jugador.renderShadow(elapsedTime, luces);
+            }
+        }
+
+        public void renderLight(float elapsedTime, List<Luz> luces)
+        {
+            foreach (Jugador jugador in this.jugadores)
+            {
+                jugador.renderLight(elapsedTime, luces);
             }
         }
 

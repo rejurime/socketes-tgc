@@ -136,20 +136,30 @@ namespace AlumnoEjemplos.Socketes.Model
             this.cancha.render();
 
             //sombras
-            this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
-            this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
-            this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
+            if (this.luz)
+            {
+                this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
+                this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
+                this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
+
+                this.equipoLocal.renderLight(elapsedTime, this.cancha.Luces);
+                this.equipoVisitante.renderLight(elapsedTime, this.cancha.Luces);
+                this.pelota.updateValues(elapsedTime);
+                this.pelota.renderLight(elapsedTime, this.cancha.Luces);
+            }
+            else
+            {
+                this.equipoLocal.render(elapsedTime);
+                this.equipoVisitante.render(elapsedTime);
+                this.pelota.updateValues(elapsedTime);
+                this.pelota.render();
+            }
 
             this.arcoLocal.render();
             this.arcoVisitante.render();
-            //objetos locos
-            this.equipoLocal.render(elapsedTime);
-            this.equipoVisitante.render(elapsedTime);
-            this.pelota.updateValues(elapsedTime);
-            this.pelota.render();
+            
 
             this.marcador.render(this.equipoLocal.Goles, this.equipoVisitante.Goles);
-
         }
 
         /// <summary>

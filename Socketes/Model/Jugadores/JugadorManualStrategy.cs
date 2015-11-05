@@ -129,7 +129,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
 
         private bool SigoColisionadoConPelota(Pelota pelota, Jugador jugador)
         {
-            TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(pelota.GetTgcBoundingBox(), jugador.GetTgcBoundingBox());
+            TgcCollisionUtils.BoxBoxResult result = TgcCollisionUtils.classifyBoxBox(pelota.BoundingBox, jugador.GetTgcBoundingBox());
 
             if (result == TgcCollisionUtils.BoxBoxResult.Adentro || result == TgcCollisionUtils.BoxBoxResult.Atravesando)
             {

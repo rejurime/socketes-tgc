@@ -68,7 +68,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         {
             float anguloEquipoCPU = 90f;
 
-            List<Jugador> jugadores = new List<Jugador>(); 
+            List<Jugador> jugadores = new List<Jugador>();
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(220, 1, 0), anguloEquipoCPU, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, 150), anguloEquipoCPU, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, -150), anguloEquipoCPU, partido.Pelota));
@@ -142,7 +142,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             //Recalculo las normales para evitar problemas con la luz
             personaje.computeNormals();
 
-            return new Jugador(personaje, strategy, pelota, TgcShaders.loadEffect(pathRecursos + "Shaders\\PlanarShadows.fx"));
+            Jugador jugador = new Jugador(personaje, strategy, pelota);
+            jugador.ShadowEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshPlanarShadows.fx");
+            jugador.LightEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshPointLight.fx");
+            return jugador;
         }
 
         /// <summary> Le carga los colisionables a cada jugador</summary>

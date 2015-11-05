@@ -1,72 +1,54 @@
 ﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Model.Iluminacion;
-using AlumnoEjemplos.Socketes.Model.Jugadores;
 using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Drawing;
 using TgcViewer;
-using TgcViewer.Utils.Shaders;
-using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model
 {
-    public class Pelota : IColisionable
+    public class Pelota
     {
         private Vector3 posicionOriginalSphere;
         private Vector3 posicionOriginalBox;
         private TgcSphere sphere;
-        private bool mostrarBounding = true;
+        private bool mostrarBounding;
         private ITiro tiro;
         private PelotaCollisionManager collisionManager;
 
-        Effect effect;
-
+        private Effect shadowEffect;
+        private Effect lightEffect;
 
         private float gravityForce = 0.8f;
 
         private TgcBox box;
         private float VELOCIDAD_DE_ROTACION_DEFAULT = 150;
 
-        //sonido para patear
-        private TgcMp3Player sonidoPatear;
         private Vector3 movimiento = Vector3.Empty;
 
         //solo guardo la rotacion, el resto de las matrices se arman en el momento
         private Matrix matrixrotacion = Matrix.Identity;
-        private float diametro;
 
         public float Diametro
         {
-            get { return diametro; }
-            set { diametro = value; }
+            get { return this.sphere.Radius * 2; }
         }
 
-        public TgcBoundingSphere BoundingSphere
+        public TgcBoundingBox BoundingBox
         {
-            get { return sphere.BoundingSphere; }
+            get { return this.box.BoundingBox; }
         }
 
         public Vector3 Position
         {
             get { return sphere.Position; }
             set { sphere.Position = value; }
-        }
-
-        public Effect Effect
-        {
-            get { return sphere.Effect; }
-            set { sphere.Effect = value; }
-        }
-
-        public string Technique
-        {
-            get { return sphere.Technique; }
-            set { sphere.Technique = value; }
         }
 
         public bool MostrarBounding
@@ -83,25 +65,16 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public Pelota(TgcSphere sphere)
         {
-            //apago el auto transformado, ya que la pelota lo maneja solo
-            sphere.AutoTransformEnable = false;
-            diametro = sphere.Radius * 2;
-            this.box = TgcBox.fromSize(sphere.Position, new Vector3(sphere.Radius * 2, sphere.Radius * 2, sphere.Radius * 2));
-            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-            effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\PlanarShadows.fx");
- 
-
-            this.sonidoPatear = new TgcMp3Player();
-            this.sonidoPatear.FileName = pathRecursos + "\\Audio\\patear-pelota.mp3";
             this.sphere = sphere;
+            //apago el auto transformado, ya que la pelota lo maneja solo
+            this.sphere.AutoTransformEnable = false;
+            this.sphere.Transform = this.getScalingMatrix() * Matrix.Translation(this.sphere.Position);
+            this.sphere.updateValues();
 
-            this.posicionOriginalSphere = new Vector3(sphere.Position.X, sphere.Position.Y, sphere.Position.Z);
-            this.posicionOriginalBox = new Vector3(box.Position.X, box.Position.Y, box.Position.Z);
+            this.box = TgcBox.fromSize(sphere.Position, new Vector3(this.Diametro, this.Diametro, this.Diametro));
 
-            this.sphere.Transform = getScalingMatrix() *
-               Matrix.Translation(sphere.Position);
-
-            sphere.updateValues();
+            this.posicionOriginalSphere = new Vector3(this.sphere.Position.X, this.sphere.Position.Y, this.sphere.Position.Z);
+            this.posicionOriginalBox = new Vector3(this.box.Position.X, this.box.Position.Y, this.box.Position.Z);
         }
 
         public void render()
@@ -160,7 +133,6 @@ namespace AlumnoEjemplos.Socketes.Model
                 if (isLogEnable())
                     GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
             }
-
         }
 
         private void resetMovimiento()
@@ -263,7 +235,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private bool isLogEnable()
         {
-
             return (bool)GuiController.Instance.Modifiers["Log"];
         }
 
@@ -351,6 +322,7 @@ namespace AlumnoEjemplos.Socketes.Model
         public void dispose()
         {
             sphere.dispose();
+            box.dispose();
         }
 
         /// <summary>
@@ -369,45 +341,72 @@ namespace AlumnoEjemplos.Socketes.Model
                 this.movimiento = movement;
         }
 
-        public Vector3 GetDireccionDeRebote(Vector3 movimiento)
-        {
-            throw new NotImplementedException();
-        }
-
-        public float GetFuerzaRebote(Vector3 movimiento, float fuerzaRestante)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TgcBoundingBox GetTgcBoundingBox()
-        {
-            return box.BoundingBox;
-        }
-
         public void renderShadow(float elapsedTime, List<Luz> luces)
         {
-            
             Device device = GuiController.Instance.D3dDevice;
             Effect originalEffect = sphere.Effect;
             string originalTechnique = this.sphere.Technique;
 
-            this.sphere.Effect = effect;
+            this.sphere.Effect = shadowEffect;
             this.sphere.Technique = "RenderShadows";
 
             foreach (Luz luz in luces)
             {
                 device.RenderState.ZBufferEnable = false;
                 this.sphere.AlphaBlendEnable = true;
-                this.effect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
-                this.effect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
+                this.shadowEffect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
+                this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.sphere.render();
             }
             device.RenderState.ZBufferEnable = true;
             this.sphere.AlphaBlendEnable = false;
             this.sphere.Effect = originalEffect;
             this.sphere.Technique = originalTechnique;
-            
+        }
 
+        public void renderLight(float elapsedTime, List<Luz> luces)
+        {
+            //Configurar los valores de cada luz
+            ColorValue[] lightColors = new ColorValue[luces.Count];
+            Vector4[] pointLightPositions = new Vector4[luces.Count];
+            float[] pointLightIntensity = new float[luces.Count];
+            float[] pointLightAttenuation = new float[luces.Count];
+
+            for (int i = 0; i < luces.Count; i++)
+            {
+                Luz lightMesh = luces[i];
+                lightColors[i] = ColorValue.FromColor(lightMesh.Color);
+                pointLightPositions[i] = TgcParserUtils.vector3ToVector4(lightMesh.Posicion);
+                pointLightIntensity[i] = (float)GuiController.Instance.Modifiers["lightIntensity"];
+                pointLightAttenuation[i] = (float)GuiController.Instance.Modifiers["lightAttenuation"];
+            }
+
+            //Cargar variables de shader
+            this.lightEffect.SetValue("lightColor", lightColors);
+            this.lightEffect.SetValue("lightPosition", pointLightPositions);
+            this.lightEffect.SetValue("lightIntensity", pointLightIntensity);
+            this.lightEffect.SetValue("lightAttenuation", pointLightAttenuation);
+            this.lightEffect.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
+            this.lightEffect.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
+
+            this.sphere.Effect = this.lightEffect;
+
+            //El Technique depende del tipo RenderType del mesh "VERTEX_COLOR"; "DIFFUSE_MAP";
+            this.sphere.Technique = "DIFFUSE_MAP";
+
+            this.render();
+        }
+
+        public Effect ShadowEffect
+        {
+            get { return shadowEffect; }
+            set { shadowEffect = value; }
+        }
+
+        public Effect LightEffect
+        {
+            get { return lightEffect; }
+            set { lightEffect = value; }
         }
     }
 }

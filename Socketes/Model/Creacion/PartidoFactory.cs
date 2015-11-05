@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.Input;
+using TgcViewer.Utils.Shaders;
 using TgcViewer.Utils.Sound;
 using TgcViewer.Utils.Terrain;
 using TgcViewer.Utils.TgcGeometry;
@@ -271,7 +272,10 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             sphere.Position = new Vector3(cancha.Position.X, cancha.Position.Y + radio, cancha.Position.Z);
             sphere.updateValues();
 
-            return new Pelota(sphere);
+            Pelota pelota = new Pelota(sphere);
+            pelota.ShadowEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshPlanarShadows.fx");
+            pelota.LightEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshMultiplePointLight.fx");
+            return pelota;
         }
 
         /// <summary>
