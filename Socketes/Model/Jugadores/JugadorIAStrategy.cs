@@ -9,7 +9,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private bool inteligenciaArtificial;
         private Random semilla;
         int maximoFuerzaPatear = 10;
-        private int MULTIPLICADOR_FUERZA_PATEAR = 50;
+        private int MULTIPLICADOR_FUERZA_PATEAR = 80;
 
         public bool InteligenciaArtificial
         {
@@ -69,7 +69,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 return;
             }
 
-            Vector3 direccion = new Vector3(jugador.EquipoPropio.ArcoRival.Red.GetPosition().X, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Y, jugador.EquipoPropio.ArcoRival.Red.GetPosition().Z);
+            Vector3 direccion = jugador.EquipoPropio.ArcoRival.Red.GetPosition() - jugador.Position;
             direccion.Normalize();
 
             //Por ahora hago esto... :p, pero hay que pensar una IA real :)
