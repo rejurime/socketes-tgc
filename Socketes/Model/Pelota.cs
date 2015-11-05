@@ -358,6 +358,7 @@ namespace AlumnoEjemplos.Socketes.Model
                 this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.sphere.render();
             }
+
             device.RenderState.ZBufferEnable = true;
             this.sphere.AlphaBlendEnable = false;
             this.sphere.Effect = originalEffect;
@@ -366,6 +367,9 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void renderLight(float elapsedTime, List<Luz> luces)
         {
+            Effect originalEffect = this.sphere.Effect;
+            string originalTechnique = this.sphere.Technique;
+
             //Configurar los valores de cada luz
             ColorValue[] lightColors = new ColorValue[luces.Count];
             Vector4[] pointLightPositions = new Vector4[luces.Count];
@@ -395,6 +399,9 @@ namespace AlumnoEjemplos.Socketes.Model
             this.sphere.Technique = "DIFFUSE_MAP";
 
             this.render();
+
+            this.sphere.Effect = originalEffect;
+            this.sphere.Technique = originalTechnique;
         }
 
         public Effect ShadowEffect
