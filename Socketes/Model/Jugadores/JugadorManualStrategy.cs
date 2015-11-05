@@ -10,9 +10,10 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
     public class JugadorManualStrategy : IJugadorMoveStrategy
     {
         private TgcD3dInput d3dInput;
-        private float acumuladoPatear = 0;
+        private float acumuladoPatear = 2;
         private float maximoFuerzaPatear = 10;
-        private float MULTIPLICADOR_FUERZA_PATEAR = 50;
+        private float minimoFuerzaPatear = 2;
+        private float MULTIPLICADOR_FUERZA_PATEAR = 80;
         private float MULTIPLICADOR_FUERZA_PASAR = 300;
 
         public JugadorManualStrategy(TgcD3dInput d3dInput)
@@ -74,7 +75,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                     Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
                     jugador.Pelota.Patear(direccion, this.maximoFuerzaPatear * MULTIPLICADOR_FUERZA_PATEAR);
                     jugador.PelotaDominada = false;
-                    this.acumuladoPatear = 0;
+                    this.acumuladoPatear = minimoFuerzaPatear;
 
                     return;
                 }
@@ -86,7 +87,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 Vector3 direccion = CalcularDireccionDePateado(jugador, pelota, movimiento);
                 jugador.Pelota.Patear(direccion, this.acumuladoPatear * MULTIPLICADOR_FUERZA_PATEAR);
                 jugador.PelotaDominada = false;
-                this.acumuladoPatear = 0;
+                this.acumuladoPatear = minimoFuerzaPatear;
 
                 return;
             }
