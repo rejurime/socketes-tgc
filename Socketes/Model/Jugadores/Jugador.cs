@@ -239,7 +239,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             string originalTechnique = this.skeletalMesh.Technique;
 
             this.skeletalMesh.Effect = shadowEffect;
-            this.skeletalMesh.Technique = "RenderShadows";
+            this.skeletalMesh.Technique = "RenderMeshShadows";
 
             foreach (Luz luz in luces)
             {

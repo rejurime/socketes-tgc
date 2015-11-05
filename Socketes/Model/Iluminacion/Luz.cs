@@ -30,6 +30,8 @@ namespace AlumnoEjemplos.Socketes.Model.Iluminacion
             this.luzMesh = luzMesh;
             this.luzColor = color;
             this.luzPosicion = posicion;
+            //TODO ver de mover toda la luz 5 veces.
+            this.luzPosicion.Y *= 5;
         }
 
         public void render()
