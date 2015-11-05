@@ -20,7 +20,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
         private TgcSkeletalMesh skeletalMesh;
         private TgcBox box;
         private float velocidadCaminar = 120f;
-        private float velocidadCorrer = 220f;
+        private float velocidadCorrer = 200f;
         private IJugadorMoveStrategy strategy;
         private Pelota pelota;
         private Equipo equipoPropio;
