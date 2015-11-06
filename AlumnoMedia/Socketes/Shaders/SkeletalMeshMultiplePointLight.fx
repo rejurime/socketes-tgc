@@ -80,6 +80,50 @@ struct VS_OUTPUT_DIFFUSE_MAP
 	float3 SpecularLight : TEXCOORD7;
 };
 
+//Output del computeComponents
+struct VS_OUTPUT_COMPUTE_COMPONENTS
+{
+	float3 Intensity;
+	float3 DiffuseLight;
+	float3 SpecularLight;
+};
+
+//Funcion para calcular los componentes de la luz
+VS_OUTPUT_COMPUTE_COMPONENTS computeComponents(int i, float3 worldPosition, float3 viewVector, float3 Nn)
+{
+	VS_OUTPUT_COMPUTE_COMPONENTS output;
+
+	//LightVec (L): vector que va desde el vertice hacia la luz. Usado en Diffuse y Specular
+	float3 lightVec = lightPosition[i].xyz - worldPosition;
+
+	//HalfAngleVec (H): vector de reflexion simplificado de Phong-Blinn (H = |V + L|). Usado en Specular
+	float3 halfAngleVec = viewVector + lightVec;
+
+	//Normalizar vectores
+	float3 Ln = normalize(lightVec);
+	float3 Hn = normalize(halfAngleVec);
+
+	//Calcular intensidad de luz, con atenuacion por distancia
+	float distAtten = length(lightPosition[i].xyz - worldPosition) * lightAttenuation[i];
+
+	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
+	output.Intensity = lightIntensity[i] / distAtten;
+
+	//Componente Diffuse: N dot L
+	float3 n_dot_l = dot(Nn, Ln);
+
+	//Controlamos que no de negativo
+	output.DiffuseLight = output.Intensity * lightColor[i] * materialDiffuseColor.rgb * max(0.0, n_dot_l);
+
+	//Componente Specular: (N dot H)^exp
+	float3 n_dot_h = dot(Nn, Hn);
+
+	output.SpecularLight = n_dot_l <= 0.0	? float3(0.0, 0.0, 0.0)
+	: (output.Intensity * lightColor[i] * materialSpecularColor * pow(max( 0.0, n_dot_h), materialSpecularExp));
+
+	return output;
+}
+
 //Vertex Shader
 VS_OUTPUT_DIFFUSE_MAP vs_DiffuseMap(VS_INPUT_DIFFUSE_MAP input)
 {
@@ -127,96 +171,26 @@ VS_OUTPUT_DIFFUSE_MAP vs_DiffuseMap(VS_INPUT_DIFFUSE_MAP input)
 	//Posicion pasada a World-Space (necesaria para atenuaci�n por distancia)
 	output.WorldPosition = mul(input.Position, matWorld);
 
-	//LightVec (L): vector que va desde el vertice hacia la luz. Usado en Diffuse y Specular
-	float3 lightVec1 = lightPosition[0].xyz - output.WorldPosition;
-	float3 lightVec2 = lightPosition[1].xyz - output.WorldPosition;
-	float3 lightVec3 = lightPosition[2].xyz - output.WorldPosition;
-	float3 lightVec4 = lightPosition[3].xyz - output.WorldPosition;
-
 	//ViewVec (V): vector que va desde el vertice hacia la camara.
 	float3 viewVector = eyePosition.xyz - output.WorldPosition;
-
-	//HalfAngleVec (H): vector de reflexion simplificado de Phong-Blinn (H = |V + L|). Usado en Specular
-	float3 halfAngleVec1 = viewVector + lightVec1;
-	float3 halfAngleVec2 = viewVector + lightVec2;
-	float3 halfAngleVec3 = viewVector + lightVec3;
-	float3 halfAngleVec4 = viewVector + lightVec4;
 
 	//Normalizar vectores
 	float3 Nn = normalize(output.WorldNormal);
 
-	float3 Ln1 = normalize(lightVec1);
-	float3 Ln2 = normalize(lightVec2);
-	float3 Ln3 = normalize(lightVec3);
-	float3 Ln4 = normalize(lightVec4);
-	
-	float3 Hn1 = normalize(halfAngleVec1);
-	float3 Hn2 = normalize(halfAngleVec1);
-	float3 Hn3 = normalize(halfAngleVec1);
-	float3 Hn4 = normalize(halfAngleVec1);
-
-	//Calcular intensidad de luz, con atenuacion por distancia
-	float distAtten1 = length(lightPosition[0].xyz - output.WorldPosition) * lightAttenuation[0];
-	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
-	float intensity1 = lightIntensity[0] / distAtten1;
-
-	float distAtten2 = length(lightPosition[1].xyz - output.WorldPosition) * lightAttenuation[1];
-	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
-	float intensity2 = lightIntensity[1] / distAtten2;
-
-	float distAtten3 = length(lightPosition[2].xyz - output.WorldPosition) * lightAttenuation[2];
-	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
-	float intensity3 = lightIntensity[2] / distAtten3;
-
-	float distAtten4 = length(lightPosition[3].xyz - output.WorldPosition) * lightAttenuation[3];
-	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
-	float intensity4 = lightIntensity[3] / distAtten4;
+	VS_OUTPUT_COMPUTE_COMPONENTS componentsLight1 = computeComponents(0, output.WorldPosition, viewVector, Nn);
+	VS_OUTPUT_COMPUTE_COMPONENTS componentsLight2 = computeComponents(1, output.WorldPosition, viewVector, Nn);
+	VS_OUTPUT_COMPUTE_COMPONENTS componentsLight3 = computeComponents(2, output.WorldPosition, viewVector, Nn);
+	VS_OUTPUT_COMPUTE_COMPONENTS componentsLight4 = computeComponents(3, output.WorldPosition, viewVector, Nn);
 
 	//Componente Ambient
-	float3 ambientLight = (intensity1 * lightColor[0] + intensity2 * lightColor[1] + intensity3 * lightColor[2] + intensity4 * lightColor[3])* materialAmbientColor;
+	output.AmbientLight = (componentsLight1.Intensity * lightColor[0] + componentsLight2.Intensity * lightColor[1] +
+		componentsLight3.Intensity * lightColor[2] + componentsLight4.Intensity * lightColor[3])* materialAmbientColor;
 
-	//Componente Diffuse: N dot L
-	float3 n_dot_l1 = dot(Nn, Ln1);
-	//Controlamos que no de negativo
-	float3 diffuseLight1 = intensity1 * lightColor[0] * materialDiffuseColor.rgb * max(0.0, n_dot_l1);
+		output.DiffuseLight = componentsLight1.DiffuseLight + componentsLight2.DiffuseLight +
+		componentsLight3.DiffuseLight + componentsLight4.DiffuseLight;
 
-	float3 n_dot_l2 = dot(Nn, Ln1);
-	//Controlamos que no de negativo
-	float3 diffuseLight2 = intensity2 * lightColor[1] * materialDiffuseColor.rgb * max(0.0, n_dot_l2);
-
-	float3 n_dot_l3 = dot(Nn, Ln1);
-	//Controlamos que no de negativo
-	float3 diffuseLight3 = intensity3 * lightColor[2] * materialDiffuseColor.rgb * max(0.0, n_dot_l3);
-
-	float3 n_dot_l4 = dot(Nn, Ln1);
-	//Controlamos que no de negativo
-	float3 diffuseLight4 = intensity4 * lightColor[3] * materialDiffuseColor.rgb * max(0.0, n_dot_l4);
-
-	//Componente Specular: (N dot H)^exp
-	float3 n_dot_h1 = dot(Nn, Hn1);
-	float3 n_dot_h2 = dot(Nn, Hn2);
-	float3 n_dot_h3 = dot(Nn, Hn3);
-	float3 n_dot_h4 = dot(Nn, Hn4);
-
-	float3 specularLight1 = n_dot_l1 <= 0.0
-	? float3(0.0, 0.0, 0.0)
-	: (intensity1 * lightColor[0] * materialSpecularColor * pow(max( 0.0, n_dot_h1), materialSpecularExp));
-
-	float3 specularLight2 = n_dot_l2 <= 0.0
-	? float3(0.0, 0.0, 0.0)
-	: (intensity2 * lightColor[1] * materialSpecularColor * pow(max( 0.0, n_dot_h2), materialSpecularExp));
-
-	float3 specularLight3 = n_dot_l3 <= 0.0
-	? float3(0.0, 0.0, 0.0)
-	: (intensity3 * lightColor[2] * materialSpecularColor * pow(max( 0.0, n_dot_h3), materialSpecularExp));
-
-	float3 specularLight4 = n_dot_l4 <= 0.0
-	? float3(0.0, 0.0, 0.0)
-	: (intensity4 * lightColor[3] * materialSpecularColor * pow(max( 0.0, n_dot_h4), materialSpecularExp));
-
-	output.AmbientLight = ambientLight;
-	output.DiffuseLight = diffuseLight1 + diffuseLight2 + diffuseLight3 + diffuseLight4;
-	output.SpecularLight = specularLight1 + specularLight2 + specularLight3 + specularLight4;
+		output.SpecularLight = componentsLight1.SpecularLight + componentsLight2.SpecularLight +
+		componentsLight3.SpecularLight + componentsLight4.SpecularLight;
 
 	return output;
 }
@@ -253,7 +227,7 @@ technique DIFFUSE_MAP
 {
 	pass Pass_0
 	{
-		VertexShader = compile vs_2_0 vs_DiffuseMap();
-		PixelShader = compile ps_2_0 ps_DiffuseMap();
+		VertexShader = compile vs_3_0 vs_DiffuseMap();
+		PixelShader = compile ps_3_0 ps_DiffuseMap();
 	}
 }

@@ -18,12 +18,12 @@ namespace AlumnoEjemplos.Socketes
 {
     public class TestIluminacion : TgcExample
     {
-        Pelota pelota;
-        Jugador jugador;
-        Effect meshMultiDiffuseLights;
-        Effect skeletalMeshPointLight;
-
-        List<Luz> luces;
+        private Pelota pelota;
+        private Jugador jugador;
+        private Effect meshMultiDiffuseLights;
+        private Effect skeletalMeshPointLight;
+        private List<Luz> luces;
+        private TgcBox piso;
 
         public override string getCategory()
         {
@@ -32,7 +32,7 @@ namespace AlumnoEjemplos.Socketes
 
         public override string getName()
         {
-            return "Test iluminacion";
+            return "Test iluminación";
         }
 
         public override string getDescription()
@@ -52,7 +52,7 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.FpsCamera.Enable = true;
             GuiController.Instance.FpsCamera.MovementSpeed = 400f;
             GuiController.Instance.FpsCamera.JumpSpeed = 300f;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(-210.0958f, 114.911f, -109.2159f), new Vector3(-209.559f, 114.8029f, -108.3791f));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 150, -200), new Vector3(0, 80, 0));
 
             //Cargar Shader personalizado de MultiDiffuseLights
             /*
@@ -66,10 +66,12 @@ namespace AlumnoEjemplos.Socketes
 
             this.luces = new List<Luz>();
             //Crear 4 mesh para representar las 4 para la luces. Las ubicamos en distintas posiciones del escenario, cada una con un color distinto.
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 100, 440), new Vector3(10, 10, 10), Color.HotPink), Color.HotPink, new Vector3(-40, 40, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 440), new Vector3(10, 10, 10), Color.Blue), Color.Blue, new Vector3(-40, 60, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 100, 340), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
-            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 100, 340), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 150, 100), new Vector3(10, 10, 10), Color.BlueViolet), Color.HotPink, new Vector3(-40, 40, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 150, 100), new Vector3(10, 10, 10), Color.LightSteelBlue), Color.Blue, new Vector3(-40, 60, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 150, -100), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
+            luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 150, -100), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
+
+            this.piso = TgcBox.fromSize(new Vector3(0, 0, 0), new Vector3(400, 0, 400), TgcTexture.createTexture(pathRecursos + Settings.Default.textureMenuField));
 
             //Modifiers
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 38);
@@ -90,10 +92,14 @@ namespace AlumnoEjemplos.Socketes
             //Aplicar al mesh el shader actual
             this.jugador.LightEffect = this.skeletalMeshPointLight;
             this.jugador.renderLight(elapsedTime, luces);
+            //this.jugador.renderShadow(elapsedTime, luces);
 
             //Aplicar al mesh el shader actual
             this.pelota.LightEffect = this.meshMultiDiffuseLights;
             this.pelota.renderLight(elapsedTime, luces);
+            //this.pelota.renderShadow(elapsedTime, luces);
+
+            this.piso.render();
         }
 
         public override void close()
@@ -108,6 +114,7 @@ namespace AlumnoEjemplos.Socketes
 
             this.jugador.dispose();
             this.pelota.dispose();
+            this.piso.dispose();
         }
 
         public Pelota CrearPelota(string pathRecursos)
@@ -118,7 +125,7 @@ namespace AlumnoEjemplos.Socketes
             TgcSphere sphere = new TgcSphere();
             sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             sphere.Radius = radio;
-            sphere.Position = new Vector3(-50, 10, 400);
+            sphere.Position = new Vector3(50, 25, 0);
             sphere.updateValues();
 
             return new Pelota(sphere);
@@ -146,7 +153,7 @@ namespace AlumnoEjemplos.Socketes
 
             //Configurar animacion inicial
             personaje.playAnimation(Settings.Default.animationStopPlayer, true);
-            personaje.Position = new Vector3(10, 0, 400);
+            personaje.Position = new Vector3(0, 0, 0);
 
             //Lo Escalo porque es muy grande
             personaje.Scale = new Vector3(0.75f, 0.75f, 0.75f);

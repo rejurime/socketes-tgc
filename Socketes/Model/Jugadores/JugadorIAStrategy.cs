@@ -1,6 +1,5 @@
 ﻿using Microsoft.DirectX;
 using System;
-using TgcViewer;
 
 namespace AlumnoEjemplos.Socketes.Model.Jugadores
 {
@@ -34,7 +33,7 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
                 jugador.playAnimation(jugador.AnimacionParado, true);
                 return;
             }
-            
+
             //Multiplicar la velocidad por el tiempo transcurrido, para no acoplarse al CPU
             float velocidad = jugador.VelocidadCaminar * elapsedTime;
 

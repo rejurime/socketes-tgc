@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
+using System.Windows.Forms;
 using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils.Sound;
@@ -59,21 +60,24 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
-            //Se ejecuta en FullScreen
-            GuiController.Instance.FullScreenEnable = true;
+            DialogResult result = MessageBox.Show("¿Ejecutar en modo patanlla completa?", "Confirmación", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                //Se ejecuta en FullScreen
+                GuiController.Instance.FullScreenEnable = true;
+            }
+            else
+            {
+                //Se ejecuta en modo normal
+                GuiController.Instance.FullScreenEnable = false;
+            }
 
             //Musica
             GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
             //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", false);
 
-            //indica si se usa la cmara dinamica o no
-            //GuiController.Instance.Modifiers.addBoolean("CamaraDinamica", "CamaraDinamica", false);
-
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
-
-            //para prender y apagar logs
-            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
 
             //Inteligencia Artificial
             GuiController.Instance.Modifiers.addBoolean("IA", "IA", true);
@@ -136,14 +140,11 @@ namespace AlumnoEjemplos.Socketes
             }
             else
             {
-                Vector3 posicionCamara = new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z);
-                float camaraOffsetHeight = Settings.Default.camaraOffsetHeight;
-                float camaraOffsetForward = Settings.Default.camaraOffsetForward;
                 if (!this.tiempo)
                 {
                     this.tiempo = true;
                     this.partido.Marcador.IniciarTiempo();
-                    GuiController.Instance.ThirdPersonCamera.setCamera(posicionCamara, camaraOffsetHeight, camaraOffsetForward);
+                    GuiController.Instance.ThirdPersonCamera.setCamera(new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
                 }
                 //BoundingBox
                 this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
@@ -156,26 +157,8 @@ namespace AlumnoEjemplos.Socketes
 
                 this.partido.render(elapsedTime);
 
-                /*
-                //la camara se puede cambiar dinamicamente, sino sigue a la pelota y esta siempre en la misma posicion
-                if ((bool)GuiController.Instance.Modifiers["CamaraDinamica"])
-                {
-                    //CODIGO muy feo, para vos reneeee!
-                    Vector3 distanciaJugadorPelota = this.partido.Pelota.Position - this.partido.EquipoLocal.JugadorManual().Position;
-                    float distancia = distanciaJugadorPelota.Length();
-                    if (distancia > Settings.Default.camaraOffsetForward)
-                    {
-                        camaraOffsetForward -= distancia;
-
-                        if (camaraOffsetForward < -900)
-                        {
-                            camaraOffsetForward = -900;
-                        }
-                    }
-                    GuiController.Instance.ThirdPersonCamera.setCamera(posicionCamara, camaraOffsetHeight, camaraOffsetForward);
-
-                }*/
-                GuiController.Instance.ThirdPersonCamera.Target = posicionCamara;
+                //Hacer que la camara siga al personaje en su nueva posicion
+                GuiController.Instance.ThirdPersonCamera.Target = new Vector3(this.partido.Pelota.Position.X, 0, this.partido.Pelota.Position.Z);
             }
         }
 
@@ -217,6 +200,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void close()
         {
+            this.tiempo = false;
             //Del menu ya hice dispose antes de empezar con el partido ;)
             this.partido.dispose();
         }

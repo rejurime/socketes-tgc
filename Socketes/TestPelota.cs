@@ -32,7 +32,7 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override string getName()
         {
-            return "Test Pelota";
+            return "Test pelota";
         }
 
         /// <summary>
@@ -47,7 +47,13 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
-            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
+            //BoundingBox
+            GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
+
+            //Luz
+            GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 100, 50);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
             //TODO Arreglar para despues :)
             Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
@@ -104,6 +110,9 @@ namespace AlumnoEjemplos.Socketes
 
             //Hacer que la camara siga al personaje en su nueva posicion
             GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
+
+            //Habilitar luz
+            this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
             //Render de todos los elementos del partido
             this.partido.render(elapsedTime);

@@ -61,8 +61,10 @@ namespace AlumnoEjemplos.Socketes
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
-            //para prender y apagar logs
-            GuiController.Instance.Modifiers.addBoolean("Log", "Log", false);
+            //Luz
+            GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 100, 50);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             //Camara en primera persona, tipo videojuego FPS
@@ -70,7 +72,7 @@ namespace AlumnoEjemplos.Socketes
             //Por default la camara FPS viene desactivada
             GuiController.Instance.FpsCamera.Enable = true;
             //Configurar posicion y hacia donde se mira
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -20), new Vector3(0, 0, 0));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 10, -20), new Vector3(0, 0, 0));
         }
 
         /// <summary>
@@ -83,6 +85,9 @@ namespace AlumnoEjemplos.Socketes
         {
             //BoundingBox
             this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
+
+            //Habilitar luz
+            this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
             this.partido.render(elapsedTime);
         }

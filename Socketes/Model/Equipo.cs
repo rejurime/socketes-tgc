@@ -228,21 +228,6 @@ namespace AlumnoEjemplos.Socketes.Model
             return jugadorMasCercano;
         }
 
-        /// <summary>
-        /// Retorna el jugador manual :P, si rene, mas codigo feo, chupala de nuevo.
-        /// </summary>
-        /// <returns></returns>
-        public Jugador JugadorManual()
-        {
-            foreach (Jugador jugador in this.jugadores)
-            {
-                if (jugador.Strategy is JugadorManualStrategy)
-                    return jugador;
-            }
-
-            return null;
-        }
-
         public Jugador JugadorMasCercano(Jugador jugadorReferencia)
         {
             Jugador jugadorMasCercano = null;

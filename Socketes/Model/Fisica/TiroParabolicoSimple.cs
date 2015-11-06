@@ -22,16 +22,12 @@ namespace AlumnoEjemplos.Socketes.Fisica
 
         public TiroParabolicoSimple(Vector3 direccion, float fuerza)
         {
-
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Direccion: " + VectorUtils.PrintVectorSinSaltos(direccion) + ", fuerza: " + fuerza);
-
             this.direccion = direccion;
             this.direccion.Normalize();
             this.fuerza = fuerza;
             this.fuerzaOriginal = fuerza;
 
-            this.fuerzaPorEje = new Vector3(fuerza, fuerza/1.4f, fuerza);
+            this.fuerzaPorEje = new Vector3(fuerza, fuerza / 1.4f, fuerza);
         }
 
         /// <summary>
@@ -69,11 +65,6 @@ namespace AlumnoEjemplos.Socketes.Fisica
         public float getFuerza()
         {
             return fuerza;
-        }
-
-        private bool isLogEnable()
-        {
-            return (bool)GuiController.Instance.Modifiers["Log"];
         }
     }
 }

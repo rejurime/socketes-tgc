@@ -128,8 +128,6 @@ namespace AlumnoEjemplos.Socketes.Model
             foreach (IColisionablePelota objetoColisionado in colisionInfo.getColisiones())
             {
                 objetoColisionado.ColisionasteConPelota(this);
-                if (isLogEnable())
-                    GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
             }
         }
 
@@ -152,8 +150,6 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             tiro = new TiroParabolicoSimple(direccion, fuerza);
 
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Patear en direccion: " + VectorUtils.PrintVectorSinSaltos(direccion) + " con fuerza: " + fuerza);
             ReproducirSonidoPatear();
         }
 
@@ -172,21 +168,13 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 lastsphereposition = sphere.Position;
             Vector3 lastboxposition = box.Position;
 
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Movimiento real: " + VectorUtils.PrintVectorSinSaltos(movimiento));
-
             moveTo(movimiento);
 
             ColisionInfo colisionInfo = collisionManager.GetColisiones(box.BoundingBox);
 
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Se colisiono con: " + colisionInfo.getColisiones().Count + " obstaculo(s)");
-
             foreach (IColisionablePelota objetoColisionado in colisionInfo.getColisiones())
             {
                 objetoColisionado.ColisionasteConPelota(this);
-                if (isLogEnable())
-                    GuiController.Instance.Logger.log("Objetos colsionados: " + objetoColisionado);
 
                 if (hayTiro())
                 {
@@ -231,15 +219,8 @@ namespace AlumnoEjemplos.Socketes.Model
             this.box.Position = this.posicionOriginalBox;
         }
 
-        private bool isLogEnable()
-        {
-            return (bool)GuiController.Instance.Modifiers["Log"];
-        }
-
         private bool hayMovimiento(Vector3 movimiento)
         {
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Movimiento: " + VectorUtils.PrintVectorSinSaltos(movimiento) + ", hay movimiento?: " + (movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0));
             return movimiento.X != 0 || movimiento.Y != 0 || movimiento.Z != 0;
         }
 
@@ -274,9 +255,6 @@ namespace AlumnoEjemplos.Socketes.Model
             Vector3 direccion = new Vector3(movimiento.X, movimiento.Y, movimiento.Z);
             direccion.Normalize();
             float velocidadRotacion = VELOCIDAD_DE_ROTACION_DEFAULT * direccion.Length();
-
-            if (isLogEnable())
-                GuiController.Instance.Logger.log("Direccion de rotacion: " + VectorUtils.PrintVectorSinSaltos(direccion));
 
             matrixrotacion *= Matrix.RotationAxis(getVectorRotacion(direccion), Geometry.DegreeToRadian(velocidadRotacion * elapsedTime));
             return matrixrotacion;
@@ -418,7 +396,7 @@ namespace AlumnoEjemplos.Socketes.Model
             set { lightEffect = value; }
         }
 
-        internal void Centro(Vector3 posicionJugador, float fuerza)
+        public void Centro(Vector3 posicionJugador, float fuerza)
         {
             Vector3 direccion = posicionJugador - sphere.Position;
             direccion.Normalize();
