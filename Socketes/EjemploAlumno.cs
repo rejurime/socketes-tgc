@@ -60,7 +60,7 @@ namespace AlumnoEjemplos.Socketes
         {
             string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
 
-            DialogResult result = MessageBox.Show("¿Ejecutar en modo patanlla completa?", "Confirmación", MessageBoxButtons.YesNo);
+            DialogResult result = MessageBox.Show("¿Ejecutar en modo pantalla completa?", "Confirmación", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 //Se ejecuta en FullScreen
