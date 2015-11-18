@@ -12,7 +12,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes
 {
-    public class TestParcial : TgcExample
+    public class TestParcialVS : TgcExample
     {
         private string pathRecursos;
         private float tiempo;
@@ -33,7 +33,7 @@ namespace AlumnoEjemplos.Socketes
 
         public override string getName()
         {
-            return "Test parcial";
+            return "Test parcial VS";
         }
 
         public override string getDescription()
@@ -58,13 +58,13 @@ namespace AlumnoEjemplos.Socketes
             this.planos = new List<TgcQuad>();
             this.normales = new List<TgcArrow>();
 
-            this.effect = TgcShaders.loadEffect(this.pathRecursos + "Shaders\\ParcialShader.fx");
+            this.effect = TgcShaders.loadEffect(this.pathRecursos + "Shaders\\ParcialVertexShader.fx");
             this.heightMap = TextureLoader.FromFile(GuiController.Instance.D3dDevice, GuiController.Instance.ExamplesDir + @"\Shaders\WorkshopShaders\Media\Heighmaps\Heightmap6.jpg");
 
             this.CrearEjes();
             this.CrearPlanos();
             this.CrearEsferas();
-            CrearTanque();
+            this.CrearTanque();
         }
 
         public override void render(float elapsedTime)
