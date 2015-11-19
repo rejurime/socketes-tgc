@@ -139,12 +139,16 @@ float4 ps_ejercicio3(float2 Texcoord : TEXCOORD0, float4 Color : COLOR0) : COLOR
 
 float4 ps_ejercicio4(float2 Texcoord : TEXCOORD0, float4 Color : COLOR0) : COLOR0
 {
-//agregar bandas oscuras de 5 pixeles intercaladas con bandas normales.
+	float resto = Texcoord.x % 10;
 
-//Tenes que usar la posicion en pantalla, eso te lo da float2 vPos : VPOS, que tiene la posicion del pixel en screen space,
-//esta en pixeles, o sea de 0 a viewport size. con eso podes aplicar alguna formula con modulo 5 por ejemplo.
-//if(Texcoord.x % 5 )
-	return Color;
+	if(resto <= 4)
+	{
+		return 0;
+	}
+	else
+	{
+		return Color;
+	}
 }
 
 float4 ps_ejercicio5(float2 Texcoord : TEXCOORD0, float4 Color : COLOR0) : COLOR0
