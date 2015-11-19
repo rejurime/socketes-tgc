@@ -144,7 +144,7 @@ VS_OUTPUT_DIFFUSE_MAP VertexMeshShadows(VS_INPUT_DIFFUSE_MAP input)
 float4 PixelShadows() :COLOR
 {
 	//return float4(0,0,0,0.5);
-	return float4(0,0,0,0.4);
+	return float4(0,0,0,0.1);
 }
 
 //-----------------------------------------------------------------------------

@@ -112,6 +112,9 @@ namespace AlumnoEjemplos.Socketes
 
             //Color de fondo
             GuiController.Instance.BackgroundColor = Color.Black;
+
+            //FIX que nos mando Mariano para poder bajar el Alpha en el PixelShader
+            GuiController.Instance.D3dDevice.RenderState.ReferenceAlpha = 10;
         }
 
         private void ReiniciarPosiciones_Click(object sender, EventArgs e)
