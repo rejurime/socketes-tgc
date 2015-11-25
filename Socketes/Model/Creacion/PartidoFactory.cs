@@ -48,7 +48,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         /// </summary>
         /// <param name="alumnoEjemplosMediaDir"> Carpeta donde estan los recursos </param>
         /// <returns> Un partido listo para comenzar a jugar :)</returns>
-        public Partido CrearPartido(string pathRecursos, TgcD3dInput input, Dictionary<string, TgcStaticSound> sonidos)
+        public Partido CrearPartido(string pathRecursos, TgcD3dInput input, Dictionary<string, TgcStaticSound> sonidos, TgcThirdPersonCamera camara)
         {
             string nombreEquipoLocal = "SKTS";
             string nombreEquipoVisitante = "TGCV";
@@ -78,6 +78,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             //Cargo las colisiones de los jugadores
             EquipoFactory.Instance.CargarColisionesEquipos(partido.EquipoLocal, partido.EquipoVisitante, partido);
+
+            partido.Camara = camara;
 
             return partido;
         }
@@ -267,7 +269,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             int radio = 6;
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
-            sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
+            //sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             sphere.Radius = radio;
             sphere.Position = new Vector3(cancha.Position.X, cancha.Position.Y + radio, cancha.Position.Z);
             sphere.updateValues();

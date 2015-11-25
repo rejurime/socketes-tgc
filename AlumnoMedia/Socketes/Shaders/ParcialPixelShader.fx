@@ -105,6 +105,7 @@ float4 ps_ejercicio1(float2 Texcoord : TEXCOORD0, float4 Color : COLOR0, float4 
 // Border detect
 void ps_ejercicio2(float2 screen_pos  : TEXCOORD0,	out float4 Color : COLOR)
 {
+	//Falta hacerlo con RT
 	float ep = 0.5;
 	float4 c0 = tex2D(Normales, screen_pos);
 	float4 c1 = tex2D(Normales, screen_pos + float2(0, 1 / screen_dy));

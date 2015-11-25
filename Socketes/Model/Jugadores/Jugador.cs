@@ -255,6 +255,12 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             this.skeletalMesh.Technique = originalTechnique;
         }
 
+        public void SetTextura(string pathTexturaJugador)
+        {
+            //Le cambiamos la textura
+            this.skeletalMesh.changeDiffuseMaps(new TgcTexture[] { TgcTexture.createTexture(pathTexturaJugador) });
+        }
+
         public void renderLight(float elapsedTime, List<Luz> luces)
         {
             //Configurar los valores de cada luz

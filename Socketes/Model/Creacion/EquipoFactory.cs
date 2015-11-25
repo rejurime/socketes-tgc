@@ -128,9 +128,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
                 );
 
             //Le cambiamos la textura
-            personaje.changeDiffuseMaps(new TgcTexture[] {
-                TgcTexture.createTexture(pathRecursos + Settings.Default.meshFolderPlayer + nombreTextura)
-                });
+            //personaje.changeDiffuseMaps(new TgcTexture[] {
+            //    TgcTexture.createTexture(pathRecursos + Settings.Default.meshFolderPlayer + nombreTextura)
+            //    });
 
             //Configurar animacion inicial
             personaje.playAnimation(Settings.Default.animationStopPlayer, true);

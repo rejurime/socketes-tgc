@@ -1,6 +1,8 @@
 ﻿using AlumnoEjemplos.Socketes.Model.ElementosCancha;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
+using Microsoft.DirectX;
 using System.Collections.Generic;
+using TgcViewer.Utils.Input;
 using TgcViewer.Utils.Sound;
 
 namespace AlumnoEjemplos.Socketes.Model
@@ -12,7 +14,6 @@ namespace AlumnoEjemplos.Socketes.Model
 
         private bool mostrarBounding;
         private bool inteligenciaArtificial;
-        private bool luz;
         private Marcador marcador;
         private Cancha cancha;
         private Pelota pelota;
@@ -20,6 +21,7 @@ namespace AlumnoEjemplos.Socketes.Model
         private Arco arcoVisitante;
         private Equipo equipoLocal;
         private Equipo equipoVisitante;
+        private TgcThirdPersonCamera camara;
 
         private Dictionary<string, TgcStaticSound> sonidos;
 
@@ -116,10 +118,10 @@ namespace AlumnoEjemplos.Socketes.Model
             set { sonidos = value; }
         }
 
-        public bool Luz
+        public TgcThirdPersonCamera Camara
         {
-            get { return luz; }
-            set { luz = value; }
+            get { return camara; }
+            set { camara = value; }
         }
 
         #endregion
@@ -135,31 +137,24 @@ namespace AlumnoEjemplos.Socketes.Model
         {
             this.cancha.render();
 
-            //sombras
-            if (this.luz)
-            {
-                this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
-                this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
-                this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
+            //Sombras
+            this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
+            this.equipoVisitante.renderShadow(elapsedTime, this.cancha.Luces);
+            this.pelota.renderShadow(elapsedTime, this.cancha.Luces);
 
-                this.equipoLocal.renderLight(elapsedTime, this.cancha.Luces);
-                this.equipoVisitante.renderLight(elapsedTime, this.cancha.Luces);
-                this.pelota.updateValues(elapsedTime);
-                this.pelota.renderLight(elapsedTime, this.cancha.Luces);
-            }
-            else
-            {
-                this.equipoLocal.render(elapsedTime);
-                this.equipoVisitante.render(elapsedTime);
-                this.pelota.updateValues(elapsedTime);
-                this.pelota.render();
-            }
+            //Luz
+            this.equipoLocal.renderLight(elapsedTime, this.cancha.Luces);
+            this.equipoVisitante.renderLight(elapsedTime, this.cancha.Luces);
+            this.pelota.updateValues(elapsedTime);
+            this.pelota.renderLight(elapsedTime, this.cancha.Luces);
 
             this.arcoLocal.render();
             this.arcoVisitante.render();
-            
 
             this.marcador.render(this.equipoLocal.Goles, this.equipoVisitante.Goles);
+
+            //Hacer que la camara siga al personaje en su nueva posicion
+            this.camara.Target = new Vector3(this.Pelota.Position.X, 0, this.Pelota.Position.Z);
         }
 
         /// <summary>
@@ -205,6 +200,23 @@ namespace AlumnoEjemplos.Socketes.Model
             this.equipoLocal.ReiniciarPosiciones();
             this.equipoVisitante.ReiniciarPosiciones();
             this.pelota.ReiniciarPosicion();
+        }
+
+        public void SetTexturasSeleccionadas(string pathTexturaPelota, string pathTexturaJugadorLocal, string pathTexturaJugadorVisitante)
+        {
+            this.pelota.SetTextura(pathTexturaPelota);
+            this.equipoLocal.SetTextura(pathTexturaJugadorLocal);
+            this.equipoVisitante.SetTextura(pathTexturaJugadorVisitante);
+        }
+
+        public void SetCamaraPelota()
+        {
+            this.camara.setCamera(new Vector3(this.Pelota.Position.X, 0, this.Pelota.Position.Z), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+        }
+
+        public void SetCamaraAerea()
+        {
+            this.camara.setCamera(new Vector3(this.Pelota.Position.X, 0, this.Pelota.Position.Z), 800, -1);
         }
 
         #endregion

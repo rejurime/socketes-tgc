@@ -228,6 +228,14 @@ namespace AlumnoEjemplos.Socketes.Model
             return jugadorMasCercano;
         }
 
+        public void SetTextura(string pathTexturaJugador)
+        {
+            foreach (Jugador jugador in this.jugadores)
+            {
+                jugador.SetTextura(pathTexturaJugador);
+            }
+        }
+
         public Jugador JugadorMasCercano(Jugador jugadorReferencia)
         {
             Jugador jugadorMasCercano = null;

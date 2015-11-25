@@ -51,7 +51,6 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
             //Luz
-            GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 100, 50);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
@@ -61,7 +60,7 @@ namespace AlumnoEjemplos.Socketes
             sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav");
             sonidos.Add("pelota-tiro", sonido);
 
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos);
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos, GuiController.Instance.ThirdPersonCamera);
 
             //Configurar camara en Tercer Persona
             GuiController.Instance.ThirdPersonCamera.Enable = true;
@@ -110,9 +109,6 @@ namespace AlumnoEjemplos.Socketes
 
             //Hacer que la camara siga al personaje en su nueva posicion
             GuiController.Instance.ThirdPersonCamera.Target = this.partido.Pelota.Position;
-
-            //Habilitar luz
-            this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
             //Render de todos los elementos del partido
             this.partido.render(elapsedTime);

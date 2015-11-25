@@ -16,7 +16,6 @@ namespace AlumnoEjemplos.Socketes.Menu
     /// </summary>
     public class MenuInicial
     {
-        private bool enable;
         private TgcText2d titulo;
         private TgcSphere pelota;
         private TgcBox cancha;
@@ -25,16 +24,13 @@ namespace AlumnoEjemplos.Socketes.Menu
         //private float tiempoTranscurridoDeAnimacion = 0;
         private bool configuracion = false;
         private TgcSprite panelConfiguracion;
+        private TgcThirdPersonCamera camara;
+        private EjemploAlumno main;
 
-        public bool Enable
+        public MenuInicial(string pathRecursos, TgcThirdPersonCamera camara, EjemploAlumno main)
         {
-            get { return enable; }
-            set { enable = value; }
-        }
-
-        public MenuInicial(string pathRecursos, TgcThirdPersonCamera camara)
-        {
-            this.enable = true;
+            this.main = main;
+            this.camara = camara;
 
             //Titulo
             this.titulo = new TgcText2d();
@@ -70,14 +66,10 @@ namespace AlumnoEjemplos.Socketes.Menu
             this.panelConfiguracion = new TgcSprite();
             this.panelConfiguracion.Texture = TgcTexture.createTexture(pathRecursos + Settings.Default.texturePanelcontroles);
             this.panelConfiguracion.Scaling = new Vector2(0.75f, 0.75f);
-            //this.panelConfiguracion.Texture = TgcTexture.createTexture(GuiController.Instance.ExamplesMediaDir + "\\Texturas\\LogoTGC.png");
+
             Size screenSize = GuiController.Instance.Panel3d.Size;
             Size textureSize = this.panelConfiguracion.Texture.Size;
             this.panelConfiguracion.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - textureSize.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - textureSize.Height / 2, 0));
-
-            //Pongo la camara en posicion
-            camara.OffsetForward = -12;
-            camara.OffsetHeight = 0;
         }
 
         /// <summary>
@@ -89,6 +81,10 @@ namespace AlumnoEjemplos.Socketes.Menu
         public void render(float elapsedTime)
         {
             TgcD3dInput d3dInput = GuiController.Instance.D3dInput;
+
+            //Pongo la camara en posicion
+            camara.OffsetForward = -12;
+            camara.OffsetHeight = 0;
 
             //Adelante
             if (d3dInput.keyPressed(Key.UpArrow))
@@ -135,7 +131,7 @@ namespace AlumnoEjemplos.Socketes.Menu
             }
 
             //Enter
-            if (d3dInput.keyPressed(Key.Return))
+            if (d3dInput.keyPressed(Key.Return) && !this.main.CambiandoPantalla)
             {
                 //TODO esto es muy horrible
                 foreach (MenuItem item in this.menus)
@@ -144,7 +140,8 @@ namespace AlumnoEjemplos.Socketes.Menu
                     {
                         if (item.Nombre.Equals("picadito"))
                         {
-                            this.close();
+                            this.main.PantallaActual = 1;
+                            this.main.CambiandoPantalla = true;
                             return;
                         }
                         if (item.Nombre.Equals("configuracion"))
@@ -154,7 +151,6 @@ namespace AlumnoEjemplos.Socketes.Menu
                         if (item.Nombre.Equals("salir"))
                         {
                             this.exit();
-                            //return;
                         }
                     }
                 }
@@ -210,8 +206,6 @@ namespace AlumnoEjemplos.Socketes.Menu
             }
 
             this.panelConfiguracion.dispose();
-
-            this.enable = false;
         }
 
         public void exit()

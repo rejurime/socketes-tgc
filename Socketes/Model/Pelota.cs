@@ -1,7 +1,6 @@
 ﻿using AlumnoEjemplos.Socketes.Fisica;
 using AlumnoEjemplos.Socketes.Model.Colision;
 using AlumnoEjemplos.Socketes.Model.Iluminacion;
-using AlumnoEjemplos.Socketes.Utils;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System;
@@ -197,6 +196,11 @@ namespace AlumnoEjemplos.Socketes.Model
             //arma la transformacion en base al escalado + rotacion + traslacion
             sphere.Transform = getScalingMatrix() * getRotationMatrix(movimiento, elapsedTime) *
                Matrix.Translation(sphere.Position);
+        }
+
+        public void SetTextura(string pathTexturaPelota)
+        {
+            this.sphere.setTexture(TgcTexture.createTexture(pathTexturaPelota));
         }
 
         private void rollbackPosition(Vector3 lastsphereposition, Vector3 lastboxposition)

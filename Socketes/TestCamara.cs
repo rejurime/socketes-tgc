@@ -56,13 +56,12 @@ namespace AlumnoEjemplos.Socketes
             sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav");
             sonidos.Add("pelota-tiro", sonido);
 
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos);
+            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos, GuiController.Instance.ThirdPersonCamera);
 
             //BoundingBox
             GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
             //Luz
-            GuiController.Instance.Modifiers.addBoolean("Luz", "Luz", true);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 100, 50);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.20f);
 
@@ -85,9 +84,6 @@ namespace AlumnoEjemplos.Socketes
         {
             //BoundingBox
             this.partido.MostrarBounding = (bool)GuiController.Instance.Modifiers["BoundingBox"];
-
-            //Habilitar luz
-            this.partido.Luz = (bool)GuiController.Instance.Modifiers["Luz"];
 
             this.partido.render(elapsedTime);
         }
