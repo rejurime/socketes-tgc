@@ -130,6 +130,40 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             TgcMesh tribuna3 = this.CrearTribunaPopular(pathRecursos, boxField, 1);
             TgcMesh tribuna4 = this.CrearTribunaPopular(pathRecursos, boxField, -1);
 
+
+            List<TgcBox> carteles = new List<TgcBox>();
+
+            TgcBox cartel1 = TgcBox.fromSize(new Vector3(0, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\gnome-logo.png"));
+            cartel1.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            cartel1.Technique = "Rotacion";
+            cartel1.updateValues();
+
+            TgcBox cartel2 = TgcBox.fromSize(new Vector3(200, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\blizzard_logo.jpg"));
+            cartel2.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            cartel2.Technique = "Rotacion";
+            cartel2.updateValues();
+
+            TgcBox cartel3 = TgcBox.fromSize(new Vector3(-200, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\github-logo.jpg"));
+            cartel3.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            cartel3.Technique = "Rotacion";
+            cartel3.updateValues();
+
+            TgcBox cartel4 = TgcBox.fromSize(new Vector3(400, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\atom-editor-logo.png"));
+            cartel4.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            cartel4.Technique = "Rotacion";
+            cartel4.updateValues();
+
+            TgcBox cartel5 = TgcBox.fromSize(new Vector3(-400, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\visual-studio-logo.png"));
+            cartel5.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            cartel5.Technique = "CartelFallando";
+            cartel5.updateValues();
+
+            carteles.Add(cartel1);
+            carteles.Add(cartel2);
+            carteles.Add(cartel3);
+            carteles.Add(cartel4);
+            carteles.Add(cartel5);
+
             //SkyBox
             TgcSkyBox skyBox = this.CrearSkyBox(pathRecursos, boxFloor);
 
@@ -151,21 +185,23 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             componentes.Add(TgcBox.fromSize(new Vector3(boxFloor.Position.X, boxFloor.Position.Y + altoMuralla / 2, -boxFloor.Size.Z / 2), new Vector3(boxFloor.Size.X, altoMuralla, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
             componentes.Add(TgcBox.fromSize(new Vector3(boxFloor.Size.X / 2, boxFloor.Position.Y + altoMuralla / 2, boxFloor.Position.Z), new Vector3(0, altoMuralla, boxFloor.Size.Z), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
             componentes.Add(TgcBox.fromSize(new Vector3(-boxFloor.Size.X / 2, boxFloor.Position.Y + altoMuralla / 2, boxFloor.Position.Z), new Vector3(0, altoMuralla, boxFloor.Size.Z), TgcTexture.createTexture(pathRecursos + Settings.Default.textureWall)));
+            componentes.Add(cartel1);
 
-            return new Cancha(boxField, componentes, limites, luces);
+            return new Cancha(boxField, componentes, limites, luces, carteles);
         }
 
         private TgcMesh CrearTribunaPlatea(string pathRecursos, TgcBox cancha, int sentido)
         {
             TgcMesh platea = this.CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePl, sentido * -(float)Math.PI / 2, new Vector3(10, 12, 14));
-            platea.Position = new Vector3(cancha.Position.X, cancha.Position.Y + platea.BoundingBox.PMax.Y, sentido * (cancha.Size.Z / 2 + platea.BoundingBox.PMax.X));
+
+            platea.Position = new Vector3(cancha.Position.X, cancha.Position.Y + platea.BoundingBox.PMax.Y, sentido * (cancha.Size.Z / 2 + platea.BoundingBox.PMax.X + 120));
             return platea;
         }
 
         private TgcMesh CrearTribunaPopular(string pathRecursos, TgcBox cancha, int sentido)
         {
             TgcMesh platea = this.CrearTribuna(pathRecursos + Settings.Default.meshFileTribunePo, sentido * -(float)Math.PI / 2, new Vector3(14, 12, 15));
-            platea.Position = new Vector3(sentido * (cancha.Size.X / 2 + platea.BoundingBox.PMax.Z), cancha.Position.Y + platea.BoundingBox.PMax.Y, cancha.Position.Z);
+            platea.Position = new Vector3(sentido * (cancha.Size.X / 2 + platea.BoundingBox.PMax.Z + 120), cancha.Position.Y + platea.BoundingBox.PMax.Y, cancha.Position.Z);
             return platea;
         }
 
@@ -309,7 +345,21 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             Vector3 posicionRed = new Vector3(posicion.X, posicion.Y + palo3.BoundingBox.PMin.Y / 2, posicion.Z);
             Vector3 tamanoRed = new Vector3(0, palo3.BoundingBox.PMin.Y, palo3.BoundingBox.PMax.Z * 2 - 14);
-            return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed)));
+
+            TgcMesh red = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\Red-TgcScene.xml").Meshes[0];
+            red.Position = posicionRed + new Vector3(direccion * 65, 0, 0);
+            //TODO esto significa que los arcos no son correctos... porque no escalo igual
+            red.Scale = new Vector3(3f, 3f, 2f);
+            red.AlphaBlendEnable = true;
+
+            //Roto uno de los 2 ya que uso el mismo mesh
+            if (direccion == -1)
+            {
+                red.rotateY(FastMath.PI);
+            }
+
+
+            return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed), red));
         }
 
         #endregion

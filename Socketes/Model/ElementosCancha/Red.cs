@@ -1,17 +1,20 @@
 ﻿using AlumnoEjemplos.Socketes.Model.Colision;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
+using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
 {
     public class Red : IColisionablePelota
     {
         private TgcBox box;
+        private TgcMesh red;
         private bool mostrarBounding;
 
-        public Red(TgcBox box)
+        public Red(TgcBox box, TgcMesh red)
         {
             this.box = box;
+            this.red = red;
         }
 
         public bool MostrarBounding
@@ -23,6 +26,7 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         public void render()
         {
             //this.box.render();
+            this.red.render();
 
             if (this.mostrarBounding)
             {

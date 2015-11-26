@@ -7,6 +7,7 @@ using TgcViewer.Utils.Input;
 using TgcViewer.Utils.Shaders;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils.TgcSkeletalAnimation;
+using System;
 
 namespace AlumnoEjemplos.Socketes.Model.Creacion
 {
@@ -49,6 +50,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             jugadores.Add(this.CrearJugadorHumano(pathRecursos, Settings.Default.textureTeam1, new Vector3(-180, 1, -150), 270, partido.Pelota, input));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-400, 1, -150), 270f, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(-400, 1, 150), 270f, partido.Pelota));
+            jugadores.Add(this.CrearArqueroIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(partido.ArcoLocal.Red.GetPosition().X + 60, 1, partido.ArcoLocal.Red.GetPosition().Z), 270f, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoLocal, partido.ArcoVisitante);
 
@@ -73,6 +75,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(180, 1, 150), anguloEquipoCPU, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(400, 1, -150), anguloEquipoCPU, partido.Pelota));
             jugadores.Add(this.CrearJugadorIA(pathRecursos, Settings.Default.textureTeam2, new Vector3(400, 1, 150), anguloEquipoCPU, partido.Pelota));
+            jugadores.Add(this.CrearArqueroIA(pathRecursos, Settings.Default.textureTeam1, new Vector3(partido.ArcoVisitante.Red.GetPosition().X - 60, 1, partido.ArcoVisitante.Red.GetPosition().Z), anguloEquipoCPU, partido.Pelota));
 
             Equipo equipo = new Equipo(nombre, jugadores, partido.ArcoVisitante, partido.ArcoLocal);
 
@@ -82,6 +85,12 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             }
 
             return equipo;
+        }
+
+        private Jugador CrearArqueroIA(string pathRecursos, string textura, Vector3 posicion, float angulo, Pelota pelota)
+        {
+            //TODO deberia usar la inteligencia del arquero no la IA pero no la puedo hacer andar :(
+            return this.CrearJugador(pathRecursos, textura, posicion, angulo, new JugadorIAStrategy(), pelota);
         }
 
         /// <summary>

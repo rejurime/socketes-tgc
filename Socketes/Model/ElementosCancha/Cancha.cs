@@ -15,18 +15,22 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         private List<IRenderObject> componentesEstaticos;
         private List<LimiteCancha> limitesCancha;
         private List<Luz> luces;
+        private List<TgcBox> carteles;
         private bool mostrarBounding;
+        private float time;
 
         #endregion
 
         #region  Constructores
 
-        public Cancha(TgcBox box, List<IRenderObject> componentes, List<LimiteCancha> limitesCancha, List<Luz> luces)
+        public Cancha(TgcBox box, List<IRenderObject> componentes, List<LimiteCancha> limitesCancha, List<Luz> luces, List<TgcBox> carteles)
         {
             this.box = box;
             this.componentesEstaticos = componentes;
             this.limitesCancha = limitesCancha;
             this.Luces = luces;
+            this.carteles = carteles;
+            this.time = 0;
         }
 
         #endregion
@@ -92,8 +96,10 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
 
         #region Metodos
 
-        public void render()
+        public void render(float elapsedTime)
         {
+            this.time += elapsedTime;
+
             box.render();
 
             if (this.mostrarBounding)
@@ -114,6 +120,12 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
             foreach (Luz lux in this.luces)
             {
                 lux.render();
+            }
+
+            foreach (TgcBox cartel in this.carteles)
+            {
+                cartel.Effect.SetValue("time", time);
+                cartel.render();
             }
         }
 

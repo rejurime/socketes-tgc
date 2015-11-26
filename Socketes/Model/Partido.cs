@@ -135,7 +135,7 @@ namespace AlumnoEjemplos.Socketes.Model
         /// </summary>
         public void render(float elapsedTime)
         {
-            this.cancha.render();
+            this.cancha.render(elapsedTime);
 
             //Sombras
             this.equipoLocal.renderShadow(elapsedTime, this.cancha.Luces);
@@ -211,7 +211,7 @@ namespace AlumnoEjemplos.Socketes.Model
 
         public void SetCamaraPelota()
         {
-            this.camara.setCamera(new Vector3(this.Pelota.Position.X, 0, this.Pelota.Position.Z), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward);
+            this.camara.setCamera(new Vector3(this.Pelota.Position.X, 0, this.Pelota.Position.Z), Settings.Default.camaraOffsetHeight, Settings.Default.camaraOffsetForward - 200);
         }
 
         public void SetCamaraAerea()

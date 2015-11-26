@@ -108,6 +108,7 @@
     <Compile Include="Socketes\Menu\MenuInicial.cs" />
     <Compile Include="Socketes\Model\Creacion\EquipoFactory.cs" />
     <Compile Include="Socketes\Model\Equipo.cs" />
+    <Compile Include="Socketes\Model\Jugadores\ArqueroIAStrategy.cs" />
     <Compile Include="Socketes\Model\Jugadores\IJugadorMoveStrategy.cs" />
     <Compile Include="Socketes\Model\Jugadores\JugadorIAStrategy.cs" />
     <Compile Include="Socketes\Model\Jugadores\JugadorManualStrategy.cs" />

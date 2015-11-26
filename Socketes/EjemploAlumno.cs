@@ -3,6 +3,7 @@ using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
 using AlumnoEjemplos.Socketes.Model.Jugadores;
 using Microsoft.DirectX;
+using Microsoft.DirectX.DirectInput;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,6 @@ using TgcViewer;
 using TgcViewer.Example;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.Sound;
-using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.Socketes
@@ -198,6 +198,24 @@ namespace AlumnoEjemplos.Socketes
 
         private void RenderPartido(float elapsedTime)
         {
+            if (GuiController.Instance.D3dInput.keyPressed(Key.F10))
+            {
+                this.partido.ReiniciarPosiciones();
+                return;
+            }
+
+            if (GuiController.Instance.D3dInput.keyPressed(Key.F9))
+            {
+                this.partido.SetCamaraAerea();
+                return;
+            }
+
+            if (GuiController.Instance.D3dInput.keyPressed(Key.F8))
+            {
+                this.partido.SetCamaraPelota();
+                return;
+            }
+
             //Todavia no inicio el partido
             if (!this.tiempo)
             {
@@ -240,28 +258,8 @@ namespace AlumnoEjemplos.Socketes
 
             //Dibujar sprite (si hubiese mas, deberian ir todos aquí)
             this.mapa.render();
-
-            foreach(Jugador jugador in this.partido.EquipoLocal.Jugadores)
-            {
-                Vector2 mapPosition = this.GetMapPosition(jugador.Position, this.mapa.Texture.Size, this.partido.Cancha.Size);
-                //El 5 es porque en el x la imagen del a foto incluye mucho pasto fuera de las lineas
-                float pX = this.mapa.Position.X - 5 + (this.mapa.Texture.Size.Width / 2) + mapPosition.X;
-                float pZ = this.mapa.Position.Y + (this.mapa.Texture.Size.Height / 2) - mapPosition.Y;
-                this.puntoAzul.Position = new Vector2(pX, pZ);
-
-                this.puntoAzul.render();
-            }
-
-            foreach (Jugador jugador in this.partido.EquipoVisitante.Jugadores)
-            {
-                Vector2 mapPosition = this.GetMapPosition(jugador.Position, this.mapa.Texture.Size, this.partido.Cancha.Size);
-                //El 5 es porque en el x la imagen del a foto incluye mucho pasto fuera de las lineas
-                float pX = this.mapa.Position.X - 5 + (this.mapa.Texture.Size.Width / 2) + mapPosition.X;
-                float pZ = this.mapa.Position.Y + (this.mapa.Texture.Size.Height / 2) - mapPosition.Y;
-                this.puntoNaranja.Position = new Vector2(pX, pZ);
-
-                this.puntoNaranja.render();
-            }
+            this.RenderJugadoresMapa(this.partido.EquipoLocal.Jugadores, this.puntoAzul);
+            this.RenderJugadoresMapa(this.partido.EquipoVisitante.Jugadores, this.puntoNaranja);
 
             //Finalizar el dibujado de Sprites
             GuiController.Instance.Drawer2D.endDrawSprite();
@@ -309,6 +307,20 @@ namespace AlumnoEjemplos.Socketes
             return result == DialogResult.Yes;
         }
 
+        private void RenderJugadoresMapa(List<Jugador> jugadores, TgcSprite punto)
+        {
+            foreach (Jugador jugador in jugadores)
+            {
+                Vector2 mapPosition = this.GetMapPosition(jugador.Position, this.mapa.Texture.Size, this.partido.Cancha.Size);
+                //El 5 es porque en el x la imagen del a foto incluye mucho pasto fuera de las lineas
+                float pX = this.mapa.Position.X - 5 + (this.mapa.Texture.Size.Width / 2) + mapPosition.X;
+                float pZ = this.mapa.Position.Y + (this.mapa.Texture.Size.Height / 2) - mapPosition.Y;
+                punto.Position = new Vector2(pX, pZ);
+
+                punto.render();
+            }
+        }
+
         private Vector2 GetMapPosition(Vector3 posicion, Size mapSize, Vector3 canchaSize)
         {
             float posicionX = posicion.X * mapSize.Width / canchaSize.X;
@@ -335,27 +347,3 @@ namespace AlumnoEjemplos.Socketes
         #endregion
     }
 }
-
-/*
-//The width and height of your map as it'll appear on screen,
-var mapWidth = 200;
-var mapHeight = 200;
-//Resolution (both width and height) of your terrain.
-var sceneWidth = 500;
-var sceneHeight = 500;
-//The size of your player and enemy's icon as it would appear on the map.
-var iconSize = 10;
-var iconHalfSize;
-
-function Update () {
-  iconHalfSize = iconSize/2;
-}
-
-
-
-function OnGUI() {
-
-
-}
-
-    */
