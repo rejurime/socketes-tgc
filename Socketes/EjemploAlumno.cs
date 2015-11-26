@@ -1,6 +1,7 @@
 using AlumnoEjemplos.Socketes.Menu;
 using AlumnoEjemplos.Socketes.Model;
 using AlumnoEjemplos.Socketes.Model.Creacion;
+using AlumnoEjemplos.Socketes.Model.Jugadores;
 using Microsoft.DirectX;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace AlumnoEjemplos.Socketes
         private ConfiguracionPartido configuracionPartido;
         private Partido partido;
         private TgcSprite mapa;
+        private TgcSprite puntoAzul;
+        private TgcSprite puntoNaranja;
 
         //TODO ver si esta se puede mejorar con un state :)
         private int pantallaActual;
@@ -126,12 +129,20 @@ namespace AlumnoEjemplos.Socketes
             this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, GuiController.Instance.D3dInput, sonidos, GuiController.Instance.ThirdPersonCamera);
 
             //Mapa
+            Size screenSize = GuiController.Instance.Panel3d.Size;
             this.mapa = new TgcSprite();
             this.mapa.Texture = TgcTexture.createTexture(pathRecursos + "Texturas\\mapa.png");
-            this.mapa.Scaling = new Vector2(0.75f, 0.75f);
-            Size screenSize = GuiController.Instance.Panel3d.Size;
+            //this.mapa.Scaling = new Vector2(0.75f, 0.75f);
             Size textureSize = this.mapa.Texture.Size;
-            this.mapa.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - textureSize.Width / 2, 0), FastMath.Max((screenSize.Height - textureSize.Height), 0));
+            this.mapa.Position = new Vector2((screenSize.Width - textureSize.Width) / 2, (screenSize.Height - textureSize.Height));
+
+            this.puntoAzul = new TgcSprite();
+            this.puntoAzul.Texture = TgcTexture.createTexture(pathRecursos + "Texturas\\radarAzul.png");
+            this.puntoAzul.Scaling = new Vector2(0.03f, 0.03f);
+
+            this.puntoNaranja = new TgcSprite();
+            this.puntoNaranja.Texture = TgcTexture.createTexture(pathRecursos + "Texturas\\radarNaranja.png");
+            this.puntoNaranja.Scaling = new Vector2(0.03f, 0.03f);
 
             //Color de fondo
             GuiController.Instance.BackgroundColor = Color.Black;
@@ -230,6 +241,28 @@ namespace AlumnoEjemplos.Socketes
             //Dibujar sprite (si hubiese mas, deberian ir todos aquí)
             this.mapa.render();
 
+            foreach(Jugador jugador in this.partido.EquipoLocal.Jugadores)
+            {
+                Vector2 mapPosition = this.GetMapPosition(jugador.Position, this.mapa.Texture.Size, this.partido.Cancha.Size);
+                //El 5 es porque en el x la imagen del a foto incluye mucho pasto fuera de las lineas
+                float pX = this.mapa.Position.X - 5 + (this.mapa.Texture.Size.Width / 2) + mapPosition.X;
+                float pZ = this.mapa.Position.Y + (this.mapa.Texture.Size.Height / 2) - mapPosition.Y;
+                this.puntoAzul.Position = new Vector2(pX, pZ);
+
+                this.puntoAzul.render();
+            }
+
+            foreach (Jugador jugador in this.partido.EquipoVisitante.Jugadores)
+            {
+                Vector2 mapPosition = this.GetMapPosition(jugador.Position, this.mapa.Texture.Size, this.partido.Cancha.Size);
+                //El 5 es porque en el x la imagen del a foto incluye mucho pasto fuera de las lineas
+                float pX = this.mapa.Position.X - 5 + (this.mapa.Texture.Size.Width / 2) + mapPosition.X;
+                float pZ = this.mapa.Position.Y + (this.mapa.Texture.Size.Height / 2) - mapPosition.Y;
+                this.puntoNaranja.Position = new Vector2(pX, pZ);
+
+                this.puntoNaranja.render();
+            }
+
             //Finalizar el dibujado de Sprites
             GuiController.Instance.Drawer2D.endDrawSprite();
         }
@@ -276,6 +309,13 @@ namespace AlumnoEjemplos.Socketes
             return result == DialogResult.Yes;
         }
 
+        private Vector2 GetMapPosition(Vector3 posicion, Size mapSize, Vector3 canchaSize)
+        {
+            float posicionX = posicion.X * mapSize.Width / canchaSize.X;
+            float posicionY = posicion.Z * mapSize.Height / canchaSize.Z;
+            return new Vector2(posicionX, posicionY);
+        }
+
         #endregion
 
         #region Cierre
@@ -295,3 +335,27 @@ namespace AlumnoEjemplos.Socketes
         #endregion
     }
 }
+
+/*
+//The width and height of your map as it'll appear on screen,
+var mapWidth = 200;
+var mapHeight = 200;
+//Resolution (both width and height) of your terrain.
+var sceneWidth = 500;
+var sceneHeight = 500;
+//The size of your player and enemy's icon as it would appear on the map.
+var iconSize = 10;
+var iconHalfSize;
+
+function Update () {
+  iconHalfSize = iconSize/2;
+}
+
+
+
+function OnGUI() {
+
+
+}
+
+    */
