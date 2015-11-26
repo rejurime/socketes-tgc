@@ -12,6 +12,9 @@ float4x4 matWorldView; //Matriz World * View
 float4x4 matWorldViewProj; //Matriz World * View * Projection
 float4x4 matInverseTransposeWorld; //Matriz Transpose(Invert(World))
 float4x4 matViewProj; //View * Projection
+float lightIntensity; //Intensidad de la luz
+float lightAttenuation; //Factor de atenuacion de la luz
+
 
 //Matrix Pallette para skinning
 static const int MAX_MATRICES = 26;
@@ -37,13 +40,12 @@ float3   g_vLightPos;  // posicion de la luz (en World Space) = pto que represen
 float3   g_vLightDir;  // Direcion de la luz (en World Space) = normal al patch Bj
 
 
-
 //-----------------------------------------------------------------------------
 // Vertex Shader para dibujar la escena pp dicha con sombras
 //-----------------------------------------------------------------------------
 
 //Vertex Shader
-void VertexShadows(float4 iPos : POSITION , out float4 oPos : POSITION)
+void VertexShadows(float4 iPos : POSITION , out float4 oPos : POSITION, out float Intensity : TEXCOORD4)
 {
 	float3 v = mul(iPos, matWorld);
 	float k = v.y / (g_vLightPos.y - v.y);
@@ -53,6 +55,12 @@ void VertexShadows(float4 iPos : POSITION , out float4 oPos : POSITION)
 
 	// transformo al screen space
 	oPos = mul(float4(v , 1), matViewProj);
+
+	//Calcular intensidad de luz, con atenuacion por distancia
+	float distAtten = length(g_vLightPos.xyz - mul(iPos, matWorld)) * lightAttenuation;
+
+	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
+	Intensity = lightIntensity / distAtten;
 }
 
 //-----------------------------------------------------------------------------
@@ -81,6 +89,7 @@ struct VS_OUTPUT_DIFFUSE_MAP
 	float3 WorldNormal : TEXCOORD1;
 	float3 WorldTangent : TEXCOORD2;
 	float3 WorldBinormal : TEXCOORD3;
+	float Intensity : TEXCOORD4;
 };
 
 //Vertex Shader
@@ -135,16 +144,34 @@ VS_OUTPUT_DIFFUSE_MAP VertexMeshShadows(VS_INPUT_DIFFUSE_MAP input)
 	//Enviar Texcoord directamente
 	output.Texcoord = input.Texcoord;
 
+	//Calcular intensidad de luz, con atenuacion por distancia
+	float distAtten = length(g_vLightPos.xyz - mul(input.Position, matWorld)) * lightAttenuation;
+
+	//Dividimos intensidad sobre distancia (lo hacemos lineal pero tambien podria ser i/d^2)
+	output.Intensity = lightIntensity / distAtten;
+
 	return output;
 }
+
+	//Input del Pixel Shader
+	struct INPUT_PS
+	{
+		float4 Position : POSITION0;
+		float4 Color : COLOR0;
+		float2 Texcoord : TEXCOORD0;
+		float3 WorldNormal : TEXCOORD1;
+		float3 WorldTangent : TEXCOORD2;
+		float3 WorldBinormal : TEXCOORD3;
+		float Intensity : TEXCOORD4;
+	};
 
 //-----------------------------------------------------------------------------
 // Pixel Shader para dibujar la sombras
 //-----------------------------------------------------------------------------
-float4 PixelShadows() :COLOR
+float4 PixelShadows(INPUT_PS input) :COLOR
 {
-	//return float4(0,0,0,0.5);
-	return float4(0,0,0,0.1);
+	float alpha = clamp(input.Intensity, 0.1, 0.9);
+	return float4(0,0,0, alpha);
 }
 
 //-----------------------------------------------------------------------------

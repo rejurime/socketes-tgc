@@ -24,6 +24,9 @@ namespace AlumnoEjemplos.Socketes
         private Effect skeletalMeshPointLight;
         private List<Luz> luces;
         private TgcBox piso;
+        private TgcMesh cartel1;
+        private Effect cartelEffect;
+        private float time;
 
         public override string getCategory()
         {
@@ -52,7 +55,7 @@ namespace AlumnoEjemplos.Socketes
             GuiController.Instance.FpsCamera.Enable = true;
             GuiController.Instance.FpsCamera.MovementSpeed = 400f;
             GuiController.Instance.FpsCamera.JumpSpeed = 300f;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 150, -200), new Vector3(0, 80, 0));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 150, 200), new Vector3(0, 80, 0));
 
             //Cargar Shader personalizado de MultiDiffuseLights
             /*
@@ -62,6 +65,7 @@ namespace AlumnoEjemplos.Socketes
              * Pero como hacer 4 veces los calculos en el shader es costoso, de cada luz solo calcula el componente Diffuse.
              */
             this.meshMultiDiffuseLights = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshMultiplePointLight.fx");
+
             this.skeletalMeshPointLight = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshMultiplePointLight.fx");
 
             this.luces = new List<Luz>();
@@ -79,24 +83,35 @@ namespace AlumnoEjemplos.Socketes
 
             //Color de fondo
             GuiController.Instance.BackgroundColor = Color.Black;
+
+            //test carteles
+            this.cartel1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Cartel\\Cartel-TgcScene.xml").Meshes[0];
+
+            this.cartelEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+
+
         }
 
         public override void render(float elapsedTime)
         {
+            time += elapsedTime;
             //Renderizar meshes de luz
             foreach (Luz luz in this.luces)
             {
-                luz.render();
+                //luz.render();
             }
 
+            cartelEffect.SetValue("time", time);
+            this.cartel1.Effect = cartelEffect;
+            this.cartel1.Technique = "CartelFallando";
+            this.cartel1.render();
             //Aplicar al mesh el shader actual
-            this.jugador.LightEffect = this.skeletalMeshPointLight;
-            this.jugador.renderLight(elapsedTime, luces);
+            //this.jugador.LightEffect = this.skeletalMeshPointLight;
+            //this.jugador.renderLight(elapsedTime, luces);
             //this.jugador.renderShadow(elapsedTime, luces);
 
             //Aplicar al mesh el shader actual
-            this.pelota.LightEffect = this.meshMultiDiffuseLights;
-            this.pelota.renderLight(elapsedTime, luces);
+            //this.pelota.renderLight(elapsedTime, luces);
             //this.pelota.renderShadow(elapsedTime, luces);
 
             this.piso.render();

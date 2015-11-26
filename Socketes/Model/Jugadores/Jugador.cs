@@ -244,6 +244,8 @@ namespace AlumnoEjemplos.Socketes.Model.Jugadores
             {
                 this.skeletalMesh.AlphaBlendEnable = true;
                 device.RenderState.ZBufferEnable = false;
+                this.shadowEffect.SetValue("lightIntensity", (float)GuiController.Instance.Modifiers["lightIntensity"]);
+                this.shadowEffect.SetValue("lightAttenuation", (float)GuiController.Instance.Modifiers["lightAttenuation"]);
                 this.shadowEffect.SetValue("matViewProj", device.Transform.View * device.Transform.Projection);
                 this.shadowEffect.SetValue("g_vLightPos", new Vector4(luz.Posicion.X, luz.Posicion.Y, luz.Posicion.Z, 1));
                 this.skeletalMesh.render();
