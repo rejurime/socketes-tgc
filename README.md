@@ -26,8 +26,8 @@ public TgcViewerConfig()
 
 ## API Reference
 * [DirectX SDK](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=6812)
-* [Visual Studio 2015 Community Edition](https://www.visualstudio.com/es-ar/products/visual-studio-community-vs)
-* [TGCViewer](https://github.com/lebarba/tgc-viewer/)
+* [Visual Studio Community Edition](https://www.visualstudio.com/es-ar/products/visual-studio-community-vs)
+* [TGCViewer](https://github.com/tgc-utn/tgc-viewer)
 
 ## Contributors
 * Matías Leonel Rege
