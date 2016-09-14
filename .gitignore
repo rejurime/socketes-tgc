@@ -21,6 +21,10 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+*.exe
+*.exe.*
+*.dll
+*.vshost.*
 
 # Visual Studo 2015 cache/options directory
 .vs/
@@ -32,8 +36,6 @@ bld/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
-*.dll
-*.exe
 
 # Build Results of an ATL Project
 [Dd]ebugPS/
@@ -131,7 +133,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -196,5 +198,3 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-
-*dll.config
