@@ -13,6 +13,8 @@ namespace AlumnoEjemplos.Socketes.Model.ElementosCancha
         public LimiteCancha(TgcBox box)
         {
             this.box = box;
+			//TODO cambiar por matrices
+			this.box.AutoTransformEnable = true;
         }
 
         public TgcBoundingAxisAlignBox BoundingBox

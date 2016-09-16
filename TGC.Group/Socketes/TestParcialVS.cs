@@ -41,8 +41,6 @@ namespace AlumnoEjemplos.Socketes
 
         public override void Init()
         {
-            this.pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
             //Color de fondo
             //GuiController.Instance.BackgroundColor = Color.Black;
 

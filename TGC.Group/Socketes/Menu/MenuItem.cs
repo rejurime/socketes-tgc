@@ -21,7 +21,11 @@ namespace AlumnoEjemplos.Socketes.Menu
         {
             this.nombre = nombre;
             this.opcion = TgcBox.fromSize(vectorOrigen, vectorFin, TgcTexture.createTexture(texturaUnselect));
+			//TODO cambiar por matrices
+			this.opcion.AutoTransformEnable = true;
             this.opcionSelect = TgcBox.fromSize(new Vector3(vectorOrigen.X + 0.4f, vectorOrigen.Y, vectorOrigen.Z), vectorFin, TgcTexture.createTexture(texturaSelect));
+			//TODO cambiar por matrices
+			this.opcionSelect.AutoTransformEnable = true;
 
             this.select = false;
             this.opcion.Enabled = true;

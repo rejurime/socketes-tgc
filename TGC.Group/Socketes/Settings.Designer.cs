@@ -49,18 +49,6 @@ namespace AlumnoEjemplos.Socketes {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Socketes\\")]
-        public string mediaFolder {
-            get {
-                return ((string)(this["mediaFolder"]));
-            }
-            set {
-                this["mediaFolder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Texturas\\pelota1.jpg")]
         public string textureBall {
             get {

@@ -50,6 +50,7 @@ namespace AlumnoEjemplos.Socketes.Menu
 
             //Pelotas
             this.pelotas = new List<TgcSphere>();
+			//TODO cambiar por matrices
             this.pelotas.Add(this.CrearPelota(pathRecursos, new Vector3(10, 3.2f, 0), TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall)));
             this.pelotas.Add(this.CrearPelota(pathRecursos, new Vector3(10, 3.2f, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\pelota2.jpg")));
             this.pelotas.Add(this.CrearPelota(pathRecursos, new Vector3(10, 3.2f, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\pelota3.jpg")));
@@ -344,6 +345,8 @@ namespace AlumnoEjemplos.Socketes.Menu
 
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
+			//TODO cambiar por matrices
+			sphere.AutoTransformEnable = true;
             sphere.setTexture(texturaPelota);
             sphere.Radius = radio;
             sphere.Position = position;
@@ -359,7 +362,8 @@ namespace AlumnoEjemplos.Socketes.Menu
                 pathRecursos + Settings.Default.meshFolderPlayer + Settings.Default.meshFilePlayer,
                 pathRecursos + Settings.Default.meshFolderPlayer,
                 new string[] { pathRecursos + Settings.Default.meshFolderPlayer + Settings.Default.animationStopFilePlayer });
-
+			//TODO cambiar por matrices
+			personaje.AutoTransformEnable = true;
             //Le cambiamos la textura
             personaje.changeDiffuseMaps(new TgcTexture[] { texturaJugador });
 

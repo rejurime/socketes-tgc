@@ -30,8 +30,6 @@ namespace AlumnoEjemplos.Socketes
 
         public override void Init()
         {
-            string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
             //BoundingBox
             //GuiController.Instance.Modifiers.addBoolean("BoundingBox", "BoundingBox", false);
 
@@ -42,7 +40,7 @@ namespace AlumnoEjemplos.Socketes
             //TODO Arreglar para despues :)
             Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
             TgcStaticSound sonido = new TgcStaticSound();
-            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
+            sonido.loadSound(MediaDir + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
             sonidos.Add("pelota-tiro", sonido);
 
             //this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, Input, sonidos, GuiController.Instance.ThirdPersonCamera);

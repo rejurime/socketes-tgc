@@ -139,6 +139,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             //    TgcTexture.createTexture(pathRecursos + Settings.Default.meshFolderPlayer + nombreTextura)
             //    });
 
+			//TODO cambiar por matrices
+			personaje.AutoTransformEnable = true;
+
             //Configurar animacion inicial
             personaje.playAnimation(Settings.Default.animationStopPlayer, true);
             personaje.Position = posicion;

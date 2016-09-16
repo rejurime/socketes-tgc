@@ -8,9 +8,6 @@
     <Setting Name="camaraOffsetForward" Type="System.Single" Scope="User">
       <Value Profile="(Default)">-400</Value>
     </Setting>
-    <Setting Name="mediaFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Socketes\</Value>
-    </Setting>
     <Setting Name="textureBall" Type="System.String" Scope="User">
       <Value Profile="(Default)">Texturas\pelota1.jpg</Value>
     </Setting>

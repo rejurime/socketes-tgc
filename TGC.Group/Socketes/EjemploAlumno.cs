@@ -71,8 +71,6 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void Init()
         {
-            string pathRecursos = MediaDir + Settings.Default.mediaFolder;
-
             //Musica
             //GuiController.Instance.Modifiers.addBoolean("Musica", "Música", true);
 
@@ -96,7 +94,7 @@ namespace AlumnoEjemplos.Socketes
             //TODO Arreglar para despues :)
             Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
             TgcStaticSound sonido = new TgcStaticSound();
-            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
+            sonido.loadSound(MediaDir + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
             sonidos.Add("pelota-tiro", sonido);
 
             //Configurar camara en Tercer Persona
@@ -106,29 +104,29 @@ namespace AlumnoEjemplos.Socketes
             this.pantallaActual = 0;
 
             //Creo el menu
-            this.menu = new MenuInicial(pathRecursos, camaraInterna, this);
+            this.menu = new MenuInicial(MediaDir, camaraInterna, this);
 
             //Creo la configuracion del partido
-			this.configuracionPartido = new ConfiguracionPartido(pathRecursos, D3DDevice.Instance.Width, camaraInterna, this);
+			this.configuracionPartido = new ConfiguracionPartido(MediaDir, D3DDevice.Instance.Width, camaraInterna, this);
 
             //Creo el partido            
-            this.partido = PartidoFactory.Instance.CrearPartido(pathRecursos, Input, sonidos, camaraInterna);
+            this.partido = PartidoFactory.Instance.CrearPartido(MediaDir, Input, sonidos, camaraInterna);
 
 			drawer2D = new Drawer2D();
 
             //Mapa
             this.mapa = new CustomSprite();
-			this.mapa.Bitmap = new CustomBitmap(pathRecursos + "Texturas\\LogoTGC.png", D3DDevice.Instance.Device);
+			this.mapa.Bitmap = new CustomBitmap(MediaDir + "Texturas\\mapa.png", D3DDevice.Instance.Device);
             //this.mapa.Scaling = new Vector2(0.75f, 0.75f);
 			Size textureSize = this.mapa.Bitmap.Size;
             this.mapa.Position = new Vector2((D3DDevice.Instance.Width - textureSize.Width) / 2, (D3DDevice.Instance.Height - textureSize.Height));
 
             this.puntoAzul = new CustomSprite();
-            this.puntoAzul.Bitmap = new CustomBitmap(pathRecursos + "Texturas\\radarAzul.png", D3DDevice.Instance.Device);
+            this.puntoAzul.Bitmap = new CustomBitmap(MediaDir + "Texturas\\radarAzul.png", D3DDevice.Instance.Device);
             this.puntoAzul.Scaling = new Vector2(0.03f, 0.03f);
 
             this.puntoNaranja = new CustomSprite();
-            this.puntoNaranja.Bitmap = new CustomBitmap(pathRecursos + "Texturas\\radarNaranja.png", D3DDevice.Instance.Device);
+            this.puntoNaranja.Bitmap = new CustomBitmap(MediaDir + "Texturas\\radarNaranja.png", D3DDevice.Instance.Device);
             this.puntoNaranja.Scaling = new Vector2(0.03f, 0.03f);
 
 			//Color de fondo (BackgroundColor)
@@ -171,6 +169,7 @@ namespace AlumnoEjemplos.Socketes
             if (this.pantallaActual == 0)
             {
                 this.menu.render(ElapsedTime);
+				PostRender();
                 return;
             }
 
@@ -178,6 +177,7 @@ namespace AlumnoEjemplos.Socketes
             if (this.pantallaActual == 1)
             {
                 this.configuracionPartido.render(ElapsedTime);
+				PostRender();
                 return;
             }
 

@@ -42,11 +42,9 @@ namespace AlumnoEjemplos.Socketes
 
         public override void Init()
         {
-            string pathRecursos = Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
             //Cargar jugador y pelota
-            this.pelota = this.CrearPelota(pathRecursos);
-            this.jugador = this.CrearJugador(pathRecursos);
+            this.pelota = this.CrearPelota(MediaDir);
+            this.jugador = this.CrearJugador(MediaDir);
 
             //Camara en 1ra persona
             //GuiController.Instance.FpsCamera.Enable = true;
@@ -61,9 +59,9 @@ namespace AlumnoEjemplos.Socketes
              * El shader toma 4 luces a la vez para iluminar un mesh.
              * Pero como hacer 4 veces los calculos en el shader es costoso, de cada luz solo calcula el componente Diffuse.
              */
-            this.meshMultiDiffuseLights = TgcShaders.loadEffect(pathRecursos + "Shaders\\MeshMultiplePointLight.fx");
+			this.meshMultiDiffuseLights = TgcShaders.loadEffect(ShadersDir + "Shaders\\MeshMultiplePointLight.fx");
 
-            this.skeletalMeshPointLight = TgcShaders.loadEffect(pathRecursos + "Shaders\\SkeletalMeshMultiplePointLight.fx");
+			this.skeletalMeshPointLight = TgcShaders.loadEffect(ShadersDir + "Shaders\\SkeletalMeshMultiplePointLight.fx");
 
             this.luces = new List<Luz>();
             //Crear 4 mesh para representar las 4 para la luces. Las ubicamos en distintas posiciones del escenario, cada una con un color distinto.
@@ -72,7 +70,7 @@ namespace AlumnoEjemplos.Socketes
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(40, 150, -100), new Vector3(10, 10, 10), Color.Green), Color.Green, new Vector3(-40, 80, 400)));
             luces.Add(new Luz(TgcBox.fromSize(new Vector3(-40, 150, -100), new Vector3(10, 10, 10), Color.Orange), Color.Orange, new Vector3(-40, 100, 400)));
 
-            this.piso = TgcBox.fromSize(new Vector3(0, 0, 0), new Vector3(400, 0, 400), TgcTexture.createTexture(pathRecursos + Settings.Default.textureMenuField));
+			this.piso = TgcBox.fromSize(new Vector3(0, 0, 0), new Vector3(400, 0, 400), TgcTexture.createTexture(MediaDir + Settings.Default.textureMenuField));
 
             //Modifiers
             //GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 38);
@@ -82,9 +80,9 @@ namespace AlumnoEjemplos.Socketes
             //GuiController.Instance.BackgroundColor = Color.Black;
 
             //test carteles
-            this.cartel1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Cartel\\Cartel-TgcScene.xml").Meshes[0];
+            this.cartel1 = new TgcSceneLoader().loadSceneFromFile(MediaDir + "Cartel\\Cartel-TgcScene.xml").Meshes[0];
 
-            this.cartelEffect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+			this.cartelEffect = TgcShaders.loadEffect(ShadersDir + "Shaders\\CartelShader.fx");
 
 
         }

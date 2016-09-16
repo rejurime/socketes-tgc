@@ -121,43 +121,64 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         {
             //Cesped
             TgcBox boxField = TgcBox.fromSize(new Vector3(0, 0, 0), new Vector3(1920, 0, 1200), TgcTexture.createTexture(pathRecursos + Settings.Default.textureField));
-
-            //Piso
+			//TODO cambiar por matrices
+			boxField.AutoTransformEnable = true;
+            
+			//Piso
             TgcBox boxFloor = TgcBox.fromSize(new Vector3(boxField.Position.X, boxField.Position.Y - 1, boxField.Position.Z), boxField.Size * 2, TgcTexture.createTexture(pathRecursos + Settings.Default.textureFloor));
+			//TODO cambiar por matrices
+			boxFloor.AutoTransformEnable = true;
 
             //Laterales
             TgcMesh tribuna1 = this.CrearTribunaPlatea(pathRecursos, boxField, 1);
-            TgcMesh tribuna2 = this.CrearTribunaPlatea(pathRecursos, boxField, -1);
+            //TODO cambiar por matrices
+			tribuna1.AutoTransformEnable = true;
+			TgcMesh tribuna2 = this.CrearTribunaPlatea(pathRecursos, boxField, -1);
+			//TODO cambiar por matrices
+			tribuna2.AutoTransformEnable = true;
 
             //Atras del arco
             TgcMesh tribuna3 = this.CrearTribunaPopular(pathRecursos, boxField, 1);
-            TgcMesh tribuna4 = this.CrearTribunaPopular(pathRecursos, boxField, -1);
-
+            //TODO cambiar por matrices
+			tribuna3.AutoTransformEnable = true;
+			TgcMesh tribuna4 = this.CrearTribunaPopular(pathRecursos, boxField, -1);
+			//TODO cambiar por matrices
+			tribuna4.AutoTransformEnable = true;
 
             List<TgcBox> carteles = new List<TgcBox>();
 
             TgcBox cartel1 = TgcBox.fromSize(new Vector3(0, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\gnome-logo.png"));
-            cartel1.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+			//TODO cambiar por matrices
+			cartel1.AutoTransformEnable = true;
+			cartel1.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
             cartel1.Technique = "Rotacion";
             cartel1.updateValues();
 
             TgcBox cartel2 = TgcBox.fromSize(new Vector3(200, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\blizzard_logo.jpg"));
-            cartel2.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            //TODO cambiar por matrices
+			cartel2.AutoTransformEnable = true;
+			cartel2.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
             cartel2.Technique = "Rotacion";
             cartel2.updateValues();
 
             TgcBox cartel3 = TgcBox.fromSize(new Vector3(-200, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\github-logo.jpg"));
-            cartel3.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            //TODO cambiar por matrices
+			cartel3.AutoTransformEnable = true;
+			cartel3.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
             cartel3.Technique = "Rotacion";
             cartel3.updateValues();
 
             TgcBox cartel4 = TgcBox.fromSize(new Vector3(400, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\atom-editor-logo.png"));
-            cartel4.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            //TODO cambiar por matrices
+			cartel4.AutoTransformEnable = true;
+			cartel4.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
             cartel4.Technique = "Rotacion";
             cartel4.updateValues();
 
             TgcBox cartel5 = TgcBox.fromSize(new Vector3(-400, 15, boxField.Size.Z / 2), new Vector3(150, 30, 0), TgcTexture.createTexture(pathRecursos + "Texturas\\visual-studio-logo.png"));
-            cartel5.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
+            //TODO cambiar por matrices
+			cartel5.AutoTransformEnable = true;
+			cartel5.Effect = TgcShaders.loadEffect(pathRecursos + "Shaders\\CartelShader.fx");
             cartel5.Technique = "CartelFallando";
             cartel5.updateValues();
 
@@ -290,11 +311,13 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
         private Luz CrearLuz(string pathRecursos, TgcBox cancha, int signoX, int signoZ, float rotateY)
         {
             TgcMesh luzMesh = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFilePoste).Meshes[0];
-            luzMesh.rotateY(rotateY);
+			//TODO cambiar por matrices
+			luzMesh.AutoTransformEnable = true;
+			luzMesh.rotateY(rotateY);
             luzMesh.Scale = new Vector3(3, 4, 3);
             luzMesh.Position = new Vector3(signoX * (cancha.Size.X / 2 + 50), cancha.Position.Y + luzMesh.BoundingBox.PMax.Y, signoZ * (cancha.Size.Z / 2 + 100));
-            Luz luz1 = new Luz(luzMesh, Color.White, luzMesh.BoundingBox.PMax);
-            return luz1;
+            Luz luz = new Luz(luzMesh, Color.White, luzMesh.BoundingBox.PMax);
+            return luz;
         }
 
         /// <summary>
@@ -308,6 +331,8 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             int radio = 6;
             //Crear esfera
             TgcSphere sphere = new TgcSphere();
+			//TODO cambiar por matrices
+			sphere.AutoTransformEnable = true;
             //sphere.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             sphere.Radius = radio;
             sphere.Position = new Vector3(cancha.Position.X, cancha.Position.Y + radio, cancha.Position.Z);
@@ -331,15 +356,21 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
 
             List<Palo> palos = new List<Palo>();
             TgcMesh palo1 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[0];
-            palo1.Position = posicion;
+            //TODO cambiar por matrices
+			palo1.AutoTransformEnable = true;
+			palo1.Position = posicion;
             palo1.Scale = new Vector3(0.8f, 0.8f, 0.8f);
 
             TgcMesh palo2 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[1];
-            palo2.Position = posicion;
+            //TODO cambiar por matrices
+			palo2.AutoTransformEnable = true;
+			palo2.Position = posicion;
             palo2.Scale = new Vector3(0.8f, 0.8f, 0.8f);
 
             TgcMesh palo3 = new TgcSceneLoader().loadSceneFromFile(pathRecursos + Settings.Default.meshFileGoal).Meshes[2];
-            palo3.Position = posicion;
+            //TODO cambiar por matrices
+			palo3.AutoTransformEnable = true;
+			palo3.Position = posicion;
             palo3.Scale = new Vector3(0.8f, 0.8f, 0.8f);
 
             palos.Add(new Palo(palo1));
@@ -350,7 +381,9 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
             Vector3 tamanoRed = new Vector3(0, palo3.BoundingBox.PMin.Y, palo3.BoundingBox.PMax.Z * 2 - 14);
 
             TgcMesh red = new TgcSceneLoader().loadSceneFromFile(pathRecursos + "Arco\\Red-TgcScene.xml").Meshes[0];
-            red.Position = posicionRed + new Vector3(direccion * 65, 0, 0);
+            //TODO cambiar por matrices
+			red.AutoTransformEnable = true;
+			red.Position = posicionRed + new Vector3(direccion * 65, 0, 0);
             //TODO esto significa que los arcos no son correctos... porque no escalo igual
             red.Scale = new Vector3(3f, 3f, 2f);
             red.AlphaBlendEnable = true;
@@ -361,8 +394,7 @@ namespace AlumnoEjemplos.Socketes.Model.Creacion
                 red.rotateY(FastMath.PI);
             }
 
-
-            return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed), red));
+			return new Arco(palos, new Red(TgcBox.fromSize(posicionRed, tamanoRed), red));
         }
 
         #endregion

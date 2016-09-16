@@ -36,12 +36,10 @@ namespace AlumnoEjemplos.Socketes
         /// </summary>
         public override void Init()
         {
-            string pathRecursos = System.Environment.CurrentDirectory + "\\" + Assembly.GetExecutingAssembly().GetName().Name + "\\" + Settings.Default.mediaFolder;
-
             //TODO Arreglar para despues :)
             Dictionary<string, TgcStaticSound> sonidos = new Dictionary<string, TgcStaticSound>();
             TgcStaticSound sonido = new TgcStaticSound();
-            sonido.loadSound(pathRecursos + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
+            sonido.loadSound(MediaDir + "Audio\\pelota-tiro.wav", DirectSound.DsDevice);
             sonidos.Add("pelota-tiro", sonido);
 
 			//FIXME arreglar para que el partido no tenga que recibir la camara.

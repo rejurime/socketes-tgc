@@ -47,6 +47,8 @@ namespace AlumnoEjemplos.Socketes.Menu
 
             //Brazuca
             this.pelota = new TgcSphere();
+			//TODO cambiar por matrices
+			this.pelota.AutoTransformEnable = true;
             this.pelota.setTexture(TgcTexture.createTexture(pathRecursos + Settings.Default.textureBall));
             this.pelota.Radius = 2.5f;
             this.pelota.LevelOfDetail = 4;
@@ -55,7 +57,9 @@ namespace AlumnoEjemplos.Socketes.Menu
 
             //Cancha donde esta la pelota
             this.cancha = TgcBox.fromSize(new Vector3(20, 0, 20), TgcTexture.createTexture(pathRecursos + Settings.Default.textureMenuField));
-            this.cancha.Position = new Vector3(0, -2.5f, 0);
+            //TODO cambiar por matrices
+			this.cancha.AutoTransformEnable = true;
+			this.cancha.Position = new Vector3(0, -2.5f, 0);
 
             //Menu
             this.menus = new List<MenuItem>();
