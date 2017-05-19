@@ -1,9 +1,11 @@
 # :soccer: socketes-tgc :soccer:
 
 ## Descripción
-Ultra precario juego de fútbol :stuck_out_tongue_closed_eyes:
+Ultra precario juego de fútbol :stuck_out_tongue_closed_eyes:.
 
-*Trabajo Práctico de la materia* **"Técnicas de Gráficos por Computadora"**. *Segundo Cuatrimestre 2015.*
+*Trabajo Práctico de la materia* **"Técnicas de Gráficos por Computadora"**. 
+
+*Segundo Cuatrimestre 2015.*
 
 ## Grupo
 **Socketes**
